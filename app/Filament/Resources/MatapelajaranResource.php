@@ -23,6 +23,7 @@ class MatapelajaranResource extends Resource
     protected static ?string $navigationGroup = 'Management';
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
     protected static ? string $navigationLabel = 'Matapelajaran';
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
@@ -89,6 +90,7 @@ class MatapelajaranResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -28,6 +28,7 @@ class SiswaResource extends Resource
     protected static ? string $navigationLabel = 'Siswa';
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -166,6 +167,7 @@ class SiswaResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

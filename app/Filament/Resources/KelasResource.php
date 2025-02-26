@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\KelasResource\Pages;
+use App\Filament\Resources\KelasResource\Pages\DeleteSiswa;
 use App\Filament\Resources\KelasResource\Pages\ManageSiswa;
 use App\Filament\Resources\KelasResource\RelationManagers;
 use App\Models\Kelas;
@@ -26,6 +27,7 @@ class KelasResource extends Resource
     protected static ?string $navigationGroup = 'Management';
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
     protected static ?string $navigationLabel = 'Kelas';
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
@@ -77,20 +79,22 @@ class KelasResource extends Resource
                 Action::make('add_siswa')
                     ->label('Tambah Siswa')
                     ->icon('heroicon-o-user-plus')
-                    ->color('primary')
+                    ->color('success')
                     ->url(fn($record) => Pages\AddSiswa::getUrl(['record' => $record->id]))
                     ->openUrlInNewTab(false), // Agar tetap di tab yang sama
                 Action::make('manage_siswa')
                     ->label('Manage Siswa')
                     ->icon('heroicon-o-user-group')
-                    ->color('primary')
-                    ->url(fn($record) => ManageSiswa::getUrl(['record' => $record->id]))
+                    ->color('info')
+                    ->url(fn($record) => DeleteSiswa::getUrl(['record' => $record->id]))
                     ->openUrlInNewTab(false), // Agar tetap di tab yang sama
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+
                 ]),
             ]);
     }
@@ -108,7 +112,7 @@ class KelasResource extends Resource
             'index' => Pages\ListKelas::route('/'),
             'create' => Pages\CreateKelas::route('/create'),
             'edit' => Pages\EditKelas::route('/{record}/edit'),
-            'manage-siswa' => ManageSiswa::route('/{record}/manage-siswa'),
+            'manage-siswa' => DeleteSiswa::route('/{record}/manage-siswa'),
             'add-siswa' => Pages\AddSiswa::route('/{record}/add-siswa'),
         ];
     }
