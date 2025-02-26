@@ -15,6 +15,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\Action as TableAction;
 
 class AddSiswa extends Page implements HasTable, HasForms
 {
@@ -88,6 +89,17 @@ class AddSiswa extends Page implements HasTable, HasForms
                             ]);
                         }
                     })
+                    ->successNotificationTitle('Siswa berhasil ditambahkan!'),
+            ])
+            ->actions([
+                TableAction::make('add_to_kelas')
+                    ->label('Tambahkan ke Kelas')
+                    ->icon('heroicon-o-building-office-2')
+                    ->requiresConfirmation()
+                    ->action(fn($record) => DetailKelas::create([
+                        'kelas_id' =>  $this->record,
+                        'siswa_id' => $record->id,
+                    ]))
                     ->successNotificationTitle('Siswa berhasil ditambahkan!'),
             ]);
     }
