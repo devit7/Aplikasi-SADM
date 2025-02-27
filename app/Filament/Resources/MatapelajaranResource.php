@@ -56,6 +56,7 @@ class MatapelajaranResource extends Resource
                 TextInput::make('kkm')
                     ->label('KKM')
                     ->required()
+                    ->numeric()
                     ->placeholder('Masukkan KKM'),
             ]);
     }
