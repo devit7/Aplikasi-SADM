@@ -47,9 +47,12 @@ class AddSiswa extends Page implements HasTable, HasForms
 
     public function table(Table $table): Table
     {
-        return $table
-            ->query(fn() => Siswa::query()->whereDoesntHave('detailKelas', fn($query) =>
-            $query->where('kelas_id', $this->record))) // Hanya siswa yang belum masuk kelas
+        $record = $this->record;
+        return $table // Mengambil data siswa yang belum masuk kelas di tahun ajaran ini
+            ->query(fn() => Siswa::query()
+            ->whereDoesntHave('detailKelas.kelas', function($query) use ($record) {
+                $query->where('tahun_ajaran', Kelas::find($record)->tahun_ajaran);
+            }))
             ->columns([
                 TextColumn::make('nis')
                     ->searchable()
