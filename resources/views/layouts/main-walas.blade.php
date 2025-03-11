@@ -7,7 +7,8 @@
     <title>APLIKASI - SADM</title>
     @vite('resources/css/app.css')
 </head>
-<body>
-    
+<body class=" bg-[#f5f6fa]">
+    <x-walas-navbar/>
+    @yield('content')
 </body>
 </html>
