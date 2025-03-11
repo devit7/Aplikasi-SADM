@@ -66,13 +66,14 @@ class MatapelajaranResource extends Resource
         return $table
             ->columns([
                 //
-                TextColumn::make('nama_mapel')
-                    ->searchable()
-                    ->sortable(),
                 TextColumn::make('kode_mapel')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('kelas_id')
+                TextColumn::make('nama_mapel')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('kelas.tahun_ajaran')
+                    ->label('Tahun Ajaran')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('kelas.nama_kelas')
