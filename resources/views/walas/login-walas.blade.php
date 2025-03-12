@@ -19,7 +19,7 @@
       <div class="w-full h-100">
 
         <div class="flex justify-center mb-4">
-          <img src="logo.png" alt="Logo"
+          <img src="img/loginlogo.png" alt="Logo"
                class="w-32 h-32 object-cover">
         </div>
 
