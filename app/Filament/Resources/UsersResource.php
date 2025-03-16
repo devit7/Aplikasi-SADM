@@ -35,7 +35,9 @@ class UsersResource extends Resource
                 //
                 TextInput::make('nip')
                     ->label('NIP')
+                    ->numeric()
                     ->required()
+                    ->minLength(18)
                     ->unique(ignoreRecord: true)
                     ->placeholder('Masukkan NIP'),
                 TextInput::make('name')
@@ -51,6 +53,7 @@ class UsersResource extends Resource
                     ->label('Password')
                     ->required()
                     ->placeholder('Masukkan Password')
+                    ->minLength(5)
                     ->password(),
                 Select::make('jenis_kelamin')
                     ->label('Jenis Kelamin')
@@ -69,6 +72,8 @@ class UsersResource extends Resource
                     ->placeholder('Masukkan Tempat Lahir'),
                 TextInput::make('no_hp')
                     ->label('No HP')
+                    ->maxLength(12)
+                    ->minLength(10)
                     ->required()
                     ->numeric()
                     ->placeholder('Masukkan No HP'),

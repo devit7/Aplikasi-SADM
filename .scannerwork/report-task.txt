@@ -1,0 +1,6 @@
+projectKey=analyze-aplikasi-sadm
+serverUrl=http://localhost:9099
+serverVersion=25.3.0.104237
+dashboardUrl=http://localhost:9099/dashboard?id=analyze-aplikasi-sadm
+ceTaskId=7d9716c8-d537-4bd0-8d3b-192073c65ba5
+ceTaskUrl=http://localhost:9099/api/ce/task?id=7d9716c8-d537-4bd0-8d3b-192073c65ba5

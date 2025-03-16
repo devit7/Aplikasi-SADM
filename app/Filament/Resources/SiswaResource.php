@@ -41,10 +41,13 @@ class SiswaResource extends Resource
                         TextInput::make('nis')
                             ->label('NIS')
                             ->required()
+                            ->numeric()
                             ->unique(ignoreRecord: true)
                             ->placeholder('Masukkan NIS'),
                         TextInput::make('nisn')
                             ->label('NISN')
+                            ->length(10)
+                            ->numeric()
                             ->required()
                             ->unique(ignoreRecord: true)
                             ->placeholder('Masukkan NISN'),
@@ -100,11 +103,15 @@ class SiswaResource extends Resource
                         TextInput::make('no_hp_bapak')
                             ->label('No HP Bapak')
                             ->numeric()
+                            ->maxLength(12)
+                            ->minLength(10)
                             ->required()
                             ->placeholder('Masukkan No HP Bapak'),
                         TextInput::make('no_hp_ibu')
                             ->label('No HP Ibu')
                             ->numeric()
+                            ->maxLength(12)
+                            ->minLength(10)
                             ->required()
                             ->placeholder('Masukkan No HP Ibu'),
                     ])->columnSpan(1)->columns(1),
