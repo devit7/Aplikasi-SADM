@@ -13,5 +13,7 @@
         <x-walas-sidebar/>
         @yield('content')
     </div>
+    <script src="{{ asset('js/flowbite.min.js') }}"></script>
+    @stack('scripts')
 </body>
 </html>
