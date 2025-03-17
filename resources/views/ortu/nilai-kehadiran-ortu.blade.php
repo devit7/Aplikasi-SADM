@@ -10,4 +10,28 @@
         <h1 class="text-3xl font-poppins">KELAS 3 SEMESTER GANJIL</h1>
         <h2 class="text-2xl font-poppins">DINDA SULISTYA</h2>
     </div>
+    <table class="w-full border-collapse border rounded-md text-sm">
+        <thead>
+            <tr class="bg-gray-200">
+                <th class="border p-2">Mata Pelajaran</th>
+                <th class="border p-2">Nilai</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="text-center">
+                <td class="border p-2">Matematika</td>
+                <td class="border p-2">90</td>
+            </tr>
+            <tr class="text-center">
+                <td class="border p-2">Bahasa Indonesia</td>
+                <td class="border p-2">95</td>
+            </tr>
+            <tr class="text-center">
+                <td class="border p-2">Bahasa Inggris</td>
+                <td class="border p-2">80</td>
+            </tr>
+
+        </tbody>
+    </table>
 @endsection

@@ -12,9 +12,14 @@ Route::get('/walas/login', function () {
     return view('walas.login-walas');
 });
 
+//panel orang tua
 Route::get('/ortu', function () {
     return view('ortu.index');
 });
+Route::get('/ortu/login', function () {
+    return view('login-ortu');
+});
+
 Route::get('/ortu/history-akademik', function () {
     return view('ortu.historyakademik-ortu');
 });
