@@ -24,20 +24,24 @@
 
         <div class=" flex flex-wrap">
             <div class="grid grid-cols-2 gap-4">
-                <button class=" bg-white w-[200px] rounded-lg shadow-md">
-                    <div class="bg-red-300 w-[200px] p-6 shadow-md text-center">
+                <button class=" bg-white w-[200px] h-[250px] rounded-lg shadow-md flex flex-col">
+                    <div class="bg-red-300 h-[150px] p-6 shadow-md text-center flex justify-center items-center">
                         <h2 class="text-3xl font-bold text-white">3A</h2>
                     </div>
-                    <div class="">
+                    <div class=" flex flex-col text-start p-3">
                         <p class="text-black font-semibold mt-2">KELAS 3A<br>S2-2025</p>
                         <p class="text-gray-700 mt-2">27 👥</p>
                     </div>
                 </button>
-                <div class="bg-green-300 w-[200px] p-6 rounded-lg shadow-md text-center">
-                    <h2 class="text-3xl font-bold text-white">3B</h2>
-                    <p class="text-black font-semibold mt-2">KELAS 3B<br>S2-2025</p>
-                    <p class="text-gray-700 mt-2">27 👥</p>
-                </div>
+                <button class=" bg-white w-[200px] h-[250px] rounded-lg shadow-md flex flex-col">
+                    <div class="bg-red-300 h-[150px] p-6 shadow-md text-center flex justify-center items-center">
+                        <h2 class="text-3xl font-bold text-white">3A</h2>
+                    </div>
+                    <div class=" flex flex-col text-start p-3">
+                        <p class="text-black font-semibold mt-2">KELAS 3A<br>S2-2025</p>
+                        <p class="text-gray-700 mt-2">27 👥</p>
+                    </div>
+                </button>
             </div>
         </div>
     </div>
