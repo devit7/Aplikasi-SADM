@@ -11,9 +11,6 @@ Route::get('/walas/list-siswa', function () {
 Route::get('/walas/login', function () {
     return view('walas.login-walas');
 });
-Route::get('/walas/list-kelas', function () {
-    return view('walas.list-kelas');
-});
 
 Route::get('/ortu', function () {
     return view('ortu.index');
