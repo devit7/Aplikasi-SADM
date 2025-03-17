@@ -1,9 +1,15 @@
-@extends("layouts.main-walas")
-@section('content')
-    <div class=" flex-col p-10">
-        <p class=" text-lg font-bold mb-5">Kelas List</p>
-
-        <!-- CARD -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>APLIKASI - SADM</title>
+    @vite('resources/css/app.css')
+</head>
+<body>
+    <x-walas-navbar/>
+    <div class=" p-5">
         <a href="your-link-here" class="block">
             <div class="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-[230px] transition-transform duration-200 hover:scale-105">
                 <div class="relative overflow-hidden text-gray-700 bg-white bg-clip-border rounded-t-xl h-[200px]">
@@ -18,8 +24,6 @@
                 </div>
             </div>
         </a>
-
-
-
     </div>
-@endsection
+</body>
+</html>

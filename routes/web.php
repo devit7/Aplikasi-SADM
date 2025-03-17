@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('ortu.historyakademik-ortu');
+    return view('walas.dashboard-walas');
 });
 
 Route::get('/ortu', function () {
