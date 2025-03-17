@@ -9,21 +9,33 @@
 </head>
 <body>
     <x-walas-navbar/>
-    <div class=" p-5">
-        <a href="your-link-here" class="block">
-            <div class="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-[230px] transition-transform duration-200 hover:scale-105">
-                <div class="relative overflow-hidden text-gray-700 bg-white bg-clip-border rounded-t-xl h-[200px]">
-                    <img src="img/wallpaper sunday.png" alt="card-image" class="object-cover w-full h-full" />
+    <div class=" flex flex-col min-h-screen bg-gray-100 p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold">Kelas List</h1>
+            <div class="flex space-x-2">
+                <select class="p-2 border rounded shadow-sm">
+                    <option>Pilih Tahun Ajar</option>
+                </select>
+                <select class="p-2 border rounded shadow-sm">
+                    <option>Pilih Semester</option>
+                </select>
+            </div>
+        </div>
+
+        <div class=" flex flex-wrap">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-red-300 w-[200px] p-6 rounded-lg shadow-md text-center">
+                    <h2 class="text-3xl font-bold text-white">3A</h2>
+                    <p class="text-black font-semibold mt-2">KELAS 3A<br>S2-2025</p>
+                    <p class="text-gray-700 mt-2">27 👥</p>
                 </div>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-2">
-                        <p class="block font-sans text-base antialiased font-semibold leading-relaxed text-blue-gray-900">
-                            KELAS 3A S2-2025
-                        </p>
-                    </div>
+                <div class="bg-green-300 w-[200px] p-6 rounded-lg shadow-md text-center">
+                    <h2 class="text-3xl font-bold text-white">3B</h2>
+                    <p class="text-black font-semibold mt-2">KELAS 3B<br>S2-2025</p>
+                    <p class="text-gray-700 mt-2">27 👥</p>
                 </div>
             </div>
-        </a>
+        </div>
     </div>
 </body>
 </html>

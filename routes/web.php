@@ -8,6 +8,9 @@ Route::get('/', function () {
 Route::get('/walas/list-siswa', function () {
     return view('walas.list-siswa');
 });
+Route::get('/walas/list-kelas', function () {
+    return view('walas.list-kelas');
+});
 
 Route::get('/ortu', function () {
     return view('ortu.index');
