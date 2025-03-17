@@ -9,6 +9,9 @@
 </head>
 <body class=" bg-[#f5f6fa]">
     <x-walas-navbar/>
-    @yield('content')
+    <div class=" flex">
+        <x-walas-sidebar/>
+        @yield('content')
+    </div>
 </body>
 </html>
