@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\WalasController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/walas', function () {
-    return view('walas.dashboard-walas');
-});
+Route::resource('/walas',WalasController::class);
+Route::get('walaas/{id}',[WalasController::class, 'showSiswa'])->name('List-Siswa');
 Route::get('/walas/list-siswa', function () {
     return view('walas.list-siswa');
 });
