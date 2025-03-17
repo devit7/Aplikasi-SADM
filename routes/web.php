@@ -15,6 +15,7 @@ Route::get('/walas/list-kelas', function () {
     return view('walas.list-kelas');
 });
 
+//panel orang tua
 Route::get('/ortu', function () {
     return view('ortu.index');
 });
