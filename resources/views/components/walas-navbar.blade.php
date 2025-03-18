@@ -2,8 +2,8 @@
     <!-- component -->
 <header class='flex border-b py-4 px-4 sm:px-10 bg-white font-sans min-h-[70px] tracking-wide relative z-50'>
       <div class='flex flex-wrap items-center gap-4 w-full'>
-        <a href="https://readymadeui.com">
-          <h3 class="text-2xl font-semibold">Logo</h3>
+        <a href="/walas">
+          <img src="{{ asset('img/loginlogo.png') }}" class="w-[50px]" alt="">
         </a>
 
         <div
@@ -64,7 +64,7 @@
             free trial</button> -->
 
             <div class="flex content-center">
-                <img src="img/logo.png" alt="" class=" w-[40px]">
+                <img src="{{ asset('img/wallpaper sunday.png') }}" alt="" class=" w-[40px]">
                 <div class="flex flex-col ml-2">
                     <p class=" ">Roy Corasapi</p>
                     <p>Wali Kelas</p>

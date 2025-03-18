@@ -9,31 +9,47 @@
 </head>
 <body>
     <x-walas-navbar/>
-    <div class=" flex flex-col min-h-screen bg-gray-100 p-6">
+    <div class="flex flex-col min-h-screen bg-gray-100 p-6">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold">Kelas List</h1>
-            <div class="flex space-x-2">
-                <select class="p-2 border rounded shadow-sm">
-                    <option>Pilih Tahun Ajar</option>
+            <form method="GET" action="{{ route('walas.index') }}" class="flex space-x-2">
+                @csrf
+                <select name="tahun_ajaran" class="p-2 border rounded shadow-sm" onchange="this.form.submit()">
+                    <option value="">Pilih Tahun Ajar</option>
+                    @foreach($tahun_ajaran as $tahun)
+                        <option value="{{ $tahun }}" {{ request('tahun_ajaran') == $tahun ? 'selected' : '' }}>{{ $tahun }}</option>
+                    @endforeach
                 </select>
-                <select class="p-2 border rounded shadow-sm">
-                    <option>Pilih Semester</option>
+                <select name="semester" class="p-2 border rounded shadow-sm" onchange="this.form.submit()">
+                    <option value="">Pilih Semester</option>
+                    <option value="1" {{ request('semester') == '1' ? 'selected' : '' }}>Semester 1</option>
+                    <option value="2" {{ request('semester') == '2' ? 'selected' : '' }}>Semester 2</option>
                 </select>
-            </div>
+            </form>
         </div>
 
-        <div class=" flex flex-wrap">
+        <div class="flex flex-wrap">
             <div class="grid grid-cols-2 gap-4">
-                <div class="bg-red-300 w-[200px] p-6 rounded-lg shadow-md text-center">
-                    <h2 class="text-3xl font-bold text-white">3A</h2>
-                    <p class="text-black font-semibold mt-2">KELAS 3A<br>S2-2025</p>
-                    <p class="text-gray-700 mt-2">27 👥</p>
-                </div>
-                <div class="bg-green-300 w-[200px] p-6 rounded-lg shadow-md text-center">
-                    <h2 class="text-3xl font-bold text-white">3B</h2>
-                    <p class="text-black font-semibold mt-2">KELAS 3B<br>S2-2025</p>
-                    <p class="text-gray-700 mt-2">27 👥</p>
-                </div>
+            @forelse ($kelas as $kelas)
+                @if ((request('tahun_ajaran') == '' || $kelas->tahun_ajaran == request('tahun_ajaran')) && 
+                     (request('semester') == '' || $kelas->matapelajaran->contains('semester', request('semester'))))
+                <a href={{ route('List-Siswa', $kelas->id) }}>
+                    <button class="bg-white w-[200px] h-[250px] rounded-lg shadow-md flex flex-col">
+                        <div class="bg-red-300 h-[150px] p-6 shadow-md text-center flex justify-center items-center">
+                            <h2 class="text-3xl font-bold text-white">{{ $kelas->nama_kelas }}</h2>
+                        </div>
+                        @foreach ($kelas->matapelajaran as $mp)
+                        <div class="flex flex-col text-start p-3">
+                            <p class="text-black font-semibold mt-2">KELAS {{ $kelas->nama_kelas }}<br>{{ $mp->semester }}-{{ $kelas->tahun_ajaran }}</p>
+                            <p class="text-gray-700 mt-2">{{ $kelas->siswa_count }} 👥</p>
+                        </div>
+                        @endforeach
+                    </button>
+                </a>
+                @endif
+            @empty
+                <p>Data tidak ada</p>
+            @endforelse
             </div>
         </div>
     </div>

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('pekerjaan_bapak');
             $table->string('pekerjaan_ibu');
             $table->string('no_hp_bapak');
-            $table->string('no_hp_ibu');
+            $table->string('no_hp_ibu');    
             $table->string('alamat');
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
