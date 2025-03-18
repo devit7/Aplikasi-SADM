@@ -18,7 +18,7 @@
         </div> -->
         
         <x-tables>
-            <table class="w-full border-collapse border rounded-md text-sm">
+            <table class="w-full border-collapse border rounded-md text-sm " id="table" >
                 <thead>
                     <tr class="bg-gray-200">
                         <th class="border p-2">NISN</th>
@@ -52,7 +52,7 @@
             </table>
         </x-tables>
         
-        <div class="flex justify-between items-center mt-4">
+        <!-- <div class="flex justify-between items-center mt-4">
             <p class="text-gray-600">Showing 1 to 10 of 57 entries</p>
             <div class="flex space-x-2">
                 <button class="p-2 border rounded">&laquo;</button>
@@ -63,7 +63,7 @@
                 <button class="p-2 border rounded">5</button>
                 <button class="p-2 border rounded">6</button>
                 <button class="p-2 border rounded">&raquo;</button>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

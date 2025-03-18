@@ -9,8 +9,10 @@ class WalasController extends Controller
 {
     //
     public function index(){
+        $tahun_ajaran = Kelas::distinct()->pluck('tahun_ajaran');
         $kelas = Kelas::with('matapelajaran')->withCount('siswa')->get();
-        return view('walas.dashboard-walas',["kelas" => $kelas]);
+
+        return view('walas.dashboard-walas', compact('kelas', 'tahun_ajaran'));
     }
     public function showSiswa($id){
         $kelas = Kelas::with('siswa')->findOrFail($id);

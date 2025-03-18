@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>APLIKASI - SADM</title>
     @vite('resources/css/app.css')
+    @stack('styles')
 </head>
 <body class=" bg-[#f5f6fa]">
     <x-walas-navbar/>
