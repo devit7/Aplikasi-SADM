@@ -1,6 +1,10 @@
 <?php
+<<<<<<< Updated upstream
 
 use App\Http\Controllers\AuthController;
+=======
+use App\Http\Controllers\ortuController;
+>>>>>>> Stashed changes
 use App\Http\Controllers\WalasController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +25,13 @@ Route::middleware('auth')->group(function () {
 // });
 
 //panel orang tua
+
+
+Route::get('/ortu/login', [ortuController::class, 'showLoginForm'])->name('ortu.login-ortu');
+Route::post('/ortu/login', [ortuController::class, 'loginOrangTua']);
+Route::post('/ortu', [ortuController::class, 'logoutOrtu'])->name('logoutortu');
+
+
 Route::get('/ortu/login', function () {
     return view('ortu.login-ortu');
 });
