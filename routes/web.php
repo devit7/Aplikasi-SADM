@@ -1,10 +1,6 @@
 <?php
-<<<<<<< Updated upstream
-
 use App\Http\Controllers\AuthController;
-=======
 use App\Http\Controllers\ortuController;
->>>>>>> Stashed changes
 use App\Http\Controllers\WalasController;
 use Illuminate\Support\Facades\Route;
 
