@@ -24,7 +24,8 @@
                     <img src="/img/loginlogo.png" alt="Logo" class="w-32 h-32 object-cover">
                 </div>
 
-                <form class="mt-6" action="#" method="POST" onsubmit="return validateForm()">
+                <form class="mt-6" action="{{ route('loginWalas') }}" method="POST" onsubmit="return validateForm()">
+                    @csrf
                     <div>
                         <label class="block text-white">NIP</label>
                         <input type="text" name="nip" id="nip" placeholder="Masukan NIP"

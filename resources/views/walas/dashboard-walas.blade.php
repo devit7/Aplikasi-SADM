@@ -23,13 +23,6 @@
                             {{ $tahun }}</option>
                     @endforeach
                 </select>
-                {{-- <select name="semester" class="p-2 border rounded shadow-sm" onchange="this.form.submit()">
-                    <option value="">Pilih Semester</option>
-                    <option value="1" {{ request('semester') == '1' ? 'selected' : '' }}>Semester 1</option>
-                    <option value="2" {{ request('semester') == '2' ? 'selected' : '' }}>Semester 2</option>
-                    //kode dibawah ini untuk validasi tahun ajaran dan semester di view blade
-                    @if ((request('tahun_ajaran') == '' || $kelas->tahun_ajaran == request('tahun_ajaran')) && (request('semester') == '' || $kelas->matapelajaran->contains('semester', request('semester'))))
-                </select> --}}
             </form>
         </div>
 

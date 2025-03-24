@@ -27,19 +27,6 @@
                 <a href="javascript:void(0)"><img src="https://readymadeui.com/readymadeui.svg" alt="logo" class='w-36' />
                 </a>
               </li>
-              <!-- <li class='max-lg:border-b max-lg:py-3'>
-                <a href='javascript:void(0)'
-                  class='hover:text-[#007bff] text-[#007bff] block font-bold text-[15px]'>Home</a>
-              </li>
-              <li class='max-lg:border-b max-lg:py-3'><a href='javascript:void(0)'
-                class='hover:text-[#007bff] text-gray-600 block font-bold text-[15px]'>Shop</a>
-              </li>
-              <li class='max-lg:border-b max-lg:py-3'><a href='javascript:void(0)'
-                class='hover:text-[#007bff] text-gray-600 block font-bold text-[15px]'>Sale</a>
-              </li>
-              <li class='max-lg:border-b max-lg:py-3'><a href='javascript:void(0)'
-                class='hover:text-[#007bff] text-gray-600 block font-bold text-[15px]'>Manage</a>
-              </li> -->
             </ul>
 
             <ul class='lg:flex lg:items-center ml-auto max-lg:block lg:space-x-8 ml-auto'>
