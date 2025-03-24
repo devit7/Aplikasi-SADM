@@ -1,9 +1,8 @@
 <?php
-
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ortuController;
 use App\Http\Controllers\WalasController;
 use Illuminate\Support\Facades\Route;
-
 
 //WALAS
 Route::get('/walas/login', function () {
@@ -22,11 +21,19 @@ Route::middleware('auth')->group(function () {
 // });
 
 //panel orang tua
+Route::get('/ortu/login', [ortuController::class, 'showLoginForm'])->name('ortu.login-ortu');
+Route::post('/ortu/login', [ortuController::class, 'loginOrangTua']);
+Route::post('/ortu', [ortuController::class, 'logoutOrtu'])->name('logoutortu');
+
+
 Route::get('/ortu/login', function () {
     return view('ortu.login-ortu');
 });
 Route::get('/ortu', function () {
     return view('ortu.index');
+});
+Route::get('/Profile', function () {
+    return view('ortu.ProfileSiswa-Ortu');
 });
 
 Route::get('/ortu/history-akademik', function () {
