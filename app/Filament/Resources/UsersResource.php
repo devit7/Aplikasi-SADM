@@ -13,12 +13,15 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Pages\Page;
+use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Hash;
 
 class UsersResource extends Resource
 {
@@ -54,7 +57,13 @@ class UsersResource extends Resource
                     ->required()
                     ->placeholder('Masukkan Password')
                     ->minLength(5)
-                    ->password(),
+                    ->password()
+                    ->afterStateHydrated(function (Forms\Components\TextInput $component, $state) {
+                        $component->state('');
+                    })
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->required(fn ($livewire) => ($livewire instanceof CreateRecord)),
                 Select::make('jenis_kelamin')
                     ->label('Jenis Kelamin')
                     ->required()
