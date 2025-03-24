@@ -11,6 +11,7 @@ Route::get('/walas/login', function () {
 })->name('loginWalas');
 
 Route::post('/walas/login', [AuthController::class, 'loginWalas']);
+Route::post('/logout', [AuthController::class, 'logoutWalas'])->name('logoutWalas');
 
 Route::middleware('auth')->group(function () {
     Route::resource('/walas', WalasController::class);

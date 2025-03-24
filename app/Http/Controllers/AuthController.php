@@ -22,4 +22,10 @@ class AuthController extends Controller
         return back()->withErrors(['nip' => 'NIP atau password salah'])->withInput();
     }
 
+    public function logoutWalas()
+    {
+        Auth::logout();
+        return redirect()->route('login');
+    }
+
 }
