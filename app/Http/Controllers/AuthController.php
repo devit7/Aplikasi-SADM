@@ -25,7 +25,7 @@ class AuthController extends Controller
     public function logoutWalas()
     {
         Auth::logout();
-        return redirect()->route('login');
+        return redirect()->route('loginWalas');
     }
 
 }
