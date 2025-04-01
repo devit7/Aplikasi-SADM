@@ -39,6 +39,6 @@ Route::get('/Profile', function () {
 Route::get('/ortu/history-akademik', function () {
     return view('ortu.historyakademik-ortu');
 });
-Route::get('/ortu/nilai-kehadiran', function () {
-    return view('ortu.nilai-kehadiran-ortu');
-});
+
+Route::get('/ortu/nilai-kehadiran', [ortuController::class, 'getNilai']);
+Route::get('/ortu/nilai-kehadiran/kehadiran', [ortuController::class, 'getAbsen']);
