@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class WalasSidebar extends Component
+class tables extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class WalasSidebar extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.walas-sidebar');
+        return view('components.tables');
     }
 }

@@ -18,21 +18,21 @@
         <span class="text-gray-600 text-sm">Nilai Rata-Rata Seluruh</span>
         <span class="text-2xl font-bold mt-1">95.0</span>
       </div>
-      <img src="bg1.png" alt="Graduation Icon" class="w-12 h-12 rounded-lg">
+      <img src="/img/1.png" alt="Graduation Icon" class="w-12 h-12 rounded-lg">
     </div>
     <div class="bg-white rounded-lg shadow-md p-4 flex items-center">
       <div class="flex flex-col items-start flex-1">
         <span class="text-gray-600 text-sm">Peringkat Nilai Dari Tahun Lalu</span>
         <span class="text-2xl font-bold mt-1">+10.0</span>
       </div>
-      <img src="logo.png" alt="Medal Icon" class="w-12 h-12 rounded-lg">
+      <img src="/img/2.png" alt="Medal Icon" class="w-12 h-12 rounded-lg">
     </div>
     <div class="bg-white rounded-lg shadow-md p-4 flex items-center">
       <div class="flex flex-col items-start flex-1">
         <span class="text-gray-600 text-sm">Persentase Kehadiran Tahun Ini</span>
         <span class="text-2xl font-bold mt-1">90%</span>
       </div>
-      <img src="bg.jpg" alt="Attendance Icon" class="w-12 h-12 rounded-lg">
+      <img src="/img/3.png" alt="Attendance Icon" class="w-12 h-12 rounded-lg">
     </div>
   </div>
 

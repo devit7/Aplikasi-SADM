@@ -1,26 +1,44 @@
 <?php
-
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ortuController;
+use App\Http\Controllers\WalasController;
 use Illuminate\Support\Facades\Route;
-Route::prefix('walas')->group(function () {
-    Route::get('/', function () {
-        return view('walas.dashboard-walas');
-    });
-    Route::get('/list-siswa', function () {
-        return view('walas.list-siswa');
-    });
-    Route::get('/login', function () {
-        return view('walas.login-walas');
-    });
+
+//WALAS
+Route::get('/walas/login', function () {
+    return view('walas.login-walas');
+})->name('loginWalas');
+
+Route::post('/walas/login', [AuthController::class, 'loginWalas']);
+Route::post('/logout', [AuthController::class, 'logoutWalas'])->name('logoutWalas');
+
+Route::middleware('auth')->group(function () {
+    Route::resource('/walas', WalasController::class);
+    Route::get('walas/{id}', [WalasController::class, 'show'])->name('List-Siswa');
+});;
+// Route::get('/walas/list-siswa', function () {
+//     return view('walas.list-siswa');
+// });
+
+//panel orang tua
+Route::get('/ortu/login', [ortuController::class, 'showLoginForm'])->name('ortu.login-ortu');
+Route::post('/ortu/login', [ortuController::class, 'loginOrangTua']);
+Route::post('/ortu', [ortuController::class, 'logoutOrtu'])->name('logoutortu');
+
+
+Route::get('/ortu/login', function () {
+    return view('ortu.login-ortu');
+});
+Route::get('/ortu', function () {
+    return view('ortu.index');
+});
+Route::get('/Profile', function () {
+    return view('ortu.ProfileSiswa-Ortu');
 });
 
-Route::prefix('ortu')->group(function () {
-    Route::get('/', function () {
-        return view('ortu.index');
-    });
-    Route::get('/history-akademik', function () {
-        return view('ortu.historyakademik-ortu');
-    });
-    Route::get('/nilai-kehadiran', function () {
-        return view('ortu.nilai-kehadiran-ortu');
-    });
+Route::get('/ortu/history-akademik', function () {
+    return view('ortu.historyakademik-ortu');
+});
+Route::get('/ortu/nilai-kehadiran', function () {
+    return view('ortu.nilai-kehadiran-ortu');
 });
