@@ -1,21 +1,24 @@
 <?php
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ortuController;
 use App\Http\Controllers\WalasController;
 use Illuminate\Support\Facades\Route;
 
 //WALAS
-Route::get('/walas/login', function () {
-    return view('walas.login-walas');
-})->name('loginWalas');
+Route::middleware(['WebAkses:walikelas'])->prefix('admin')->group(function () {
+    Route::get('/walas/login', function () {
+        return view('walas.login-walas');
+    })->name('loginWalas');
 
-Route::post('/walas/login', [AuthController::class, 'loginWalas']);
-Route::post('/logout', [AuthController::class, 'logoutWalas'])->name('logoutWalas');
+    Route::post('/walas/login', [AuthController::class, 'loginWalas']);
+    Route::post('/logout', [AuthController::class, 'logoutWalas'])->name('logoutWalas');
 
-Route::middleware('auth')->group(function () {
-    Route::resource('/walas', WalasController::class);
-    Route::get('walas/{id}', [WalasController::class, 'show'])->name('List-Siswa');
-});;
+    Route::middleware('auth')->group(function () {
+        Route::resource('/walas', WalasController::class);
+        Route::get('walas/{id}', [WalasController::class, 'show'])->name('List-Siswa');
+    });
+});
 // Route::get('/walas/list-siswa', function () {
 //     return view('walas.list-siswa');
 // });
