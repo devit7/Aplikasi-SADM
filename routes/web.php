@@ -15,7 +15,7 @@ Route::post('/logout', [AuthController::class, 'logoutWalas'])->name('logoutWala
 
 Route::middleware(['WebAkses:walikelas'])->group(function () {
 
-        Route::get('/walas', [WalasController::class, 'index']);
+        Route::resource('/walas', WalasController::class);
         Route::get('/walas/{id}', [WalasController::class, 'show'])->name('List-Siswa');
 
 });
