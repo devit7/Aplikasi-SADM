@@ -19,11 +19,7 @@ Route::middleware(['WebAkses:walikelas'])->group(function () {
         Route::get('/walas/{id}', [WalasController::class, 'show'])->name('List-Siswa');
 
 });
-// Route::get('/walas/list-siswa', function () {
-//     return view('walas.list-siswa');
-// });
 
-//panel orang tua
 Route::get('/ortu/login', [ortuController::class, 'showLoginForm'])->name('ortu.login-ortu');
 Route::post('/ortu/login', [ortuController::class, 'loginOrangTua']);
 Route::post('/ortu', [ortuController::class, 'logoutOrtu'])->name('logoutortu');
@@ -45,3 +41,13 @@ Route::get('/ortu/history-akademik', function () {
 
 Route::get('/ortu/nilai-kehadiran', [ortuController::class, 'getNilai']);
 Route::get('/ortu/nilai-kehadiran/kehadiran', [ortuController::class, 'getAbsen']);
+
+route::get('/', function () {
+    return view('ortu.historyakademik-ortu');
+
+});
+// Route::get('/walas/list-siswa', function () {
+//     return view('walas.list-siswa');
+// });
+
+//panel orang tua
