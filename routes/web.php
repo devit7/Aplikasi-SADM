@@ -14,6 +14,7 @@ Route::get('/walas/login', function () {
 Route::post('/walas/login', [AuthController::class, 'loginWalas']);
 Route::post('/logout', [AuthController::class, 'logoutWalas'])->name('logoutWalas');
 
+<<<<<<< HEAD
 Route::middleware('auth')->group(function () {
     Route::resource('walas/manajemen-nilai', ManajemenNilai::class);
 
@@ -26,6 +27,15 @@ Route::middleware('auth')->group(function () {
 
 
 //panel orang tua
+=======
+Route::middleware(['WebAkses:walikelas'])->group(function () {
+
+        Route::resource('/walas', WalasController::class);
+        Route::get('/walas/{id}', [WalasController::class, 'show'])->name('List-Siswa');
+
+});
+
+>>>>>>> c5cc76555b75000ffa741ba994588e8b664e547f
 Route::get('/ortu/login', [ortuController::class, 'showLoginForm'])->name('ortu.login-ortu');
 Route::post('/ortu/login', [ortuController::class, 'loginOrangTua']);
 Route::post('/ortu', [ortuController::class, 'logoutOrtu'])->name('logoutortu');
@@ -47,3 +57,13 @@ Route::get('/ortu/history-akademik', function () {
 
 Route::get('/ortu/nilai-kehadiran', [ortuController::class, 'getNilai']);
 Route::get('/ortu/nilai-kehadiran/kehadiran', [ortuController::class, 'getAbsen']);
+
+route::get('/', function () {
+    return view('ortu.historyakademik-ortu');
+
+});
+// Route::get('/walas/list-siswa', function () {
+//     return view('walas.list-siswa');
+// });
+
+//panel orang tua
