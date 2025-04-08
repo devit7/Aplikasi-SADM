@@ -16,7 +16,7 @@
     <div class="bg-white rounded-lg shadow-md p-4 flex items-center">
       <div class="flex flex-col items-start flex-1">
         <span class="text-gray-600 text-sm">Nilai Rata-Rata Seluruh</span>
-        <span class="text-2xl font-bold mt-1">95.0</span>
+        <span class="text-2xl font-bold mt-1" >95.0</span>
       </div>
       <img src="/img/1.png" alt="Graduation Icon" class="w-12 h-12 rounded-lg">
     </div>
@@ -37,7 +37,7 @@
   </div>
 
   <div class="mt-16"></div>
-  <h2 class="text-2xl font-bold mb-8 text-center">Histori Akademik</h2>
+  <h2 class="text-2xl font-bold mb-8 text-center">His tori Akademik</h2>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <div class="bg-white rounded-lg shadow-md overflow-hidden max-w-xs w-full flex flex-col group">
       <div class="h-40 relative">

@@ -15,7 +15,7 @@ class WalasController extends Controller
         $semester = Matapelajaran::distinct()->pluck('semester');
         $kelas = Kelas::with('matapelajaran')->withCount('siswa')->get();
 
-        return view('walas.dashboard-walas', compact('kelas', 'tahun_ajaran','semester'));
+        return view('walas.dashboard-walas', compact('kelas', 'tahun_ajaran', 'semester'));
     }
     public function show($id)
     {
