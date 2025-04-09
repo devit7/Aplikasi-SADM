@@ -19,7 +19,7 @@
                             <tr class="text-center">
                                 <td class="border p-2">{{ $mapel->nama_mapel }}</td>
                                 <td class="border p-2">{{ $mapel->semester }}</td>
-                                <td class="border p-2">{{ $status_nilai != 0 ? 'Dinilai' : 'Belum Dinilai' }}</td>
+                                <td class="border p-2">{{ $mapel->status_nilai }}</td>
                                 <td class="border p-2">
                                     <a href="{{ url("walas/manajemen-nilai/$mapel->id") }}">✏️</a>
                                 </td>
