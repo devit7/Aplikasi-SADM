@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ortuController;
+use App\Http\Controllers\Walas\ManajemenAbsen;
 use App\Http\Controllers\Walas\ManajemenNilai;
 use App\Http\Controllers\WalasController;
 use Illuminate\Support\Facades\Route;
@@ -16,9 +17,16 @@ Route::post('/logout', [AuthController::class, 'logoutWalas'])->name('logoutWala
 
 
 Route::middleware(['WebAkses:walikelas'])->group(function () {
+    //Start - MANAJEMEN NILAI
     Route::get('walas/manajemen-nilai', [ManajemenNilai::class, 'index']);
     Route::get('walas/manajemen-nilai/{id}', [ManajemenNilai::class, 'show']);
     Route::post('walas/manajemen-nilai', [ManajemenNilai::class, 'store']);
+
+    //Start - MANAJEMEN ABSEN
+    Route::get('walas/manajemen-absen', [ManajemenAbsen::class, 'index']);
+    Route::post('walas/manajemen-absen/store', [ManajemenAbsen::class, 'store'])->name('walas.manajemen-absen.store');
+    Route::get('walas/manajemen-absen/{tanggal}', [ManajemenAbsen::class, 'show'])->name('walas.manajemen-absen.show');
+    Route::post('walas/manajemen-absen/simpan', [ManajemenAbsen::class, 'simpanPresensi'])->name('walas.manajemen-absen.simpan');
 
     Route::resource('/walas', WalasController::class);
     Route::get('/walas/{id}', [WalasController::class, 'show'])->name('List-Siswa');
