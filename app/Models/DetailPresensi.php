@@ -8,7 +8,7 @@ class DetailPresensi extends Model
 {
     use HasFactory;
 
-    protected $table = 'detail_presensi';
+    protected $table = 'detail_presensis';
     protected $fillable = ['presensi_id', 'siswa_id', 'status'];
 
     public function presensi()

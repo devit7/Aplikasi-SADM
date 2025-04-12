@@ -121,7 +121,7 @@ class ManajemenAbsen extends Controller
     public function simpanPresensi(Request $request)
     {
         $request->validate([
-            'presensi_id' => 'required|exists:presensi,id',
+            'presensi_id' => 'required|exists:presensis,id',
             'siswa_status' => 'required|array',
         ]);
         
@@ -141,7 +141,7 @@ class ManajemenAbsen extends Controller
             
             DB::commit();
             
-            return redirect()->route('walas.manajemen-absen')
+            return redirect()->route('walas.manajemen-absen.index')
                              ->with('success', 'Presensi berhasil disimpan');
         } catch (\Exception $e) {
             DB::rollBack();

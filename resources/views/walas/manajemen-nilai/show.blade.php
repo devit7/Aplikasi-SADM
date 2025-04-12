@@ -4,17 +4,16 @@
     <div class="w-full bg-gray-100 p-6">
         <h1 class="text-2xl font-bold mb-4">Nilai / {{ $data['mapel']['nama_mapel'] }}</h1>
         @if (session()->has('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                <strong class="font-bold">Sukses!</strong>
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
                 <span class="block sm:inline">{{ session('success') }}</span>
             </div>
         @endif
         @if (session()->has('error'))
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                <strong class="font-bold">Gagal!</strong>
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
                 <span class="block sm:inline">{{ session('error') }}</span>
             </div>
         @endif
+        
         <div class="bg-white p-4 shadow-md rounded-lg">
             <x-tables>
                 <table class="w-full border-collapse border rounded-md text-sm" id="table">

@@ -14,7 +14,13 @@
 <body class=" bg-[#f5f6fa]">
     <x-walas-navbar />
     <div class=" flex">
+    <!-- Check if we are on a page with a kelas object -->
+    @if(isset($kelas) && isset($kelas->id))
+        <x-alternative-walas-sidebar :kelasId="$kelas->id" />
+    @else
         <x-walas-sidebar />
+    @endif
+
         @yield('content')
     </div>
     <script src="{{ asset('js/flowbite.min.js') }}"></script>

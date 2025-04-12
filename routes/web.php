@@ -13,23 +13,24 @@ Route::get('/walas/login', function () {
 })->name('loginWalas');
 
 Route::post('/walas/login', [AuthController::class, 'loginWalas']);
-Route::post('/logout', [AuthController::class, 'logoutWalas'])->name('logoutWalas');
+Route::post('/logout', [AuthController::class, 'logoutWalas'])->name('walas.logout');
 
 
-Route::middleware(['WebAkses:walikelas'])->group(function () {
+Route::prefix('walas')->middleware(['WebAkses:walikelas'])->group(function () {
+    Route::get('/', [WalasController::class, 'index'])->name('walas.index');
+    Route::get('/list-siswa/{id}', [WalasController::class, 'show'])->name('walas.list-siswa');
+
     //Start - MANAJEMEN NILAI
-    Route::get('walas/manajemen-nilai', [ManajemenNilai::class, 'index']);
-    Route::get('walas/manajemen-nilai/{id}', [ManajemenNilai::class, 'show']);
-    Route::post('walas/manajemen-nilai', [ManajemenNilai::class, 'store']);
+    Route::get('/manajemen-nilai', [ManajemenNilai::class, 'index'])->name('walas.manajemen-nilai.index');
+    Route::get('/manajemen-nilai/{id}', [ManajemenNilai::class, 'show']);
+    Route::post('/manajemen-nilai', [ManajemenNilai::class, 'store']);
 
     //Start - MANAJEMEN ABSEN
-    Route::get('walas/manajemen-absen', [ManajemenAbsen::class, 'index']);
-    Route::post('walas/manajemen-absen/store', [ManajemenAbsen::class, 'store'])->name('walas.manajemen-absen.store');
-    Route::get('walas/manajemen-absen/{tanggal}', [ManajemenAbsen::class, 'show'])->name('walas.manajemen-absen.show');
-    Route::post('walas/manajemen-absen/simpan', [ManajemenAbsen::class, 'simpanPresensi'])->name('walas.manajemen-absen.simpan');
+    Route::get('/manajemen-absen', [ManajemenAbsen::class, 'index'])->name('walas.manajemen-absen.index');
+    Route::post('/manajemen-absen/store', [ManajemenAbsen::class, 'store'])->name('walas.manajemen-absen.store');
+    Route::get('/manajemen-absen/{tanggal}', [ManajemenAbsen::class, 'show'])->name('walas.manajemen-absen.show');
+    Route::post('/manajemen-absen/simpan', [ManajemenAbsen::class, 'simpanPresensi'])->name('walas.manajemen-absen.simpan');
 
-    Route::resource('/walas', WalasController::class);
-    Route::get('/walas/{id}', [WalasController::class, 'show'])->name('List-Siswa');
 });
 
 Route::get('/ortu/login', [ortuController::class, 'showLoginForm'])->name('ortu.login-ortu');

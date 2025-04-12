@@ -9,7 +9,7 @@ class Presensi extends Model
 {
     use HasFactory;
 
-    protected $table = 'presensi';
+    protected $table = 'presensis';
     protected $fillable = ['tanggal', 'kelas_id', 'status'];
 
     public function kelas()

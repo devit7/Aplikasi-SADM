@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Walas;
 
 use App\Http\Controllers\Controller;
 use App\Models\DetailKelas;
+use App\Models\Kelas;
 use App\Models\Matapelajaran;
 use App\Models\Nilai;
 use App\Models\Siswa;
 use Exception;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 
 class ManajemenNilai extends Controller
 {
@@ -18,10 +19,13 @@ class ManajemenNilai extends Controller
      */
     public function index()
     {
-        // $mapel_with_nilai = Matapelajaran::with('nilai')->get();
-        // $status_nilai = Nilai::with('matapelajaran')->where('nilai_uts', '!=', '0')->where('nilai_uas', '!=', '0')->count();
-
-        // return view('walas.manajemen-nilai.index', compact('mapel_with_nilai', 'status_nilai'));
+        // Get the current role by wali kelas 
+        $user = Auth::user();
+        $kelas = Kelas::where('walikelas_id', $user->id)->first();
+        
+        if (!$kelas) {
+            return redirect()->back()->with('error', 'Anda belum memiliki kelas yang dikelola');
+        }
 
         $mapel_with_nilai = Matapelajaran::with(['nilai' => function ($query) {
             $query->where('nilai_uts', '!=', '0')
@@ -34,7 +38,7 @@ class ManajemenNilai extends Controller
             return $mapel;
         });
 
-        return view('walas.manajemen-nilai.index', compact('mapel_with_nilai'));
+        return view('walas.manajemen-nilai.index', compact('mapel_with_nilai', 'kelas'));
     }
 
     /**
@@ -50,55 +54,6 @@ class ManajemenNilai extends Controller
      */
     public function store(Request $request)
     {
-        // try {
-        //     // Validasi input
-        //     $request->validate([
-        //         'nama' => 'required|string',
-        //         'id_mapel' => 'required|exists:matapelajaran,id',
-        //         'id_kelas' => 'required|exists:kelas,id',
-        //         'uts' => 'required|numeric|min:0|max:100',
-        //         'uas' => 'required|numeric|min:0|max:100',
-        //     ]);
-
-        //     // Cari siswa berdasarkan nama
-        //     $siswa = Siswa::where('nama', $request->nama)->first();
-        //     if (!$siswa) {
-        //         return redirect()->back()->with('error', 'Siswa tidak ditemukan');
-        //     }
-
-        //     // Cari detail kelas untuk siswa dan kelas yang dipilih
-        //     $detailKelas = DetailKelas::where('siswa_id', $siswa->id)
-        //         ->where('kelas_id', $request->id_kelas)
-        //         ->first();
-        //     if (!$detailKelas) {
-        //         return redirect()->back()->with('error', 'Data kelas siswa tidak ditemukan');
-        //     }
-
-        //     // Cek apakah nilai sudah ada
-        //     $existingNilai = Nilai::where('detail_kelas_id', $detailKelas->id)
-        //         ->where('matapelajaran_id', $request->id_mapel)
-        //         ->first();
-        //     if ($existingNilai) {
-        //         // Update nilai jika sudah ada
-        //         $existingNilai->update([
-        //             'nilai_uts' => $request->uts,
-        //             'nilai_uas' => $request->uas
-        //         ]);
-        //     } else {
-        //         // Buat nilai baru jika belum ada
-        //         Nilai::create([
-        //             'matapelajaran_id' => $request->id_mapel,
-        //             'detail_kelas_id' => $detailKelas->id,
-        //             'nilai_uts' => $request->uts,
-        //             'nilai_uas' => $request->uas
-        //         ]);
-        //     }
-
-        //     return redirect()->back()->with('success', 'Nilai berhasil disimpan');
-        // } catch (Exception $e) {
-        //     return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
-        // }
-
         try {
             // Validasi input
             $request->validate([
@@ -124,7 +79,7 @@ class ManajemenNilai extends Controller
                 return redirect()->back()->with('error', 'Data kelas siswa tidak ditemukan');
             }
 
-            // Update atau create nilai
+            // Update atau create data nilai
             $nilai = Nilai::updateOrCreate(
                 [
                     'detail_kelas_id' => $detailKelas->id,
@@ -147,6 +102,14 @@ class ManajemenNilai extends Controller
      */
     public function show(string $id)
     {
+        // Get the current role by wali kelas
+        $user = Auth::user();
+        $kelas = Kelas::where('walikelas_id', $user->id)->first();
+        
+        if (!$kelas) {
+            return redirect()->back()->with('error', 'Anda belum memiliki kelas yang dikelola');
+        }
+        
         // Get mata pelajaran dengan relasinya
         $nilai_siswa = Matapelajaran::with(['nilai.detailKelas.siswa', 'kelas.detailKelas.siswa'])
             ->where('id', $id)
@@ -170,7 +133,7 @@ class ManajemenNilai extends Controller
             'siswa' => $siswas
         ];
 
-        return view('walas.manajemen-nilai.show', compact('data'));
+        return view('walas.manajemen-nilai.show', compact('data', 'kelas'));
     }
 
     /**

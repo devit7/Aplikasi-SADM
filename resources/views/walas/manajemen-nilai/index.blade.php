@@ -28,8 +28,6 @@
                     </tbody>
                 </table>
             </x-tables>
-
         </div>
-    </div>
     </div>
 @endsection

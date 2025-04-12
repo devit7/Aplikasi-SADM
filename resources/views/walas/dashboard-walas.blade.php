@@ -46,7 +46,7 @@
                     @if (
                         (request('tahun_ajaran') == '' || $kelas->tahun_ajaran == request('tahun_ajaran')) &&
                             (request('semester') == '' || $kelas->matapelajaran->contains('semester', request('semester'))))
-                        <a href={{ route('List-Siswa', $kelas->id) }}>
+                        <a href={{ route('walas.list-siswa', $kelas->id) }}>
                             <button class="bg-white w-[200px] h-[250px] rounded-lg shadow-md flex flex-col">
                                 <div
                                     class="bg-red-300 h-[150px] p-6 shadow-md text-center flex justify-center items-center">
@@ -54,18 +54,17 @@
                                 </div>
                                 <div class="flex flex-col text-start p-3">
                                     <p class="text-black font-semibold mt-2">KELAS
-                                        {{ $kelas->nama_kelas }}<br>{{ $kelas->matapelajaran->first()->semester }}-{{ $kelas->tahun_ajaran }}
+                                        {{-- {{ $kelas->nama_kelas }}<br>{{ $kelas->matapelajaran->first()->semester }}-{{ $kelas->tahun_ajaran }} --}}
+                                        {{ $kelas->nama_kelas }}<br>
+                                        @if($kelas->matapelajaran->count() > 0 && $kelas->matapelajaran->first())
+                                            {{ $kelas->matapelajaran->first()->semester }}-{{ $kelas->tahun_ajaran }}
+                                        @else
+                                            {{ $kelas->tahun_ajaran }}
+                                        @endif
                                     </p>
                                     <p class="text-gray-700 mt-2">{{ $kelas->siswa_count }} 👥</p>
                                 </div>
-                                {{-- @foreach ($kelas->matapelajaran as $mp)
-                                    <div class="flex flex-col text-start p-3">
-                                        <p class="text-black font-semibold mt-2">KELAS
-                                            {{ $kelas->nama_kelas }}<br>{{ $mp->semester }}-{{ $kelas->tahun_ajaran }}
-                                        </p>
-                                        <p class="text-gray-700 mt-2">{{ $kelas->siswa_count }} 👥</p>
-                                    </div>
-                                @endforeach --}}
+                                
                             </button>
                         </a>
                     @endif
@@ -74,7 +73,7 @@
                 @endforelse
             </div>
         </div>
-    </div>
+    </div> 
 </body>
 
 </html>
