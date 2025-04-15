@@ -17,14 +17,14 @@ class OrtuController extends Controller
     public function index()
     {
         return view('ortu.historyakademik-ortu');
-{
-    $siswa = session('siswa');
 
-    if (!$siswa) {
-        $siswa = \App\Models\Siswa::first();
-        session(['siswa' => $siswa]);
+        $siswa = session('siswa');
+
+        if (!$siswa) {
+            $siswa = \App\Models\Siswa::first();
+            session(['siswa' => $siswa]);
+        }
     }
-
     public function showProfile(){
         $siswa = Session::get('siswa');
         $profile = Siswa::where('id', $siswa->id)->with('detailKelas.kelas.matapelajaran')->first();
