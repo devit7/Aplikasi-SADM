@@ -32,23 +32,6 @@ Route::prefix('walas')->middleware(['WebAkses:walikelas'])->group(function () {
 
 });
 
-<<<<<<< Updated upstream
-// ORTU
-Route::prefix('ortu')->group(function () {
-    Route::get('/profile', [ortuController::class, 'showProfile'])->name('ortu.profile');
-    route::get('/', [ortuController::class, 'index'])->name('ortu.index');
-    Route::get('/nilai-kehadiran', [ortuController::class, 'showPageNilai'])->name('ortu.nilai');
-    Route::get('/nilai-kehadiran/kehadiran', [ortuController::class, 'showPageKehadiran'])->name('ortu.kehadiran');
-    Route::get('/login', function () {
-        return view('ortu.login-ortu');
-    });
-});
-Route::get('/ortu/login', [ortuController::class, 'showLoginForm'])->name('ortu.login-ortu');
-Route::post('/ortu/login', [ortuController::class, 'loginOrangTua']);
-Route::post('/ortu', [ortuController::class, 'logoutOrtu'])->name('logoutortu');
-
-
-=======
 //ortu
 
 Route::get('/ortu/login', function () {
@@ -72,7 +55,6 @@ Route::get('/ortu/history-akademik', function () {
 
 Route::get('/ortu/nilai-kehadiran', [ortuController::class, 'getNilai']);
 Route::get('/ortu/nilai-kehadiran/kehadiran', [ortuController::class, 'getAbsen']);
->>>>>>> Stashed changes
 
 route::get('/', function () {
     return view('ortu.historyakademik-ortu');
