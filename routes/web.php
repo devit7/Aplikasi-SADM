@@ -33,9 +33,8 @@ Route::prefix('walas')->middleware(['WebAkses:walikelas'])->group(function () {
 
 });
 
-Route::get('/ortu/login', [ortuController::class, 'showLoginForm'])->name('ortu.login-ortu');
-Route::post('/ortu/login', [ortuController::class, 'loginOrangTua']);
-Route::post('/ortu', [ortuController::class, 'logoutOrtu'])->name('logoutortu');
+Route::post('/ortu/login', [ortuController::class, 'loginOrtu']);
+Route::post('/ortu', [ortuController::class, 'logoutOrtu'])->name('ortu.logout');
 
 
 Route::get('/ortu/login', function () {
