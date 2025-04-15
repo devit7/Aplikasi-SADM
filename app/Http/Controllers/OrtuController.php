@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\DB;
 class OrtuController extends Controller
 {
     public function index()
+    {
+        return view('ortu.historyakademik-ortu');
 {
     $siswa = session('siswa');
 
@@ -23,6 +25,11 @@ class OrtuController extends Controller
         session(['siswa' => $siswa]);
     }
 
+    public function showProfile(){
+        $siswa = Session::get('siswa');
+        $profile = Siswa::where('id', $siswa->id)->with('detailKelas.kelas.matapelajaran')->first();
+        // dd($profile);
+        return view('ortu.profile-siswa', compact('profile'));
     $ortu = $siswa;
 
     $detailKelasList = \App\Models\DetailKelas::where('siswa_id', $siswa->id)->with('kelas')->get();
