@@ -7,7 +7,7 @@
             <div class="flex items-center space-x-3">
 
                 <div class="rounded-full bg-[#eb2a2a] size-14">
-                    <a href="#">
+                    <a href="{{ route('ortu.profile') }}">
                         <img src="{{ asset('img/1.png') }}" alt="">
                     </a>
                 </div>
