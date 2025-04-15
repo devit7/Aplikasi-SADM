@@ -12,11 +12,18 @@ use App\Models\DetailKelas;
 use App\Models\DetailPresensi;
 use Illuminate\Support\Facades\DB;
 
-class ortuController extends Controller
+class OrtuController extends Controller
 {
     public function index()
     {
         return view('ortu.historyakademik-ortu');
+    }
+
+    public function showProfile(){
+        $siswa = Session::get('siswa');
+        $profile = Siswa::where('id', $siswa->id)->with('detailKelas.kelas.matapelajaran')->first();
+        // dd($profile);
+        return view('ortu.profile-siswa', compact('profile'));
     }
 
     private function getKelasSiswa($studentId)
