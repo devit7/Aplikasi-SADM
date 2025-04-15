@@ -49,7 +49,7 @@
                         <a href={{ route('walas.list-siswa', $kelas->id) }}>
                             <button class="bg-white w-[200px] h-[250px] rounded-lg shadow-md flex flex-col">
                                 <div
-                                    class="bg-red-300 h-[150px] p-6 shadow-md text-center flex justify-center items-center">
+                                    class="bg-red-300 h-[150px] p-6 shadow-md text-center flex justify-center items-center w-full">
                                     <h2 class="text-3xl font-bold text-white">{{ $kelas->nama_kelas }}</h2>
                                 </div>
                                 <div class="flex flex-col text-start p-3">
@@ -64,7 +64,7 @@
                                     </p>
                                     <p class="text-gray-700 mt-2">{{ $kelas->siswa_count }} 👥</p>
                                 </div>
-                                
+
                             </button>
                         </a>
                     @endif
@@ -73,7 +73,7 @@
                 @endforelse
             </div>
         </div>
-    </div> 
+    </div>
 </body>
 
 </html>
