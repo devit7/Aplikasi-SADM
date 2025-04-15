@@ -22,7 +22,7 @@
         @endforeach
     </tbody>
 </table>
-<div class="bg-white shadow-lg rounded-2xl text-center mr-11 p-1">
+<div class="bg-white shadow-lg rounded-xl text-center mr-11 p-1 w-full">
     <div class="text-center flex flex-row justify-between items-center px-6">
         <div class="text-gray-600">Keseluruhan Ranking</div>
         <div class="text-2xl pr-40 font-light ">{{ $studentRanking }}</div>
