@@ -9,94 +9,118 @@ use App\Models\Nilai;
 use App\Models\MataPelajaran;
 use App\Models\Absen;
 use App\Models\DetailKelas;
+use App\Models\DetailPresensi;
+use Illuminate\Support\Facades\DB;
 
 class ortuController extends Controller
 {
-    // Menampilkan halaman login ortu
-    public function showLoginForm()
+    public function index()
     {
-        // Jika sudah login, redirect ke dashboard
-        if (Session::has('siswa')) {
-            return redirect('/ortu');
-        }
-
-        return view('ortu.login-ortu'); // Sesuaikan dengan nama view Anda
+        return view('ortu.historyakademik-ortu');
     }
 
-    // Proses login ortu
-    public function loginOrangTua(Request $request)
+    private function getKelasSiswa($studentId)
     {
-        // Validasi input
-        $request->validate([
-            'nisn' => 'required|string',
-            'nis' => 'required|string',
-        ]);
-
-        // Ambil data dari request
-        $nisn = $request->input('nisn');
-        $nis = $request->input('nis');
-
-        // Cari siswa berdasarkan NISN dan NIS
-        $siswa = Siswa::where('nisn', $nisn)
-                      ->where('nis', $nis)
-                      ->first();
-
-        // Jika siswa ditemukan, simpan data ke session dan redirect ke dashboard
-        if ($siswa) {
-            // Simpan data siswa ke session
-            Session::put('siswa', $siswa);
-
-            return redirect('/ortu'); // Sesuaikan dengan route dashboard ortu
-        }
-
-        // Jika siswa tidak ditemukan, kembali ke halaman login dengan pesan error
-        return back()->withErrors([
-            'nisn' => 'NISN atau NIS yang Anda masukkan salah.',
-        ])->withInput();
-    }
-
-    // Logout ortu
-    public function logoutOrtu()
-    {
-        // Hapus session siswa
-        Session::forget('siswa');
-
-        return redirect('/ortu/login'); // Redirect ke halaman login
-    }
-
-    private function getKelasSiswa($studentId){
         return DetailKelas::where('siswa_id', $studentId)
-        ->with('kelas.matapelajaran')
-        ->first();
+            ->with('kelas.matapelajaran')
+            ->first();
     }
 
-    public function getNilai()
+    private function getDetailPresensiSiswa($studentId){
+        $siswa = Session::get('siswa');
+        $detailKelas = $this->getKelasSiswa($studentId);
+        return DetailPresensi::whereHas('presensi', function ($query) use ($siswa, $detailKelas) {
+            $query->whereHas('kelas', function ($kelasQuery) use ($siswa, $detailKelas) {
+                $kelasQuery->whereHas('detailKelas', function ($detailKelasQuery) use ($siswa) {
+                    $detailKelasQuery->where('siswa_id', $siswa->id);
+                })
+                ->where('id', $detailKelas->kelas_id); // match kelas_id
+            });
+        })
+        ->with('presensi')
+        ->get();
+    }
+
+    private function getStatusCount(){
+        $countAbsenceStatus = DetailPresensi::select('status', DB::raw('count(*) as total'))
+        ->groupBy('status')
+        ->get();
+        // dd($countAbsenceStatus);
+        $statusCount = [
+            'masuk' => 0,
+            'izin' => 0,
+            'sakit' => 0,
+            'alpha' => 0
+        ];
+        foreach ($countAbsenceStatus as $status) {
+            $statusCount[$status->status] = $status->total;
+        }
+        // dd($statusCount);
+        return $statusCount;
+    }
+
+    private function getSiswaRanking($studentId){
+        $students = Siswa::whereHas('detailKelas.nilai')
+            ->with(['detailKelas' => function ($query) {
+                $query->with('nilai');
+            }])
+            ->get();
+        // dd($students);
+        $ranked = $students->map(function ($siswa) {
+            $nilaiList = $siswa->detailKelas->flatMap->nilai;
+
+            $totalScore = $nilaiList->sum(function ($nilai) {
+                $uts = $nilai->nilai_uts ?? 0;
+                $uas = $nilai->nilai_uas ?? 0;
+                return ($uts + $uas) / 2;
+            });
+
+            $count = $nilaiList->count();
+            $average = $count > 0 ? $totalScore / $count : 0;
+
+            return [
+                'siswa_id' => $siswa->id,
+                'average' => $average
+            ];
+        })->sortByDesc('average')->values();
+        // dd($ranked);
+        foreach ($ranked as $index => $student) {
+            if ($student['siswa_id'] == $studentId) {
+                return $index + 1;
+            }
+        }
+
+        return null;
+    }
+
+    public function showPageNilai()
     {
         $siswa = Session::get('siswa');
         if (!$siswa) {
             return redirect('/ortu')->with('error', 'Siswa tidak ditemukan dalam sesi.');
         }
-
+        $studentRanking = $this->getSiswaRanking($siswa->id);
         $detailKelas = $this->getKelasSiswa($siswa->id);
-
+        $tahunAjaran = $detailKelas->kelas->tahun_ajaran;
         // Get all subjects related to the student's class
         $matapelajaran = MataPelajaran::whereHas('kelas.detailKelas', function ($query) use ($siswa) {
-                $query->where('siswa_id', $siswa->id);
-            })
+            $query->where('siswa_id', $siswa->id);
+        })
             ->select('id', 'nama_mapel', 'semester')
             ->get();
-            $semester = $matapelajaran->first()->semester ?? 'N/A';
+        $semester = $matapelajaran->first()->semester ?? 'N/A';
         // Get nilai related to the student
         $nilai = Nilai::whereHas('detailKelas', function ($query) use ($siswa) {
-                $query->where('siswa_id', $siswa->id);
-            })
+            $query->where('siswa_id', $siswa->id);
+        })
             ->select('matapelajaran_id', 'nilai_uts', 'nilai_uas')
             ->get();
-
-        return view('ortu.nilai-ortu', compact('matapelajaran', 'nilai', 'detailKelas', 'siswa', 'semester'));
+        // Check if the student has any grades
+        // dd($matapelajaran);
+        return view('ortu.nilai-ortu', compact('matapelajaran', 'nilai', 'detailKelas', 'siswa', 'semester', 'tahunAjaran', 'studentRanking'));
     }
 
-    public function getAbsen()
+    public function showPageKehadiran()
     {
         $siswa = Session::get('siswa');
 
@@ -107,17 +131,12 @@ class ortuController extends Controller
         $detailKelas = $this->getKelasSiswa($siswa->id);
         $matapelajaran = $detailKelas->kelas->matapelajaran;
         $semester = $matapelajaran->first()->semester ?? 'N/A';
-
+        $tahunAjaran = $detailKelas->kelas->tahun_ajaran;
         // Fetch the absence records of the student
-        $absences = Absen::whereHas('detailKelas', function ($query) use ($siswa) {
-            $query->where('siswa_id', $siswa->id);
-        })
-        ->with('detailKelas.kelas') // Load related class data
-        ->select('detail_kelas_id', 'tanggal', 'status')
-        ->orderBy('tanggal', 'desc')
-        ->get();
+        $absences = $this->getDetailPresensiSiswa($siswa->id);
+        $statusCount = $this->getStatusCount();
 
-        return view('ortu.kehadiran-ortu', compact('absences', 'detailKelas', 'siswa', 'semester'));
+        // dd($absences);
+        return view('ortu.kehadiran-ortu', compact('absences', 'detailKelas', 'siswa', 'semester', 'tahunAjaran', 'statusCount'));
     }
-
 }
