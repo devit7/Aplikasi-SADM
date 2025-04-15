@@ -35,12 +35,11 @@ Route::prefix('walas')->middleware(['WebAkses:walikelas'])->group(function () {
 
 });
 
-
+Route::get('/ortu/login', [AuthController::class, 'showLoginForm'])->name('ortu.login-ortu');
+Route::post('/ortu/login', [AuthController::class, 'loginOrtu']);
+Route::post('/ortu/logout', [AuthController::class, 'logoutOrtu'])->name('ortu.logout');
 
 Route::prefix('ortu')->middleware(['ortuAkses'])->group(function () {
-    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('ortu.login-ortu');
-    Route::post('/login', [AuthController::class, 'loginOrtu'])->name('ortu.login');
-    Route::post('/logout', [AuthController::class, 'logoutOrtu'])->name('ortu.logout');
 
     Route::get('/', [OrtuController::class, 'index'])->name('ortu.index');
     Route::get('/profile', [OrtuController::class, 'showProfile'])->name('ortu.profile');
