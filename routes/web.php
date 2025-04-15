@@ -36,14 +36,15 @@ Route::prefix('walas')->middleware(['WebAkses:walikelas'])->group(function () {
 });
 
 
-Route::get('/ortu/login', [AuthController::class, 'showLoginForm'])->name('ortu.login-ortu');
-Route::post('/ortu/login', [AuthController::class, 'loginOrtu']);
-Route::post('/ortu', [AuthController::class, 'logoutOrtu'])->name('logoutortu');
 
 Route::prefix('ortu')->middleware(['ortuAkses'])->group(function () {
-    Route::get('/profile', [OrtuController::class, 'showProfile'])->name('ortu.profile');
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('ortu.login-ortu');
+    Route::post('/login', [AuthController::class, 'loginOrtu'])->name('ortu.login');
+    Route::post('/logout', [AuthController::class, 'logoutOrtu'])->name('ortu.logout');
+
     Route::get('/', [OrtuController::class, 'index'])->name('ortu.index');
+    Route::get('/profile', [OrtuController::class, 'showProfile'])->name('ortu.profile');
     Route::get('/nilai-kehadiran', [OrtuController::class, 'showPageNilai'])->name('ortu.nilai');
-    Route::get('/nilai-kehadiran/kehadiran', [OrtuController::class, 'showPageKehadiran'])->name('ortu.kehadiran');  
+    Route::get('/nilai-kehadiran/kehadiran', [OrtuController::class, 'showPageKehadiran'])->name('ortu.kehadiran');
 });
 
