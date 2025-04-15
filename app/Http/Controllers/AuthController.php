@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
@@ -28,24 +30,43 @@ class AuthController extends Controller
         return redirect()->route('loginWalas');
     }
 
-    public function loginOrtu(Request $request)
+    public function loginOrangTua(Request $request)
     {
-        $credentials = $request->validate([
-            'nisn' => 'required',
-            'nis' => 'required'
+        // Validasi input
+        $request->validate([
+            'nisn' => 'required|string',
+            'nis' => 'required|string',
         ]);
 
-        if (Auth::attempt(['nisn' => $credentials['nisn'], 'nis' => $credentials['nis']])) {
-            return redirect()->route('ortu.index'); 
+        // Ambil data dari request
+        $nisn = $request->input('nisn');
+        $nis = $request->input('nis');
+
+        // Cari siswa berdasarkan NISN dan NIS
+        $siswa = Siswa::where('nisn', $nisn)
+                      ->where('nis', $nis)
+                      ->first();
+
+        // Jika siswa ditemukan, simpan data ke session dan redirect ke dashboard
+        if ($siswa) {
+            // Simpan data siswa ke session
+            Session::put('siswa', $siswa);
+
+            return redirect('/ortu'); // Sesuaikan dengan route dashboard ortu
         }
 
-        return back()->withErrors(['nisn' => 'NIS atau NISN Salah'])->withInput();
+        // Jika siswa tidak ditemukan, kembali ke halaman login dengan pesan error
+        return back()->withErrors([
+            'nisn' => 'NISN atau NIS yang Anda masukkan salah.',
+        ])->withInput();
     }
 
+    // Logout ortu
     public function logoutOrtu()
     {
-        Auth::logout();
-        return redirect()->route('loginOrtu');
-    }
+        // Hapus session siswa
+        Session::forget('siswa');
 
+        return redirect('/ortu/login'); // Redirect ke halaman login
+    }
 }
