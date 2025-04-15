@@ -12,7 +12,7 @@ use App\Models\DetailKelas;
 use App\Models\DetailPresensi;
 use Illuminate\Support\Facades\DB;
 
-class ortuController extends Controller
+class OrtuController extends Controller
 {
     public function index()
 {

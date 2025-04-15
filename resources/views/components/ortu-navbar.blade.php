@@ -8,7 +8,7 @@
 
                 <div class="rounded-full bg-[#eb2a2a] size-14">
                     <a href="#">
-                        <img src="https://i.pinimg.com/736x/24/cc/88/24cc88ebbf5e1429ea093e93e0065535.jpg" alt="">
+                        <img src="{{ asset('img/1.png') }}" alt="">
                     </a>
                 </div>
                 <div>
