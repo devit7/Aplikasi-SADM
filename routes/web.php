@@ -49,9 +49,8 @@ Route::post('/ortu', [ortuController::class, 'logoutOrtu'])->name('logoutortu');
 
 
 
-route::get('/', function () {
-    return view('ortu.historyakademik-ortu');
-});
+route::get('/ortu', [ortuController::class, 'index'])->name('ortu.index');
+
 
 
 // Route::get('/walas/list-siswa', function () {

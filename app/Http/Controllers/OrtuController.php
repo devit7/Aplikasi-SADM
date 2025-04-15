@@ -15,9 +15,50 @@ use Illuminate\Support\Facades\DB;
 class ortuController extends Controller
 {
     public function index()
-    {
-        return view('ortu.historyakademik-ortu');
+{
+    $siswa = session('siswa');
+
+    if (!$siswa) {
+        $siswa = \App\Models\Siswa::first();
+        session(['siswa' => $siswa]);
     }
+
+    $ortu = $siswa;
+
+    $detailKelasList = \App\Models\DetailKelas::where('siswa_id', $siswa->id)->with('kelas')->get();
+
+    $histories = [];
+    foreach ($detailKelasList as $detailKelas) {
+        $kelas = $detailKelas->kelas;
+        $totalSiswa = \App\Models\DetailKelas::where('kelas_id', $kelas->id)->count();
+
+        $totalPertemuan = $detailKelas->absen()->count();
+        $hadir = $detailKelas->absen()->where('status', 'hadir')->count();
+        $kehadiran = $totalPertemuan > 0 ? round(($hadir / $totalPertemuan) * 100) : 0;
+
+        $histories[] = (object)[
+            'kelas' => $kelas->nama,
+            'tahun' => $kelas->tahun,
+            'peringkat' => rand(1, $totalSiswa), // dummy
+            'total_siswa' => $totalSiswa,
+            'kehadiran' => $kehadiran,
+        ];
+    }
+
+    // Rata-rata nilai
+    $nilaiList = \App\Models\Nilai::whereHas('detailKelas', function ($q) use ($siswa) {
+        $q->where('siswa_id', $siswa->id);
+    })->get();
+
+    $rataRata = $nilaiList->count() > 0
+        ? round(($nilaiList->sum('nilai_uts') + $nilaiList->sum('nilai_uas')) / ($nilaiList->count() * 2), 2)
+        : null;
+
+    $peringkat = rand(1, 10); // dummy
+    $kehadiran = $histories[0]->kehadiran ?? null;
+
+    return view('ortu.historyakademik-ortu', compact('ortu', 'rataRata', 'peringkat', 'kehadiran', 'histories'));
+}
 
     private function getKelasSiswa($studentId)
     {
