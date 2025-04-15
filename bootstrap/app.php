@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'siswa' => siswaAkses::class,
             'WebAkses' => webAkses::class,
+            'OrtuAkses' => ortuAkses::class,
         ]);
 
     })

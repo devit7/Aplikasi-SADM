@@ -4,7 +4,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Walas\ManajemenAbsen;
 use App\Http\Controllers\Walas\ManajemenNilai;
 use App\Http\Controllers\WalasController;
+use App\Http\Controllers\OrtuController;
 use Illuminate\Support\Facades\Route;
+
+
 
 //WALAS
 Route::get('/walas/login', function () {
@@ -32,33 +35,25 @@ Route::prefix('walas')->middleware(['WebAkses:walikelas'])->group(function () {
 
 });
 
-//ortu
-
-Route::get('/ortu/login', function () {
-    return view('ortu.login-ortu');
-})->name('loginOrtu');
-
-Route::post('/ortu/login', [AuthController::class, 'loginOrtu']);
-Route::post('/logoutortu', [AuthController::class, 'logoutOrtu'])->name('ortu.logout');
-
-
-Route::get('/ortu', function () {
-    return view('ortu.index');
-});
-Route::get('/Profile', function () {
-    return view('ortu.ProfileSiswa-Ortu');
+Route::prefix('ortu')->middleware(['ortuAkses'])->group(function () {
+    Route::get('/profile', [OrtuController::class, 'showProfile'])->name('ortu.profile');
+    Route::get('/', [OrtuController::class, 'index'])->name('ortu.index');
+    Route::get('/nilai-kehadiran', [OrtuController::class, 'showPageNilai'])->name('ortu.nilai');
+    Route::get('/nilai-kehadiran/kehadiran', [OrtuController::class, 'showPageKehadiran'])->name('ortu.kehadiran');
+    Route::get('/login', function () {
+        return view('ortu.login-ortu');
+    });
 });
 
-Route::get('/ortu/history-akademik', function () {
-    return view('ortu.historyakademik-ortu');
-});
 
-Route::get('/ortu/nilai-kehadiran', [ortuController::class, 'getNilai']);
-Route::get('/ortu/nilai-kehadiran/kehadiran', [ortuController::class, 'getAbsen']);
+Route::get('/ortu/login', [OrtuController::class, 'showLoginForm'])->name('ortu.login-ortu');
+Route::post('/ortu/login', [OrtuController::class, 'loginOrangTua']);
+Route::post('/ortu', [OrtuController::class, 'logoutOrtu'])->name('logoutortu');
 
-route::get('/', function () {
-    return view('ortu.historyakademik-ortu');
-});
+
+
+route::get('/ortu', [ortuController::class, 'index'])->name('ortu.index');
+
 
 
 // Route::get('/walas/list-siswa', function () {

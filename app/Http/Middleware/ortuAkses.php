@@ -8,8 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Siswa;
 
-class siswaAkses
+class ortuAkses
 {
+    
     /**
      * Handle an incoming request.
      *
