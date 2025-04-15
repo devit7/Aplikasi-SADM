@@ -1,7 +1,7 @@
 <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-[#ffffff] shadow-sm p-1 px-3">
         <div class="flex justify-between align-middle w-full">
-            <a href="./ortu">
+            <a href="/ortu">
                 <img src="{{ asset('img/loginlogo.png') }}" alt="Logo" class="w-[64px] h-[64px]"/>
             </a>
             <div class="flex items-center space-x-3">

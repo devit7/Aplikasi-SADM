@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="m-5">
-        <h1 class="text-3xl font-poppins"> {{ strtoupper($detailKelas->kelas->nama_kelas . ' semester ' . $semester) }} </h1>
+        <h1 class="text-3xl font-poppins"> {{ strtoupper($detailKelas->kelas->nama_kelas . ' tahun ajaran ' . $tahunAjaran) }} </h1>
         <h2 class="text-2xl font-poppins"> {{ strtoupper($siswa->nama) }} </h2>
     </div>
     <div>
