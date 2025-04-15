@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    //
+    //walas
     public function loginWalas(Request $request)
     {
         $credentials = $request->validate([
@@ -26,6 +26,26 @@ class AuthController extends Controller
     {
         Auth::logout();
         return redirect()->route('loginWalas');
+    }
+
+    public function loginOrtu(Request $request)
+    {
+        $credentials = $request->validate([
+            'nisn' => 'required',
+            'nis' => 'required'
+        ]);
+
+        if (Auth::attempt(['nisn' => $credentials['nisn'], 'nis' => $credentials['nis']])) {
+            return redirect()->route('ortu.index'); 
+        }
+
+        return back()->withErrors(['nisn' => 'NIS atau NISN Salah'])->withInput();
+    }
+
+    public function logoutOrtu()
+    {
+        Auth::logout();
+        return redirect()->route('loginOrtu');
     }
 
 }

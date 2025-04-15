@@ -7,7 +7,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Profile</title>
-    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
     <div class="max-w-4xl mx-auto my-10 bg-white p-8 rounded-xl shadow-md">
@@ -18,51 +17,51 @@
         <div class="grid grid-cols-2 gap-4 mt-6">
             <div>
                 <label class="block text-gray-600">Nama</label>
-                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" placeholder="Your First Name">
+                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" readonly placeholder="Your First Name">
             </div>
             <div>
                 <label class="block text-gray-600">NISN</label>
-                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" placeholder="Your First Name">
+                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" readonly placeholder="Your First Name">
             </div>
             <div>
                 <label class="block text-gray-600">NIS</label>
-                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" placeholder="Your First Name">
+                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" readonly placeholder="Your First Name">
             </div>
             <div>
                 <label class="block text-gray-600">Jenis Kelamin</label>
-                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" placeholder="Your First Name">
+                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" readonly placeholder="Your First Name">
             </div>
             <div>
                 <label class="block text-gray-600">Tanggal Lahir</label>
-                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" placeholder="Your First Name">
+                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" readonly placeholder="Your First Name">
             </div>
             <div>
                 <label class="block text-gray-600">Alamat</label>
-                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" placeholder="Your First Name">
+                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" readonly placeholder="Your First Name">
             </div>
             <div>
                 <label class="block text-gray-600">Nama Bapak</label>
-                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" placeholder="Your First Name">
+                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" readonly placeholder="Your First Name">
             </div>
             <div>
                 <label class="block text-gray-600">Nama Ibu</label>
-                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" placeholder="Your First Name">
+                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" readonly placeholder="Your First Name">
             </div>
             <div>
                 <label class="block text-gray-600">Pekerjaan Bapak</label>
-                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" placeholder="Your First Name">
+                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" readonly placeholder="Your First Name">
             </div>
             <div>
                 <label class="block text-gray-600">Pekerjaan Ibu</label>
-                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" placeholder="Your First Name">
+                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" readonly placeholder="Your First Name">
             </div>
             <div>
                 <label class="block text-gray-600">Nomer Bapak</label>
-                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" placeholder="Your First Name">
+                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" readonly placeholder="Your First Name">
             </div>
             <div>
                 <label class="block text-gray-600">Nomer Ibu</label>
-                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" placeholder="Your First Name">
+                <input type="text" class="w-full px-4 py-2 mt-1 border rounded-md" readonly placeholder="Your First Name">
             </div>
         </div>
     </div>
