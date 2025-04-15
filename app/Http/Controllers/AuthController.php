@@ -30,7 +30,19 @@ class AuthController extends Controller
         return redirect()->route('loginWalas');
     }
 
-    public function loginOrangTua(Request $request)
+    public function showLoginForm()
+    {
+        // Jika sudah login, redirect ke dashboard
+        if (Session::has('siswa')) {
+            return redirect('/ortu');
+        }
+
+        return view('ortu.login-ortu'); // Sesuaikan dengan nama view Anda
+    }
+
+
+
+    public function loginOrtu(Request $request)
     {
         // Validasi input
         $request->validate([

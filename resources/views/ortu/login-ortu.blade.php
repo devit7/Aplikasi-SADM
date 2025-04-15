@@ -24,7 +24,7 @@
                     <img src="/img/loginlogo.png" alt="Logo" class="w-32 h-32 object-cover">
                 </div>
 
-                <form class="mt-6" action="{{ route('loginOrtu') }}" method="POST" onsubmit="return validateForm()">
+                <form class="mt-6" action="{{ route('ortu.login-ortu') }}" method="POST" onsubmit="return validateForm()">
                     @csrf
                     <div>
                         <label class="block text-white">NISN</label>

@@ -5,6 +5,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\siswaAkses;
 use App\Http\Middleware\webAkses;
+use App\Http\Middleware\OrtuAkses;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -17,7 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'siswa' => siswaAkses::class,
             'WebAkses' => webAkses::class,
-            'OrtuAkses' => ortuAkses::class,
+            'ortuAkses' => OrtuAkses::class,
         ]);
 
     })
