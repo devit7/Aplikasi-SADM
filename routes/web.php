@@ -77,6 +77,8 @@ Route::get('/ortu/nilai-kehadiran/kehadiran', [ortuController::class, 'getAbsen'
 route::get('/', function () {
     return view('ortu.historyakademik-ortu');
 });
+
+
 // Route::get('/walas/list-siswa', function () {
 //     return view('walas.list-siswa');
 // });
