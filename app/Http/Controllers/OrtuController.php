@@ -15,21 +15,14 @@ use Illuminate\Support\Facades\DB;
 class OrtuController extends Controller
 {
     public function index()
-    {
-        return view('ortu.historyakademik-ortu');
+{
+    $siswa = session('siswa');
 
-        $siswa = session('siswa');
-
-        if (!$siswa) {
-            $siswa = \App\Models\Siswa::first();
-            session(['siswa' => $siswa]);
-        }
+    if (!$siswa) {
+        $siswa = \App\Models\Siswa::first();
+        session(['siswa' => $siswa]);
     }
-    public function showProfile(){
-        $siswa = Session::get('siswa');
-        $profile = Siswa::where('id', $siswa->id)->with('detailKelas.kelas.matapelajaran')->first();
-        // dd($profile);
-        return view('ortu.profile-siswa', compact('profile'));
+
     $ortu = $siswa;
 
     $detailKelasList = \App\Models\DetailKelas::where('siswa_id', $siswa->id)->with('kelas')->get();
@@ -46,13 +39,12 @@ class OrtuController extends Controller
         $histories[] = (object)[
             'kelas' => $kelas->nama,
             'tahun' => $kelas->tahun,
-            'peringkat' => rand(1, $totalSiswa), // dummy
+            'peringkat' => rand(1, $totalSiswa), // dummy, bisa diganti real
             'total_siswa' => $totalSiswa,
             'kehadiran' => $kehadiran,
         ];
     }
 
-    // Rata-rata nilai
     $nilaiList = \App\Models\Nilai::whereHas('detailKelas', function ($q) use ($siswa) {
         $q->where('siswa_id', $siswa->id);
     })->get();
