@@ -17,7 +17,7 @@ class siswaAkses
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Check if user is authenticated
+// Check if user is authenticated
         if (!Auth::check()) {
             return redirect('login');
         }
