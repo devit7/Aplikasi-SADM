@@ -63,7 +63,7 @@ class OrtuController extends Controller
 
         $peringkat = rand(1, 10); // dummy
         $kehadiran = $histories[0]->kehadiran ?? null;
-        dd($histories);
+        ($histories);
         return view('ortu.historyakademik-ortu', compact('ortu', 'rataRata', 'peringkat', 'kehadiran', 'histories'));
     }
 
