@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrtuAuthController;
+use App\Http\Controllers\StafController;
 use App\Http\Controllers\Walas\ManajemenAbsen;
 use App\Http\Controllers\Walas\ManajemenNilai;
 use App\Http\Controllers\WalasController;
 use App\Http\Controllers\OrtuController;
+use App\Http\Controllers\StafAuthController;
 use App\Http\Controllers\WalasAuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,7 +50,13 @@ Route::prefix('ortu')->middleware(['ortuAkses'])->group(function () {
     Route::get('/nilai-kehadiran', [OrtuController::class, 'showPageNilai'])->name('ortu.nilai');
     Route::get('/nilai-kehadiran/kehadiran', [OrtuController::class, 'showPageKehadiran'])->name('ortu.kehadiran');
 });
-Route::get('/staf/login', function () {
-    return view('staf.login-staf');
-})->name('loginStaf');
 
+
+//STAF
+Route::get('/staff/login', [StafAuthController::class, 'showLoginForm'])->name('staf.login-staf');
+Route::post('/staff/login', [StafAuthController::class, 'loginStaf']);
+Route::post('/staff/logout', [StafAuthController::class, 'logoutStaf'])->name('staf.logout');
+
+Route::prefix('staff')->middleware(['stafAkses'])->group(function () {
+    Route::get('/', [StafController::class, 'index'])->name('staf.index');
+});

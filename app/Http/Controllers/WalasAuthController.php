@@ -29,13 +29,4 @@ class WalasAuthController extends Controller
         return redirect()->route('loginWalas');
     }
 
-    public function showLoginForm()
-    {
-        // Jika sudah login, redirect ke dashboard
-        if (Session::has('siswa')) {
-            return redirect('/ortu');
-        }
-
-        return view('ortu.login-ortu'); // Sesuaikan dengan nama view Anda
-    }
 }
