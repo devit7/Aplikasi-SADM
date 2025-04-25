@@ -2,7 +2,11 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-6">
-    <h1 class="text-2xl font-bold mb-6">Absen</h1>
+    <div class="w-24 mx-1 border-collapse border rounded-md bg-red-600 hover:bg-red-500 p-2 text-center mb-2">
+        <a href="{{route('walas.manajemen-absen.index')}}" class="text-white hover:text-gray-100 font-medium text-base">
+            < Kembali</a>
+    </div>
+    <h1 class="text-2xl font-bold mb-6 ml-1">Absensi</h1>
 
     @if(session('error'))
     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -24,7 +28,7 @@
             <form action="{{ route('walas.manajemen-absen.simpan') }}" method="POST" id="presensiForm">
                 @csrf
                 <input type="hidden" name="presensi_id" value="{{ $presensi->id }}">
-                
+
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
@@ -52,10 +56,10 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex space-x-6">
                                         <div class="flex items-center">
-                                            <input id="masuk_{{ $detail->siswa_id }}" 
-                                                name="siswa_status[{{ $detail->siswa_id }}]" 
-                                                type="radio" 
-                                                value="masuk" 
+                                            <input id="masuk_{{ $detail->siswa_id }}"
+                                                name="siswa_status[{{ $detail->siswa_id }}]"
+                                                type="radio"
+                                                value="masuk"
                                                 {{ $detail->status == 'masuk' ? 'checked' : '' }}
                                                 class="h-4 w-4 text-green-600 border-gray-300 focus:ring-green-500">
                                             <label for="masuk_{{ $detail->siswa_id }}" class="ml-2 block text-sm text-gray-900">
@@ -63,10 +67,10 @@
                                             </label>
                                         </div>
                                         <div class="flex items-center">
-                                            <input id="sakit_{{ $detail->siswa_id }}" 
-                                                name="siswa_status[{{ $detail->siswa_id }}]" 
-                                                type="radio" 
-                                                value="sakit" 
+                                            <input id="sakit_{{ $detail->siswa_id }}"
+                                                name="siswa_status[{{ $detail->siswa_id }}]"
+                                                type="radio"
+                                                value="sakit"
                                                 {{ $detail->status == 'sakit' ? 'checked' : '' }}
                                                 class="h-4 w-4 text-yellow-600 border-gray-300 focus:ring-yellow-500">
                                             <label for="sakit_{{ $detail->siswa_id }}" class="ml-2 block text-sm text-gray-900">
@@ -74,10 +78,10 @@
                                             </label>
                                         </div>
                                         <div class="flex items-center">
-                                            <input id="izin_{{ $detail->siswa_id }}" 
-                                                name="siswa_status[{{ $detail->siswa_id }}]" 
-                                                type="radio" 
-                                                value="izin" 
+                                            <input id="izin_{{ $detail->siswa_id }}"
+                                                name="siswa_status[{{ $detail->siswa_id }}]"
+                                                type="radio"
+                                                value="izin"
                                                 {{ $detail->status == 'izin' ? 'checked' : '' }}
                                                 class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500">
                                             <label for="izin_{{ $detail->siswa_id }}" class="ml-2 block text-sm text-gray-900">
@@ -85,10 +89,10 @@
                                             </label>
                                         </div>
                                         <div class="flex items-center">
-                                            <input id="alpha_{{ $detail->siswa_id }}" 
-                                                name="siswa_status[{{ $detail->siswa_id }}]" 
-                                                type="radio" 
-                                                value="alpha" 
+                                            <input id="alpha_{{ $detail->siswa_id }}"
+                                                name="siswa_status[{{ $detail->siswa_id }}]"
+                                                type="radio"
+                                                value="alpha"
                                                 {{ $detail->status == 'alpha' ? 'checked' : '' }}
                                                 class="h-4 w-4 text-red-600 border-gray-300 focus:ring-red-500">
                                             <label for="alpha_{{ $detail->siswa_id }}" class="ml-2 block text-sm text-gray-900">
@@ -118,7 +122,7 @@
     <p class="text-sm text-gray-500">
         Apakah anda yakin menyimpan presensi?
     </p>
-    
+
     <x-slot name="footer">
         <button type="button" id="confirmSimpan" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
             Simpan
@@ -138,22 +142,22 @@
         const cancelSimpan = document.getElementById('cancelSimpan');
         const presensiForm = document.getElementById('presensiForm');
         const confirmationModal = document.getElementById('confirmationModal');
-        
+
         simpanBtn.addEventListener('click', function() {
             // Show confirmation modal
             confirmationModal.classList.remove('hidden');
         });
-        
+
         confirmSimpan.addEventListener('click', function() {
             // Submit the form
             presensiForm.submit();
         });
-        
+
         cancelSimpan.addEventListener('click', function() {
             // Hide modal
             confirmationModal.classList.add('hidden');
         });
-        
+
         // Close modal when clicking outside
         window.addEventListener('click', function(event) {
             if (event.target === confirmationModal) {

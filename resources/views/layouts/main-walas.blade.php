@@ -14,12 +14,12 @@
 <body class=" bg-[#f5f6fa]">
     <x-walas-navbar />
     <div class=" flex">
-    <!-- Check if we are on a page with a kelas object -->
-    @if(isset($kelas) && isset($kelas->id))
+        <!-- Check if we are on a page with a kelas object -->
+        @if(isset($kelas) && isset($kelas->id))
         <x-alternative-walas-sidebar :kelasId="$kelas->id" />
-    @else
+        @else
         <x-walas-sidebar />
-    @endif
+        @endif
 
         @yield('content')
     </div>

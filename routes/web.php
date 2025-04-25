@@ -24,8 +24,8 @@ Route::prefix('walas')->middleware(['WebAkses:walikelas'])->group(function () {
 
     //Start - MANAJEMEN NILAI
     Route::get('/manajemen-nilai', [ManajemenNilai::class, 'index'])->name('walas.manajemen-nilai.index');
-    Route::get('/manajemen-nilai/{id}', [ManajemenNilai::class, 'show']);
-    Route::post('/manajemen-nilai', [ManajemenNilai::class, 'store']);
+    Route::get('/manajemen-nilai/{id}', [ManajemenNilai::class, 'show'])->name('walas.manajemen-nilai.show');
+    Route::post('/manajemen-nilai', [ManajemenNilai::class, 'store'])->name('walas.manajemen-nilai.store');
 
     //Start - MANAJEMEN ABSEN
     Route::get('/manajemen-absen', [ManajemenAbsen::class, 'index'])->name('walas.manajemen-absen.index');
