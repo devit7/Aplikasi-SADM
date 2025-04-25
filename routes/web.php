@@ -1,10 +1,14 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OrtuAuthController;
+use App\Http\Controllers\StafController;
 use App\Http\Controllers\Walas\ManajemenAbsen;
 use App\Http\Controllers\Walas\ManajemenNilai;
 use App\Http\Controllers\WalasController;
 use App\Http\Controllers\OrtuController;
+use App\Http\Controllers\StafAuthController;
+use App\Http\Controllers\WalasAuthController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -14,8 +18,8 @@ Route::get('/walas/login', function () {
     return view('walas.login-walas');
 })->name('loginWalas');
 
-Route::post('/walas/login', [AuthController::class, 'loginWalas']);
-Route::post('/logout', [AuthController::class, 'logoutWalas'])->name('walas.logout');
+Route::post('/walas/login', [WalasAuthController::class, 'loginWalas']);
+Route::post('/logout', [WalasAuthController::class, 'logoutWalas'])->name('walas.logout');
 
 // Walas
 Route::prefix('walas')->middleware(['WebAkses:walikelas'])->group(function () {
@@ -35,9 +39,9 @@ Route::prefix('walas')->middleware(['WebAkses:walikelas'])->group(function () {
 
 });
 
-Route::get('/ortu/login', [AuthController::class, 'showLoginForm'])->name('ortu.login-ortu');
-Route::post('/ortu/login', [AuthController::class, 'loginOrtu']);
-Route::post('/ortu/logout', [AuthController::class, 'logoutOrtu'])->name('ortu.logout');
+Route::get('/ortu/login', [OrtuAuthController::class, 'showLoginForm'])->name('ortu.login-ortu');
+Route::post('/ortu/login', [OrtuAuthController::class, 'loginOrtu']);
+Route::post('/ortu/logout', [OrtuAuthController::class, 'logoutOrtu'])->name('ortu.logout');
 
 Route::prefix('ortu')->middleware(['ortuAkses'])->group(function () {
 
@@ -47,3 +51,12 @@ Route::prefix('ortu')->middleware(['ortuAkses'])->group(function () {
     Route::get('/nilai-kehadiran/kehadiran', [OrtuController::class, 'showPageKehadiran'])->name('ortu.kehadiran');
 });
 
+
+//STAF
+Route::get('/staff/login', [StafAuthController::class, 'showLoginForm'])->name('staf.login-staf');
+Route::post('/staff/login', [StafAuthController::class, 'loginStaf']);
+Route::post('/staff/logout', [StafAuthController::class, 'logoutStaf'])->name('staf.logout');
+
+Route::prefix('staff')->middleware(['stafAkses'])->group(function () {
+    Route::get('/', [StafController::class, 'index'])->name('staf.index');
+});

@@ -14,9 +14,15 @@ use Illuminate\Support\Facades\DB;
 
 class OrtuController extends Controller
 {
+    public function showProfile()
+    {
+        $siswa = Session::get('siswa');
+        $profile = Siswa::where('id', $siswa->id)->with('detailKelas.kelas.matapelajaran')->first();
+        // dd($profile);
+        return view('ortu.profile-siswa', compact('profile'));
+    }
     public function index()
     {
-        return view('ortu.historyakademik-ortu');
 
         $siswa = session('siswa');
 
@@ -24,48 +30,42 @@ class OrtuController extends Controller
             $siswa = \App\Models\Siswa::first();
             session(['siswa' => $siswa]);
         }
+        $ortu = $siswa;
+
+        $detailKelasList = \App\Models\DetailKelas::where('siswa_id', $siswa->id)->with('kelas')->get();
+
+        $histories = [];
+        foreach ($detailKelasList as $detailKelas) {
+            $kelas = $detailKelas->kelas;
+            $totalSiswa = \App\Models\DetailKelas::where('kelas_id', $kelas->id)->count();
+
+            $totalPertemuan = $detailKelas->absen()->count();
+            $hadir = $detailKelas->absen()->where('status', 'hadir')->count();
+            $kehadiran = $totalPertemuan > 0 ? round(($hadir / $totalPertemuan) * 100) : 0;
+
+            $histories[] = (object)[
+                'kelas' => $kelas->nama,
+                'tahun' => $kelas->tahun,
+                'peringkat' => rand(1, $totalSiswa), // dummy
+                'total_siswa' => $totalSiswa,
+                'kehadiran' => $kehadiran,
+            ];
+        }
+
+        // Rata-rata nilai
+        $nilaiList = \App\Models\Nilai::whereHas('detailKelas', function ($q) use ($siswa) {
+            $q->where('siswa_id', $siswa->id);
+        })->get();
+
+        $rataRata = $nilaiList->count() > 0
+            ? round(($nilaiList->sum('nilai_uts') + $nilaiList->sum('nilai_uas')) / ($nilaiList->count() * 2), 2)
+            : null;
+
+        $peringkat = rand(1, 10); // dummy
+        $kehadiran = $histories[0]->kehadiran ?? null;
+        ($histories);
+        return view('ortu.historyakademik-ortu', compact('ortu', 'rataRata', 'peringkat', 'kehadiran', 'histories'));
     }
-    public function showProfile(){
-        $siswa = Session::get('siswa');
-        $profile = Siswa::where('id', $siswa->id)->with('detailKelas.kelas.matapelajaran')->first();
-        // dd($profile);
-        return view('ortu.profile-siswa', compact('profile'));
-    $ortu = $siswa;
-
-    $detailKelasList = \App\Models\DetailKelas::where('siswa_id', $siswa->id)->with('kelas')->get();
-
-    $histories = [];
-    foreach ($detailKelasList as $detailKelas) {
-        $kelas = $detailKelas->kelas;
-        $totalSiswa = \App\Models\DetailKelas::where('kelas_id', $kelas->id)->count();
-
-        $totalPertemuan = $detailKelas->absen()->count();
-        $hadir = $detailKelas->absen()->where('status', 'hadir')->count();
-        $kehadiran = $totalPertemuan > 0 ? round(($hadir / $totalPertemuan) * 100) : 0;
-
-        $histories[] = (object)[
-            'kelas' => $kelas->nama,
-            'tahun' => $kelas->tahun,
-            'peringkat' => rand(1, $totalSiswa), // dummy
-            'total_siswa' => $totalSiswa,
-            'kehadiran' => $kehadiran,
-        ];
-    }
-
-    // Rata-rata nilai
-    $nilaiList = \App\Models\Nilai::whereHas('detailKelas', function ($q) use ($siswa) {
-        $q->where('siswa_id', $siswa->id);
-    })->get();
-
-    $rataRata = $nilaiList->count() > 0
-        ? round(($nilaiList->sum('nilai_uts') + $nilaiList->sum('nilai_uas')) / ($nilaiList->count() * 2), 2)
-        : null;
-
-    $peringkat = rand(1, 10); // dummy
-    $kehadiran = $histories[0]->kehadiran ?? null;
-
-    return view('ortu.historyakademik-ortu', compact('ortu', 'rataRata', 'peringkat', 'kehadiran', 'histories'));
-}
 
     private function getKelasSiswa($studentId)
     {
@@ -74,7 +74,8 @@ class OrtuController extends Controller
             ->first();
     }
 
-    private function getDetailPresensiSiswa($studentId){
+    private function getDetailPresensiSiswa($studentId)
+    {
         $siswa = Session::get('siswa');
         $detailKelas = $this->getKelasSiswa($studentId);
         return DetailPresensi::whereHas('presensi', function ($query) use ($siswa, $detailKelas) {
@@ -82,17 +83,18 @@ class OrtuController extends Controller
                 $kelasQuery->whereHas('detailKelas', function ($detailKelasQuery) use ($siswa) {
                     $detailKelasQuery->where('siswa_id', $siswa->id);
                 })
-                ->where('id', $detailKelas->kelas_id); // match kelas_id
+                    ->where('id', $detailKelas->kelas_id); // match kelas_id
             });
         })
-        ->with('presensi')
-        ->get();
+            ->with('presensi')
+            ->get();
     }
 
-    private function getStatusCount(){
+    private function getStatusCount()
+    {
         $countAbsenceStatus = DetailPresensi::select('status', DB::raw('count(*) as total'))
-        ->groupBy('status')
-        ->get();
+            ->groupBy('status')
+            ->get();
         // dd($countAbsenceStatus);
         $statusCount = [
             'masuk' => 0,
@@ -107,7 +109,8 @@ class OrtuController extends Controller
         return $statusCount;
     }
 
-    private function getSiswaRanking($studentId){
+    private function getSiswaRanking($studentId)
+    {
         $students = Siswa::whereHas('detailKelas.nilai')
             ->with(['detailKelas' => function ($query) {
                 $query->with('nilai');

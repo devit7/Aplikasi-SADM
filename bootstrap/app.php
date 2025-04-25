@@ -6,6 +6,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\siswaAkses;
 use App\Http\Middleware\webAkses;
 use App\Http\Middleware\OrtuAkses;
+use App\Http\Middleware\stafAkses;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'siswa' => siswaAkses::class,
             'WebAkses' => webAkses::class,
             'ortuAkses' => OrtuAkses::class,
+            'stafAkses' => stafAkses::class,
         ]);
 
     })
