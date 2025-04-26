@@ -52,7 +52,9 @@
                         <div class="h-40 relative bg-blue-500 flex items-center justify-center rounded-t-lg">
                             <h3 class="text-white text-2xl font-bold">{{ $history->kelas }}</h3>
                         </div>
-
+                        <div class="text-xl  text-center mb-2">
+                        {{ strtoupper(session('siswa')->detailKelas->first()?->kelas->nama_kelas ?? '-') }}
+                        </div>
                         <div class="p-4 flex-1 flex flex-col">
                             <div class="mb-4">
                                 <span class="text-gray-600 text-sm text-center block">{{ $history->kelas }} {{ $history->tahun }}</span>
