@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class StafNavbar extends Component
+class AlternativeStafSidebar extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class StafNavbar extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.staf-navbar');
+        return view('components.alternative-staf-sidebar');
     }
 }

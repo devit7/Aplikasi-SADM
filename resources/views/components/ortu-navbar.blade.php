@@ -1,8 +1,8 @@
 <div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-[#ffffff] shadow-sm p-1 px-3">
+    <nav class="navbar navbar-expand-lg navbar-light bg-[#ffffff] shadow-sm p-1 px-2">
         <div class="flex justify-between align-middle w-full">
             <a href="/ortu">
-                <img src="{{ asset('img/loginlogo.png') }}" alt="Logo" class="w-[64px] h-[64px]"/>
+                <img src="{{ asset('img/loginlogo.png') }}" alt="Logo SD MUSIX" class="w-[80px]"/>
             </a>
             <div class="flex items-center space-x-3">
                 <div class="text-right mr-4">

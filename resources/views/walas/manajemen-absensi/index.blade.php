@@ -168,12 +168,6 @@
                 "infoEmpty": "Tidak ada data yang tersedia",
                 "infoFiltered": "(difilter dari _MAX_ total data)",
                 "search": "Cari:",
-                "paginate": {
-                    "first": "Pertama",
-                    "last": "Terakhir",
-                    "next": "Selanjutnya",
-                    "previous": "Sebelumnya"
-                }
             }
         });
 

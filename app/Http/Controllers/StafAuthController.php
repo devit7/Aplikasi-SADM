@@ -23,7 +23,7 @@ class StafAuthController extends Controller
         $nip = $request->input('nip');
         $password = $request->input('password');
 
-        // Cari siswa berdasarkan NISN dan Password
+        // Cari siswa berdasarkan NIP dan Password
         $staf = Staff::where('nip', $nip)->first();
         // dd($staf);
         if ($staf && Hash::check($password, $staf->password)) {
@@ -42,6 +42,7 @@ class StafAuthController extends Controller
         Session::forget('staff'); // Hapus sesi 'staff'
         return redirect()->route('staf.login-staf');
     }
+
     public function showLoginForm()
     {
         // Jika sudah login, redirect ke dashboard
@@ -49,6 +50,6 @@ class StafAuthController extends Controller
             return redirect('/staff');
         }
 
-        return view('staf.login-staf'); // Sesuaikan dengan nama view Anda
+        return view('staf.login-staf'); 
     }
 }

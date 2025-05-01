@@ -15,10 +15,11 @@
     <x-staf-navbar />
     <div class=" flex">
     <!-- Check if we are on a page with a kelas object -->
-    @if(isset($kelas) && isset($kelas->id))
-        <x-alternative-walas-sidebar :kelasId="$kelas->id" />
+    @if((isset($kelas) && isset($kelas->id)) || (isset($staff_acces) && (isset($staff_acces->akses_nilai) || isset($staff_acces->akses_absen))))
+
+        <x-alternative-staf-sidebar :kelasId="$kelas->id" :staffAksesNilai="$staff_acces->akses_nilai" :staffAksesAbsen="$staff_acces->akses_absen"/>
     @else
-        <x-walas-sidebar />
+        <x-staf-sidebar />
     @endif
 
         @yield('content')

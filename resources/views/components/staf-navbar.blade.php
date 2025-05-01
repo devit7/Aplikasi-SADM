@@ -1,21 +1,18 @@
 <div>
-    <header class='flex border-b py-4 px-4 sm:px-10 bg-white font-sans min-h-[70px] tracking-wide relative z-50'>
+    <header class='flex border-b py-2 px-2 sm:px-10 bg-white font-sans min-h-[60px] tracking-wide relative z-50'>
         <div class='flex flex-wrap items-center gap-4 w-full'>
-            <a href="/walas">
-                <img src="{{ asset('img/loginlogo.png') }}" class="w-[50px]" alt="">
+            <a href="{{ route('staff.dashboard') }}">
+                <img src="{{ asset('img/loginlogo.png') }}" class="w-[80px]" alt="Logo SD MUSIX">
             </a>
 
             <div class='flex items-center ml-auto space-x-6'>
                 <div class="relative">
                     <button id="dropdownButton" class="flex items-center space-x-2 focus:outline-none">
-                        <img src="{{ asset('img/wallpaper sunday.png') }}" alt="" class="w-[55px] h-[55px]">
+                        <img src="{{ asset('img/1.png') }}" alt="" class="w-[60px]">
                         <div class="flex flex-col text-left">
                             <p class="font-semibold"> 
-                            @if (session()->has('staff'))
                                 <p class="font-semibold">{{ session('staff')->nama }}</p>
-                            @else
-                                <p class="font-semibold">Guest</p> <!-- Fallback jika session tidak ada -->
-                            @endif
+                                <p class="text-xs font-medium text-gray-500">Staff</p>
                             </p>
                         </div>
                         <svg class="w-4 h-4 ml-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -28,7 +25,6 @@
                     <!-- Dropdown Menu -->
                     <div id="dropdownMenu"
                         class="hidden absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg">
-                        {{-- <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a> --}}
                         <form method="POST" action="{{ route('staf.logout') }}">
                             @csrf
                             <button type="submit" class="flex items-center w-full px-4 py-3 text-gray-700 rounded-lg hover:bg-red-100 hover:text-red-600 transition-colors duration-200">

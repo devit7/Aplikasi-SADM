@@ -1,8 +1,8 @@
 <div>
-    <header class='flex border-b py-4 px-4 sm:px-10 bg-white font-sans min-h-[70px] tracking-wide relative z-50'>
+    <header class='flex border-b py-2 px-2 sm:px-10 bg-white font-sans min-h-[60px] tracking-wide relative z-50'>
         <div class='flex flex-wrap items-center gap-4 w-full'>
             <a href="/walas">
-                <img src="{{ asset('img/loginlogo.png') }}" class="w-[50px]" alt="">
+                <img src="{{ asset('img/loginlogo.png') }}" class="w-[80px]" alt="Logo SD MUSIX">
             </a>
 
             <div class='flex items-center ml-auto space-x-6'>
