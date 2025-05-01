@@ -40,7 +40,7 @@ Route::prefix('walas')->middleware(['WebAkses:walikelas'])->group(function () {
     //End - MANAJEMEN ABSEN
 });
 
-//ORTU AUTH
+Route::get('/nilai-kehadiran/showReport', [OrtuController::class, 'showReport']);
 Route::get('/ortu/login', [OrtuAuthController::class, 'showLoginForm'])->name('ortu.login-ortu');
 Route::post('/ortu/login', [OrtuAuthController::class, 'loginOrtu']);
 Route::post('/ortu/logout', [OrtuAuthController::class, 'logoutOrtu'])->name('ortu.logout');
@@ -52,6 +52,7 @@ Route::prefix('ortu')->middleware(['ortuAkses'])->group(function () {
     Route::get('/profile', [OrtuController::class, 'showProfile'])->name('ortu.profile');
     Route::get('/nilai-kehadiran', [OrtuController::class, 'showPageNilai'])->name('ortu.nilai');
     Route::get('/nilai-kehadiran/kehadiran', [OrtuController::class, 'showPageKehadiran'])->name('ortu.kehadiran');
+    Route::get('/nilai-kehadiran/showReport', [OrtuController::class, 'showRaport'])->name('ortu.showRaport');
 });
 
 

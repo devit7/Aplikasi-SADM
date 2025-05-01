@@ -11,6 +11,8 @@ use App\Models\Absen;
 use App\Models\DetailKelas;
 use App\Models\DetailPresensi;
 use Illuminate\Support\Facades\DB;
+use setasign\Fpdi\Tfpdf\Fpdi;
+use setasign\Fpdi\Tfpdf\FpdfTpl;
 
 class OrtuController extends Controller
 {
@@ -189,5 +191,46 @@ class OrtuController extends Controller
 
         // dd($absences);
         return view('ortu.kehadiran-ortu', compact('absences', 'detailKelas', 'siswa', 'semester', 'tahunAjaran', 'statusCount'));
+    }
+
+    public function showRaport(){
+        $siswa = Session::get('siswa');
+        $detailKelas = $this->getKelasSiswa($siswa->id);
+
+        $pdf = new Fpdi();
+        $pdf->setSourceFile(storage_path('app/private/template_rapot.pdf'));
+
+        // === Page 1 ===
+        $pdf->AddPage('P', [215.9, 355.6]);
+        $template1 = $pdf->importPage(1);
+        $pdf->useTemplate($template1);
+
+        $pdf->SetFont('Helvetica', '',11);
+        $pdf->SetTextColor(0, 0, 0);
+        // Example writing on page 1
+        $pdf->SetXY(42, 70.5);
+        $pdf->Write(0, ucwords($siswa->nama));
+        $pdf->SetXY(42, 77);
+        $pdf->Write(0, $siswa->nisn . ' / ' . $siswa->nis);
+        $pdf->SetXY(42, 83.5);
+        $pdf->Write(0, $detailKelas->kelas->nama_kelas);
+        $pdf->SetXY(42, 90.5);
+        $pdf->Write(0, $detailKelas->kelas->semester);
+        $pdf->SetXY(42, 96);
+        $pdf->Write(0, $detailKelas->kelas->tahun_ajaran);
+
+        // === Page 2 ===
+        $pdf->AddPage('P', [215.9, 355.6]);
+        $template2 = $pdf->importPage(2);
+        $pdf->useTemplate($template2);
+
+        // You can also write something on page 2 if needed:
+        // $pdf->SetXY(30, 50);
+        // $pdf->Write(0, "Page 2 Data Here");
+
+        $pdfContent = $pdf->Output('S'); // S = Return as string
+
+        return response($pdfContent, 200)
+            ->header('Content-Type', 'application/pdf');
     }
 }
