@@ -38,48 +38,56 @@ height="800px"
 frameborder="0"
 style="border:none;">
 </iframe> --}}
-<div class="flex justify-center min-h-screen py-8">
-    <canvas class="" id="pdf-canvas"></canvas>
-</div>
+<div id="pdf-container" class="flex flex-col items-center justify-center"></div>
 @endsection
 
 @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.13.216/pdf.min.js"></script>
     <script>
-        const url = '{{ route('ortu.showRaport') }}'; // Path to your generated PDF file
+document.addEventListener("DOMContentLoaded", function() {
+    const url = "{{ route('ortu.showRaport') }}";
 
-        // Set up PDF.js worker (to improve performance)
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
+    // Set the workerSrc (important: match the version)
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.13.216/pdf.worker.min.js';
 
-        const loadingTask = pdfjsLib.getDocument(url);
-        loadingTask.promise.then(function(pdf) {
-            console.log('PDF loaded');
+    const container = document.getElementById('pdf-container');
 
-            // Fetch the first page
-            pdf.getPage(1).then(function(page) {
-                console.log('Page loaded');
+    // Load PDF
+    const loadingTask = pdfjsLib.getDocument(url);
+    loadingTask.promise.then(function(pdf) {
+        console.log('PDF loaded');
 
-                const scale = 1.5; // You can adjust this to zoom in/out
-                const viewport = page.getViewport({
-                    scale: scale
-                });
+        // Loop all pages
+        for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+            pdf.getPage(pageNumber).then(function(page) {
+                console.log('Page loaded', pageNumber);
 
-                // Get canvas element and set its dimensions
-                const canvas = document.getElementById('pdf-canvas');
+                const viewport = page.getViewport({ scale: 1.5 });
+
+                // Create canvas and render
+                const canvas = document.createElement('canvas');
                 const context = canvas.getContext('2d');
                 canvas.height = viewport.height;
                 canvas.width = viewport.width;
 
-                // Render the page into the canvas
+                // Center canvas using Tailwind
+                canvas.classList.add('mx-auto', 'my-4', 'shadow-md', 'rounded-lg');
+
+                container.appendChild(canvas);
+
                 const renderContext = {
                     canvasContext: context,
                     viewport: viewport
                 };
                 page.render(renderContext);
             });
-        });
+        }
+    }, function(reason) {
+        console.error('Error loading PDF: ', reason);
+    });
+});
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>

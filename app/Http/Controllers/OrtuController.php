@@ -11,9 +11,8 @@ use App\Models\Absen;
 use App\Models\DetailKelas;
 use App\Models\DetailPresensi;
 use Illuminate\Support\Facades\DB;
-use setasign\Fpdi\Fpdi; //ini import package yang benar
-// use setasign\Fpdi\Tfpdf\Fpdi; //ini import package yang salah
-// use setasign\Fpdi\Tfpdf\FpdfTpl;
+// use setasign\Fpdi\Fpdi;
+use setasign\Fpdi\Tfpdf\Fpdi;
 
 class OrtuController extends Controller
 {
