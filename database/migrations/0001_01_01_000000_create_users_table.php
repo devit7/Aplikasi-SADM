@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('tanggal_lahir')->nullable();
             $table->string('no_hp')->nullable();
             $table->string('alamat')->nullable();
-            $table->enum('role', ['admin', 'walikelas'])->default('walikelas');
+            $table->enum('role', ['admin', 'walikelas'])->default('admin');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
