@@ -12,7 +12,9 @@ use App\Http\Controllers\Staff\StaffManajemenNilai;
 use App\Http\Controllers\WalasAuthController;
 use Illuminate\Support\Facades\Route;
 
-
+Route::get('/', function () {
+    return redirect('/ortu');
+})->name('home');
 
 //WALAS
 Route::get('/walas/login', function () {
