@@ -63,7 +63,7 @@ class OrtuController extends Controller
             ? round(($nilaiList->sum('nilai_uts') + $nilaiList->sum('nilai_uas')) / ($nilaiList->count() * 2), 2)
             : null;
 
-        $peringkat = rand(1, 10); // dummy
+        $peringkat = $this->getSiswaRanking($siswa->id);
         $kehadiran = $histories[0]->kehadiran ?? null;
         ($histories);
         return view('ortu.historyakademik-ortu', compact('ortu', 'rataRata', 'peringkat', 'kehadiran', 'histories'));
