@@ -14,7 +14,9 @@
 pest()->extend(Tests\TestCase::class)
  // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
     ->in('Feature');
-
+// Tambahkan ini untuk mengaktifkan fitur testing Laravel di unit test
+pest()->extend(Tests\TestCase::class)
+    ->in('Unit');
 /*
 |--------------------------------------------------------------------------
 | Expectations
