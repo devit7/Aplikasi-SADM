@@ -44,7 +44,7 @@ test('Admin tidak dapat menambahkan wali kelas dengan NIP yang sudah ada', funct
     ]);
 
     $dataWaliKelasDuplicate = [
-        'nip' => '135799753113579911', // NIP yang sama dengan wali kelas yang sudah ada
+        'nip' => '135799753113579911', 
         'name' => 'Wali Kelas Duplicate',
         'email' => 'walikelasduplicate@gmail.com',
         'jenis_kelamin' => 'L',
@@ -94,10 +94,6 @@ test('Admin dapat melihat daftar wali kelas', function() {
     // Act & Assert
     Livewire::test(ListUsers::class)
         ->assertCanSeeTableRecords([$waliKelas1, $waliKelas2]);
-        // ->assertTableRecordsCount(2)
-        // ->assertCanSeeTableRecords(function($query) {
-        //     return $query->where('role', 'walikelas');
-        // }, 2);
 });
 
 test('Admin dapat memperbarui data wali kelas', function() {
@@ -116,7 +112,7 @@ test('Admin dapat memperbarui data wali kelas', function() {
     ]);
 
     $dataUpdate = [
-        'nip' => '135799753113501010', // NIP tetap sama
+        'nip' => '135799753113501010',
         'name' => 'Wali Kelas Update',
         'email' => 'walikelasupdate@gmail.com',
         'jenis_kelamin' => 'L',
