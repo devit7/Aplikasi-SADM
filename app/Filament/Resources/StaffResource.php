@@ -32,23 +32,23 @@ class StaffResource extends Resource
                 TextInput::make('nama')
                     ->label('Nama')
                     ->required()
-                    ->placeholder('Masukkan Nama'),
+                    ->placeholder('Contoh: Ahmad Reza, S.Pd'),
                 TextInput::make('nip')
                     ->label('NIP')
                     ->required()
                     ->minLength(18)
                     ->unique(ignoreRecord: true)
-                    ->placeholder('Masukkan NIP'),
+                    ->placeholder('Contoh: 198601232010011007'),
                 TextInput::make('email')
                     ->label('Email')
                     ->required()
                     ->email()
                     ->unique(ignoreRecord: true)
-                    ->placeholder('Masukkan Email'),
+                    ->placeholder('Contoh: ahmad.reza@gmail.com'),
                 TextInput::make('password')
                 ->label('Password')
                 ->required()
-                ->placeholder('Masukkan Password')
+                ->placeholder('Contoh: AhmadR123#')
                 ->minLength(5)
                 ->password()
                 ->afterStateHydrated(function (Forms\Components\TextInput $component, $state) {

@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SiswaResource\Pages;
 use App\Filament\Resources\SiswaResource\RelationManagers;
 use App\Models\Siswa;
+use Carbon\Carbon;
 use Faker\Provider\ar_EG\Text;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
@@ -25,7 +26,7 @@ class SiswaResource extends Resource
 {
     protected static ?string $model = Siswa::class;
     protected static ?string $navigationGroup = 'Management';
-    protected static ? string $navigationLabel = 'Siswa';
+    protected static ?string $navigationLabel = 'Siswa';
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?int $navigationSort = 2;
@@ -43,18 +44,18 @@ class SiswaResource extends Resource
                             ->required()
                             ->numeric()
                             ->unique(ignoreRecord: true)
-                            ->placeholder('Masukkan NIS'),
+                            ->placeholder('Contoh: 2023001'),
                         TextInput::make('nisn')
                             ->label('NISN')
                             ->length(10)
                             ->numeric()
                             ->required()
                             ->unique(ignoreRecord: true)
-                            ->placeholder('Masukkan NISN'),
+                            ->placeholder('Contoh: 0098765432'),
                         TextInput::make('nama')
                             ->label('Nama')
                             ->required()
-                            ->placeholder('Masukkan Nama'),
+                            ->placeholder('Contoh: Anisa Putri'),
                         Select::make('jenis_kelamin')
                             ->label('Jenis Kelamin')
                             ->required()
@@ -65,20 +66,28 @@ class SiswaResource extends Resource
                         TextInput::make('tempat_lahir')
                             ->label('Tempat Lahir')
                             ->required()
-                            ->placeholder('Masukkan Tempat Lahir'),
+                            ->placeholder('Contoh: Bandung'),
                         DatePicker::make('tanggal_lahir')
                             ->label('Tanggal Lahir')
                             ->required()
+                            ->native(false)
+                            ->maxDate(now())
+                            ->disabledDates(
+                                collect(Carbon::parse(now()->subYears(6))->daysUntil(now()))
+                                    ->map(fn($date) => $date->format('Y-m-d'))
+                                    ->toArray()
+                            )
                             ->placeholder('Masukkan Tanggal Lahir'),
                         DatePicker::make('tanggal_masuk')
                             ->label('Tanggal Masuk')
                             ->required()
+                            ->native(false)
                             ->placeholder('Masukkan Tanggal Masuk'),
                         Textarea::make('alamat')
                             ->label('Alamat')
                             ->required()
                             ->maxLength(200)
-                            ->placeholder('Masukkan Alamat'),
+                            ->placeholder('Contoh: Jl. Sudirman No. 45, RT 03/RW 04, Kec. Cicendo, Kota Bandung'),
 
                     ])->columnSpan(1)->columns(1),
                 Section::make('Data Orang Tua')
@@ -87,33 +96,33 @@ class SiswaResource extends Resource
                         TextInput::make('nama_bapak')
                             ->label('Nama Bapak')
                             ->required()
-                            ->placeholder('Masukkan Nama Bapak'),
+                            ->placeholder('Contoh: Drs. Agus Supriyanto'),
                         TextInput::make('nama_ibu')
                             ->label('Nama Ibu')
                             ->required()
-                            ->placeholder('Masukkan Nama Ibu'),
+                            ->placeholder('Contoh: Sri Wahyuni, S.E.'),
                         TextInput::make('pekerjaan_bapak')
                             ->label('Pekerjaan Bapak')
                             ->required()
-                            ->placeholder('Masukkan Pekerjaan Bapak'),
+                            ->placeholder('Contoh: Pegawai Swasta'),
                         TextInput::make('pekerjaan_ibu')
                             ->label('Pekerjaan Ibu')
                             ->required()
-                            ->placeholder('Masukkan Pekerjaan Ibu'),
+                            ->placeholder('Contoh: Wiraswasta'),
                         TextInput::make('no_hp_bapak')
                             ->label('No HP Bapak')
                             ->numeric()
                             ->maxLength(12)
                             ->minLength(10)
                             ->required()
-                            ->placeholder('Masukkan No HP Bapak'),
+                            ->placeholder('Contoh: 081234567890'),
                         TextInput::make('no_hp_ibu')
                             ->label('No HP Ibu')
                             ->numeric()
                             ->maxLength(12)
                             ->minLength(10)
                             ->required()
-                            ->placeholder('Masukkan No HP Ibu'),
+                            ->placeholder('Contoh: 085678901234'),
                     ])->columnSpan(1)->columns(1),
 
             ])->columns(2);
@@ -148,7 +157,7 @@ class SiswaResource extends Resource
                 TextColumn::make('alamat')
                     ->searchable()
                     ->sortable(),
-/*                 TextColumn::make('nama_bapak')
+                /*                 TextColumn::make('nama_bapak')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('nama_ibu')

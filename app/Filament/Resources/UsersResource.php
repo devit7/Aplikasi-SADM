@@ -6,6 +6,7 @@ use App\Filament\Resources\UsersResource\Pages;
 use App\Filament\Resources\UsersResource\RelationManagers;
 use App\Models\User;
 use App\Models\Users;
+use Carbon\Carbon;
 use Faker\Provider\ar_EG\Text;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
@@ -28,7 +29,7 @@ class UsersResource extends Resource
     protected static ?string $model = User::class;
     protected static ?string $navigationGroup = 'Management';
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
-    protected static ? string $navigationLabel = 'Users';
+    protected static ?string $navigationLabel = 'Users';
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -42,29 +43,29 @@ class UsersResource extends Resource
                     ->required()
                     ->minLength(18)
                     ->unique(ignoreRecord: true)
-                    ->placeholder('Masukkan NIP'),
+                    ->placeholder('Contoh: 198507262015051001'),
                 TextInput::make('name')
                     ->label('Nama')
                     ->required()
-                    ->placeholder('Masukkan Nama'),
+                    ->placeholder('Contoh: Budi Santoso, S.Pd'),
                 TextInput::make('email')
                     ->label('Email')
                     ->required()
                     ->email()
                     ->unique(ignoreRecord: true)
-                    ->placeholder('Masukkan Email'),
+                    ->placeholder('Contoh: budi.santoso@gmail.com'),
                 TextInput::make('password')
                     ->label('Password')
                     ->required()
-                    ->placeholder('Masukkan Password')
+                    ->placeholder('Contoh: BudiS123#')
                     ->minLength(5)
                     ->password()
                     ->afterStateHydrated(function (Forms\Components\TextInput $component, $state) {
                         $component->state('');
                     })
-                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                    ->dehydrated(fn ($state) => filled($state))
-                    ->required(fn ($livewire) => ($livewire instanceof CreateRecord)),
+                    ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                    ->dehydrated(fn($state) => filled($state))
+                    ->required(fn($livewire) => ($livewire instanceof CreateRecord)),
                 Select::make('jenis_kelamin')
                     ->label('Jenis Kelamin')
                     ->required()
@@ -75,23 +76,30 @@ class UsersResource extends Resource
                 DatePicker::make('tanggal_lahir')
                     ->label('Tanggal Lahir')
                     ->required()
-                    ->placeholder('Masukkan Tanggal Lahir'),
+                    ->native(false)
+                    ->maxDate(now())
+                    ->disabledDates(
+                        collect(Carbon::parse(now()->subYears(20))->daysUntil(now()))
+                            ->map(fn($date) => $date->format('Y-m-d'))
+                            ->toArray()
+                    )
+                    ->placeholder('Contoh: May 5, 2005'),
                 TextInput::make('tempat_lahir')
                     ->label('Tempat Lahir')
                     ->required()
-                    ->placeholder('Masukkan Tempat Lahir'),
+                    ->placeholder('Contoh: Jakarta'),
                 TextInput::make('no_hp')
                     ->label('No HP')
                     ->maxLength(12)
                     ->minLength(10)
                     ->required()
                     ->numeric()
-                    ->placeholder('Masukkan No HP'),
+                    ->placeholder('Contoh: 081234567890'),
                 Textarea::make('alamat')
                     ->label('Alamat')
                     ->maxLength(200)
                     ->required()
-                    ->placeholder('Masukkan Alamat'),
+                    ->placeholder('Contoh: Jl. Raya Bogor No. 123, RT 01/RW 02, Kec. Bogor Tengah, Kota Bogor'),
                 Select::make('role')
                     ->label('Role')
                     ->required()
