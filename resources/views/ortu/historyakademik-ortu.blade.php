@@ -72,10 +72,11 @@
                                 </p>
                             </div>
 
-                            <button
+                            <a href="{{ route('ortu.nilai') }}"
                                 class="bg-blue-500 text-white text-xs font-semibold py-1 px-3 rounded focus:outline-none hover:bg-blue-600 transition duration-300 self-end">
                                 Lihat Detail
-                            </button>
+                            </a>
+
                         </div>
                     </div>
                 @empty

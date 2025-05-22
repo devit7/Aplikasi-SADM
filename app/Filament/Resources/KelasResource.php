@@ -37,11 +37,11 @@ class KelasResource extends Resource
                 TextInput::make('nama_kelas')
                     ->label('Nama Kelas')
                     ->required()
-                    ->placeholder('Masukkan Nama Kelas'),
+                    ->placeholder('Contoh: X IPA 1'),
                 TextInput::make('tahun_ajaran')
                     ->label('Tahun Ajaran')
                     ->required()
-                    ->placeholder('Masukkan Tahun Ajaran'),
+                    ->placeholder('Contoh: May 5, 2005'),
                 Select::make('walikelas_id')
                     ->searchable()
                     ->searchDebounce(200)
@@ -49,7 +49,7 @@ class KelasResource extends Resource
                     ->required()
                     ->preload()
                     ->relationship('user', 'name')
-                    ->placeholder('Masukkan Wali Kelas'),
+                    ->placeholder('Contoh: Budi Santoso, S.Pd'),
             ]);
     }
 

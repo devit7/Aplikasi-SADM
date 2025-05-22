@@ -33,11 +33,11 @@ class MatapelajaranResource extends Resource
                 TextInput::make('nama_mapel')
                     ->label('Nama Mapel')
                     ->required()
-                    ->placeholder('Masukkan Nama Mapel'),
+                    ->placeholder('Contoh: Matematika'),
                 TextInput::make('kode_mapel')
                     ->label('Kode Mapel')
                     ->required()
-                    ->placeholder('Masukkan Kode Mapel'),
+                    ->placeholder('Contoh: MTK001'),
                 Select::make('kelas_id')
                     ->searchable()
                     ->searchDebounce(200)
@@ -45,7 +45,7 @@ class MatapelajaranResource extends Resource
                     ->preload()
                     ->required()
                     ->relationship('kelas', 'nama_kelas')
-                    ->placeholder('Masukkan Kelas'),
+                    ->placeholder('Contoh: X IPA 1'),
                 Select::make('semester')
                     ->label('Semester')
                     ->required()
@@ -57,7 +57,7 @@ class MatapelajaranResource extends Resource
                     ->label('KKM')
                     ->required()
                     ->numeric()
-                    ->placeholder('Masukkan KKM'),
+                    ->placeholder('Contoh: 75'),
             ]);
     }
 
