@@ -50,6 +50,7 @@ class UsersResource extends Resource
                 TextInput::make('email')
                     ->label('Email')
                     ->required()
+                    ->email()
                     ->unique(ignoreRecord: true)
                     ->placeholder('Masukkan Email'),
                 TextInput::make('password')
