@@ -43,8 +43,9 @@ class SiswaResource extends Resource
                             ->label('NIS')
                             ->required()
                             ->numeric()
+                            ->length(5)
                             ->unique(ignoreRecord: true)
-                            ->placeholder('Contoh: 2023001'),
+                            ->placeholder('Contoh: 13579'),
                         TextInput::make('nisn')
                             ->label('NISN')
                             ->length(10)
