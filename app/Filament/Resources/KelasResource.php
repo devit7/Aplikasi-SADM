@@ -83,8 +83,8 @@ class KelasResource extends Resource
                     ->url(fn($record) => Pages\AddSiswa::getUrl(['record' => $record->id]))
                     ->openUrlInNewTab(false), // Agar tetap di tab yang sama
                 Action::make('manage_siswa')
-                    ->label('Manage Siswa')
-                    ->icon('heroicon-o-user-group')
+                    ->label('Hapus Siswa')
+                    ->icon('heroicon-o-user-minus')
                     ->color('info')
                     ->url(fn($record) => DeleteSiswa::getUrl(['record' => $record->id]))
                     ->openUrlInNewTab(false), // Agar tetap di tab yang sama
