@@ -24,58 +24,46 @@
                     <img src="/img/loginlogo.png" alt="Logo" class="w-32 h-32 object-cover">
                 </div>
 
-                <form class="mt-6" action="{{ route('ortu.login-ortu') }}" method="POST" onsubmit="return validateForm()">
+                <form class="mt-6" action="{{ route('ortu.login-ortu') }}" method="POST">
                     @csrf
+
+
+
                     <div>
                         <label class="block text-white">NISN</label>
-                        <input type="text" name="nisn" id="nisn" placeholder="Masukan NISN"
-                            class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
+                        <input type="text" name="nisn" id="nisn" placeholder="Contoh: 0098765432"
+                            value="{{ old('nisn') }}"
+                            class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none @error('nisn') border-red-500 @enderror"
                             autofocus autocomplete>
-                        <p id="nisn-error" class="hidden text-red-500 text-sm mt-1">NISN tidak boleh kosong</p>
+                        @error('nisn')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="mt-4">
                         <label class="block text-white">NIS</label>
-                        <input type="text" name="nis" id="nis" placeholder="Masukan NIS" 
-                            class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none">
-                        <p id="nis-error" class="hidden text-red-500 text-sm mt-1">NIS tidak boleh kosong</p>
+                        <input type="text" name="nis" id="nis" placeholder="Contoh: 13579"
+                            value="{{ old('nis') }}"
+                            class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none @error('nis') border-red-500 @enderror">
+                        @error('nis')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <button type="submit"
                         class="w-full block bg-blue-500 hover:bg-blue-400 focus:bg-blue-400 text-white font-semibold rounded-lg px-4 py-3 mt-6">Masuk</button>
                 </form>
 
-                <div class="text-right mt-2">
-                    <a href="#" class="text-sm font-semibold text-white hover:text-blue-700 focus:text">Lupa Password?</a>
-                </div>
+                <!-- Display general login error -->
+                @if ($errors->has('login'))
+                    <div class="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                        {{ $errors->first('login') }}
+                    </div>
+                @endif
             </div>
         </div>
     </section>
 
-    <script>
-        function validateForm() {
-            const nisn = document.getElementById('nisn').value.trim();
-            const nis = document.getElementById('nis').value.trim();
-
-            // Reset pesan error
-            document.getElementById('nisn-error').classList.add('hidden');
-            document.getElementById('nis-error').classList.add('hidden');
-
-            let isValid = true;
-
-            if (nisn === "") {
-                document.getElementById('nisn-error').classList.remove('hidden');
-                isValid = false;
-            }
-
-            if (nis === "") {
-                document.getElementById('nis-error').classList.remove('hidden');
-                isValid = false;
-            }
-
-            return isValid;
-        }
-    </script>
 </body>
 
 </html>

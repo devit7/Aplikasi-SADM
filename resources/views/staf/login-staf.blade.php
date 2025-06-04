@@ -41,11 +41,6 @@
                     <button type="submit"
                         class="w-full block bg-blue-500 hover:bg-blue-400 focus:bg-blue-400 text-white font-semibold rounded-lg px-4 py-3 mt-6">Masuk</button>
                 </form>
-
-                <div class="text-right mt-2">
-                    <a href="#" class="text-sm font-semibold text-white hover:text-blue-700 focus:text">Lupa
-                        Password?</a>
-                </div>
             </div>
         </div>
         

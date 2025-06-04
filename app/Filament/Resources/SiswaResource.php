@@ -78,12 +78,14 @@ class SiswaResource extends Resource
                                     ->map(fn($date) => $date->format('Y-m-d'))
                                     ->toArray()
                             )
-                            ->placeholder('Masukkan Tanggal Lahir'),
+                            ->placeholder('Masukkan Tanggal Lahir')
+                            ->default(now()->subYears(16)->format('Y-m-d')),
                         DatePicker::make('tanggal_masuk')
                             ->label('Tanggal Masuk')
                             ->required()
                             ->native(false)
-                            ->placeholder('Masukkan Tanggal Masuk'),
+                            ->placeholder('Masukkan Tanggal Masuk')
+                            ->default(now()->format('Y-m-d')),
                         Textarea::make('alamat')
                             ->label('Alamat')
                             ->required()

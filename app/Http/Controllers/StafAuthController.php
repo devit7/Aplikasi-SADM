@@ -16,7 +16,12 @@ class StafAuthController extends Controller
         // dd($request->all());
         // Validasi input
         $request->validate([
-            'nip' => 'required',
+            'nip' => [
+                'required',
+                'string',
+                'digits:18',
+                'numeric'
+            ],
             'password' => 'required',
         ]);
         // Ambil data dari request
