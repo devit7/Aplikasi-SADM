@@ -7,7 +7,6 @@ use App\Filament\Resources\KelasResource\Pages\DeleteSiswa;
 use App\Filament\Resources\KelasResource\Pages\ManageSiswa;
 use App\Filament\Resources\KelasResource\RelationManagers;
 use App\Models\Kelas;
-use Faker\Provider\ar_EG\Text;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -17,9 +16,9 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Actions\Action;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Unique;
 
 class KelasResource extends Resource
 {
@@ -33,15 +32,22 @@ class KelasResource extends Resource
     {
         return $form
             ->schema([
-                //
                 TextInput::make('nama_kelas')
                     ->label('Nama Kelas')
                     ->required()
-                    ->placeholder('Contoh: X IPA 1'),
+                    ->placeholder('Contoh: X IPA 1')
+                    ->unique(
+                        table: 'kelas', 
+                        column: 'nama_kelas', 
+                        ignoreRecord: true, 
+                        modifyRuleUsing: function (Unique $rule, callable $get) {
+                            return $rule->where('tahun_ajaran', $get('tahun_ajaran'));
+                        }
+                    ),
                 TextInput::make('tahun_ajaran')
                     ->label('Tahun Ajaran')
                     ->required()
-                    ->placeholder('Contoh: May 5, 2005'),
+                    ->placeholder('Contoh: 2023/2024'),
                 Select::make('walikelas_id')
                     ->searchable()
                     ->searchDebounce(200)

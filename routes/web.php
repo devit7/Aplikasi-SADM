@@ -80,3 +80,7 @@ Route::prefix('staff')->middleware(['stafAkses'])->group(function () {
      Route::post('/manajemen-nilai', [StaffManajemenNilai::class, 'store'])->name('staff.manajemen-nilai.store');
      //End - MANAJEMEN NILAI
 });
+
+Route::fallback(function () {
+    return view('<h1>404 Page Not Found</h1>');
+});

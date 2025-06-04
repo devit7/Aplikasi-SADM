@@ -37,6 +37,7 @@ class MatapelajaranResource extends Resource
                 TextInput::make('kode_mapel')
                     ->label('Kode Mapel')
                     ->required()
+                    ->unique(ignoreRecord: true)
                     ->placeholder('Contoh: MTK001'),
                 Select::make('kelas_id')
                     ->searchable()
