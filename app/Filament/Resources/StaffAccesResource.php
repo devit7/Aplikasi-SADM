@@ -19,6 +19,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\HtmlString;
 
 class StaffAccesResource extends Resource
 {
@@ -63,18 +64,17 @@ class StaffAccesResource extends Resource
                                 return [$matapelajaran->id => $matapelajaran->nama_mapel . ' - ' . $matapelajaran->semester];
                             });
                     })
-                    ->required()
                     ->searchable()
                     ->disabled(fn(callable $get) => !$get('kelas_id')),
 
                 Section::make('Hak Akses')
-                    ->description('Pengaturan hak akses staff')
+                    ->description('Pilih 1 atau lebih hak akses yang diberikan kepada staff')
                     ->schema([
                         Checkbox::make('akses_nilai')
                             ->label('Akses Nilai'),
                         Checkbox::make('akses_absen')
                             ->label('Akses Absen'),
-                    ]),
+                    ])
             ]);
     }
 

@@ -24,4 +24,28 @@ class Siswa extends Model
     {
         return $this->hasMany(DetailPresensi::class);
     }
+
+    /**
+     * Get all Al-Quran assessments for this student
+     */
+    public function alQuranAssessments()
+    {
+        return $this->hasMany(AlQuranStudentAssessment::class, 'siswa_id');
+    }
+
+    /**
+     * Get all Extrakurikuler assessments for this student
+     */
+    public function extrakurikulerAssessments()
+    {
+        return $this->hasMany(ExtrakurikulerStudentAssessment::class, 'siswa_id');
+    }
+
+    /**
+     * Get all Worship assessments for this student
+     */
+    public function worshipAssessments()
+    {
+        return $this->hasMany(WorshipStudentAssessment::class, 'siswa_id');
+    }
 }

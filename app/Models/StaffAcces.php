@@ -27,4 +27,31 @@ class StaffAcces extends Model
     {
         return $this->belongsTo(Matapelajaran::class, 'matapelajaran_id');
     }
+
+    /**
+     * Get all Al-Quran subcategories that this staff access is assigned to
+     */
+    public function alQuranSubcategories()
+    {
+        return $this->belongsToMany(AlQuranLearningSubcategory::class, 'al_quran_subcategory_staff_access', 'staff_access_id', 'subcategory_id')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get all Extrakurikuler categories that this staff access is assigned to
+     */
+    public function extrakurikulerCategories()
+    {
+        return $this->belongsToMany(ExtrakurikulerCategory::class, 'extrakurikuler_category_staff_access', 'staff_access_id', 'category_id')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get all Worship Character categories that this staff access is assigned to
+     */
+    public function worshipCategories()
+    {
+        return $this->belongsToMany(WorshipCharacterCategory::class, 'worship_category_staff_access', 'staff_access_id', 'category_id')
+            ->withTimestamps();
+    }
 }
