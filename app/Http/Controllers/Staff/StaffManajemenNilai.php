@@ -18,18 +18,29 @@ class StaffManajemenNilai extends Controller
 
     public function index()
     {
-        // Get the current role by wali kelas 
-        $staff_acces = StaffAcces::where('staff_id', session('staff')->id)->first();
-        $kelas = Kelas::where('id', $staff_acces->kelas_id)->first();
+        // Mengambil semua data staff yang memiliki akses kelas
+        $staff_acces_collection = StaffAcces::where('staff_id', session('staff')->id)->get();
 
-        if (!$kelas) {
-            return redirect()->back()->with('error', 'Anda belum memiliki kelas yang dikelola');
-        }
+        $kelas = Kelas::whereIn('id', $staff_acces_collection->pluck('kelas_id'))->first();
 
+        // Filter only records with nilai access and get kelas_id
+        $staff_nilai_access = $staff_acces_collection->whereIn('kelas_id', $kelas->id)->first();
+
+        // Membuat objek dengan absen & nilai akses berdasarkan semua record staff_acces
+        $staff_acces = (object)[
+            'akses_nilai' => $staff_acces_collection->where('kelas_id', $kelas->id)->contains('akses_nilai', 1) ? 1 : 0,
+            'akses_absen' => $staff_acces_collection->where('kelas_id', $kelas->id)->contains('akses_absen', 1) ? 1 : 0,
+            'kelas_id' => $kelas->id
+        ];
+
+
+        // Filter mata pelajaran berdasarkan akses staff
         $mapel_with_nilai = Matapelajaran::with(['nilai' => function ($query) {
             $query->where('nilai_uts', '!=', '0')
                 ->where('nilai_uas', '!=', '0');
-        }])->get();
+        }])
+            ->where('id', $staff_nilai_access->matapelajaran_id)
+            ->get();
 
         // Transform data untuk mendapatkan status nilai per mata pelajaran
         $mapel_with_nilai = $mapel_with_nilai->map(function ($mapel) {
@@ -37,7 +48,8 @@ class StaffManajemenNilai extends Controller
             return $mapel;
         });
 
-        return view('staff.manajemen-nilai.index', compact('mapel_with_nilai', 'kelas'));
+
+        return view('staf.manajemen-nilai.index', compact('mapel_with_nilai', 'kelas', 'staff_acces'));
     }
 
     public function create()
@@ -84,6 +96,25 @@ class StaffManajemenNilai extends Controller
                 ]
             );
 
+            // Get staff access information to pass back
+            $staff_acces_collection = StaffAcces::where('staff_id', session('staff')->id)->get();
+
+            // Filter only records with nilai access and get kelas_id
+            $staff_nilai_access = $staff_acces_collection->where('akses_nilai', 1)->first();
+
+            // If no specific nilai access, fall back to any access
+            $kelas_id = $staff_nilai_access ? $staff_nilai_access->kelas_id : $staff_acces_collection->first()->kelas_id;
+
+            // Create staff_acces object with the same structure as in other methods
+            $staff_acces = (object)[
+                'akses_nilai' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_nilai', 1) ? 1 : 0,
+                'akses_absen' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_absen', 1) ? 1 : 0,
+                'kelas_id' => $kelas_id
+            ];
+
+            // Store staff_acces in session to ensure it's available after redirect
+            session(['temp_staff_acces' => $staff_acces]);
+
             return redirect()->back()->with('success', 'Nilai berhasil disimpan');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
@@ -92,14 +123,44 @@ class StaffManajemenNilai extends Controller
 
     public function show(string $id)
     {
-        // Mengambil data staff yang memiliki akses kelas yang dikelola
-        $staff_acces = StaffAcces::where('staff_id', session('staff')->id)->first();
-        $kelas = Kelas::where('id', $staff_acces->kelas_id)->first();
-        
+        // Mengambil semua data staff yang memiliki akses kelas
+        $staff_acces_collection = StaffAcces::where('staff_id', session('staff')->id)->get();
+
+        // Jika tidak ada akses sama sekali
+        if ($staff_acces_collection->isEmpty()) {
+            return redirect()->back()->with('error', 'Anda belum memiliki akses kelas yang dikelola');
+        }
+
+        // Filter only records with nilai access and get kelas_id
+        $staff_nilai_access = $staff_acces_collection->where('akses_nilai', 1)->first();
+
+        // If no specific nilai access, fall back to any access
+        $kelas_id = $staff_nilai_access ? $staff_nilai_access->kelas_id : $staff_acces_collection->first()->kelas_id;
+        $kelas = Kelas::where('id', $kelas_id)->first();
+
         if (!$kelas) {
             return redirect()->back()->with('error', 'Anda belum memiliki kelas yang dikelola');
         }
-        
+
+        // Membuat objek dengan absen & nilai akses berdasarkan semua record staff_acces
+        $staff_acces = (object)[
+            'akses_nilai' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_nilai', 1) ? 1 : 0,
+            'akses_absen' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_absen', 1) ? 1 : 0,
+            'kelas_id' => $kelas_id
+        ];
+
+        // Dapatkan daftar matapelajaran_id yang dimiliki staff
+        $staff_mapel_ids = $staff_acces_collection
+            ->where('staff_id', session('staff')->id)
+            ->where('akses_nilai', 1)
+            ->pluck('matapelajaran_id')
+            ->toArray();
+
+        // Periksa apakah staff memiliki akses ke mata pelajaran yang diminta
+        if (!in_array($id, $staff_mapel_ids)) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk mata pelajaran ini');
+        }
+
         // Get mata pelajaran dengan relasinya
         $nilai_siswa = Matapelajaran::with(['nilai.detailKelas.siswa', 'kelas.detailKelas.siswa'])
             ->where('id', $id)
@@ -123,7 +184,7 @@ class StaffManajemenNilai extends Controller
             'siswa' => $siswas
         ];
 
-        return view('staff.manajemen-nilai.show', compact('data', 'kelas'));
+        return view('staff.manajemen-nilai.show', compact('data', 'kelas', 'staff_acces'));
     }
 
     public function edit(string $id)

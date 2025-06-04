@@ -16,8 +16,12 @@
     <div class=" flex">
     <!-- Check if we are on a page with a kelas object -->
     @if((isset($kelas) && isset($kelas->id)) || (isset($staff_acces) && (isset($staff_acces->akses_nilai) || isset($staff_acces->akses_absen))))
-
-        <x-alternative-staf-sidebar :kelasId="$kelas->id" :staffAksesNilai="$staff_acces->akses_nilai" :staffAksesAbsen="$staff_acces->akses_absen"/>
+        @php
+            $kelasId = isset($kelas->id) ? $kelas->id : 
+                    (isset($staff_acces->kelas_id) ? $staff_acces->kelas_id : 
+                    (isset($kelas) ? $kelas->id : null));
+        @endphp
+        <x-alternative-staf-sidebar :kelasId="$kelasId" :staffAksesNilai="$staff_acces->akses_nilai ?? 0" :staffAksesAbsen="$staff_acces->akses_absen ?? 0"/>
     @else
         <x-staf-sidebar />
     @endif
