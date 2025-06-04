@@ -77,13 +77,9 @@ class UsersResource extends Resource
                     ->label('Tanggal Lahir')
                     ->required()
                     ->native(false)
-                    ->maxDate(now())
-                    ->disabledDates(
-                        collect(Carbon::parse(now()->subYears(20))->daysUntil(now()))
-                            ->map(fn($date) => $date->format('Y-m-d'))
-                            ->toArray()
-                    )
-                    ->placeholder('Contoh: May 5, 2005'),
+                    ->maxDate(now()->subYears(20))
+                    ->placeholder('Contoh: May 5, 2005')
+                    ->default(now()->subYears(30)->format('Y-m-d')),
                 TextInput::make('tempat_lahir')
                     ->label('Tempat Lahir')
                     ->required()

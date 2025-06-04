@@ -37,9 +37,9 @@ class KelasResource extends Resource
                     ->required()
                     ->placeholder('Contoh: X IPA 1')
                     ->unique(
-                        table: 'kelas', 
-                        column: 'nama_kelas', 
-                        ignoreRecord: true, 
+                        table: 'kelas',
+                        column: 'nama_kelas',
+                        ignoreRecord: true,
                         modifyRuleUsing: function (Unique $rule, callable $get) {
                             return $rule->where('tahun_ajaran', $get('tahun_ajaran'));
                         }
@@ -47,7 +47,12 @@ class KelasResource extends Resource
                 TextInput::make('tahun_ajaran')
                     ->label('Tahun Ajaran')
                     ->required()
-                    ->placeholder('Contoh: 2023/2024'),
+                    ->placeholder('Contoh: 2023/2024')
+                    ->default(function () {
+                        $currentYear = now()->year;
+                        $nextYear = $currentYear + 1;
+                        return $currentYear . '/' . $nextYear;
+                    }),
                 Select::make('walikelas_id')
                     ->searchable()
                     ->searchDebounce(200)
