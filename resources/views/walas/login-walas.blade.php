@@ -24,26 +24,38 @@
                     <img src="/img/loginlogo.png" alt="Logo" class="w-32 h-32 object-cover">
                 </div>
 
-                <form class="mt-6" action="{{ route('loginWalas') }}" method="POST" onsubmit="return validateForm()">
+                <form class="mt-6" action="{{ route('loginWalas') }}" method="POST">
                     @csrf
                     <div>
                         <label class="block text-white">NIP</label>
-                        <input type="text" name="nip" id="nip" placeholder="Masukan NIP"
-                            class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none">
-                        <p id="nip-error" class="hidden text-red-500 text-sm mt-1">NIP tidak boleh kosong</p>
-                      </div>
+                        <input required type="number" name="nip" id="nip" placeholder="Contoh: 198507262015051001"
+                            value="{{ old('nip') }}"
+                            class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none @error('nip') border-red-500 @enderror"
+                            autofocus autocomplete>
+                        @error('nip')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
 
                     <div class="mt-4">
                         <label class="block text-white">Password</label>
-                        <input type="password" name="password" id="password" placeholder="Masukan Password"
-                            minlength="6"
-                            class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none">
-                        <p id="password-error" class="hidden text-red-500 text-sm mt-1">Password tidak boleh kosong</p>
+                        <input required type="password" name="password" id="password" placeholder="Masukan Password"
+                            class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none @error('password') border-red-500 @enderror">
+                        @error('password')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <button type="submit"
                         class="w-full block bg-blue-500 hover:bg-blue-400 focus:bg-blue-400 text-white font-semibold rounded-lg px-4 py-3 mt-6">Masuk</button>
                 </form>
+
+                <!-- Display general login error -->
+                @if ($errors->has('login'))
+                    <div class="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                        {{ $errors->first('login') }}
+                    </div>
+                @endif
 
                 <div class="text-right mt-2">
                     <a href="#" class="text-sm font-semibold text-white hover:text-blue-700 focus:text">Lupa
@@ -53,30 +65,6 @@
         </div>
     </section>
 
-    <script>
-        function validateForm() {
-            const nip = document.getElementById('nip').value.trim();
-            const password = document.getElementById('password').value.trim();
-
-            // Reset error messages
-            document.getElementById('nip-error').classList.add('hidden');
-            document.getElementById('password-error').classList.add('hidden');
-
-            let isValid = true;
-
-            if (nip === "") {
-                document.getElementById('nip-error').classList.remove('hidden');
-                isValid = false;
-            }
-
-            if (password === "") {
-                document.getElementById('password-error').classList.remove('hidden');
-                isValid = false;
-            }
-
-            return isValid;
-        }
-    </script>
 </body>
 
 </html>

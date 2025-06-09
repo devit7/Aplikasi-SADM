@@ -31,7 +31,7 @@
 
                     <div>
                         <label class="block text-white">NISN</label>
-                        <input type="text" name="nisn" id="nisn" placeholder="Contoh: 0098765432"
+                        <input  required type="number" name="nisn" id="nisn" placeholder="Contoh: 0098765432"
                             value="{{ old('nisn') }}"
                             class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none @error('nisn') border-red-500 @enderror"
                             autofocus autocomplete>
@@ -42,7 +42,7 @@
 
                     <div class="mt-4">
                         <label class="block text-white">NIS</label>
-                        <input type="text" name="nis" id="nis" placeholder="Contoh: 13579"
+                        <input required type="number" name="nis" id="nis" placeholder="Contoh: 13579"
                             value="{{ old('nis') }}"
                             class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none @error('nis') border-red-500 @enderror">
                         @error('nis')
