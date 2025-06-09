@@ -20,6 +20,7 @@ class ManajemenAbsen extends Controller
         $kelas = Kelas::where('walikelas_id', $user->id)->first();
         
         if (!$kelas) {
+            dd('Anda belum memiliki kelas yang dikelola');
             return redirect()->back()->with('error', 'Anda belum memiliki kelas yang dikelola');
         }
         
