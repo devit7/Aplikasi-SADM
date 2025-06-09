@@ -8,7 +8,7 @@
             <div class='flex items-center ml-auto space-x-6'>
                 <div class="relative">
                     <button id="dropdownButton" class="flex items-center space-x-2 focus:outline-none">
-                        <img src="{{ asset('img/wallpaper sunday.png') }}" alt="" class="w-[55px] h-[55px]">
+                        <img src="{{ asset('img/teacher.png') }}" alt="" class="w-[55px] h-[55px]">
                         <div class="flex flex-col text-left">
                             <p class="font-semibold">{{ Auth::user()->name }}</p>
                             <p class="text-sm text-gray-600">{{ Auth::user()->role }}</p>
