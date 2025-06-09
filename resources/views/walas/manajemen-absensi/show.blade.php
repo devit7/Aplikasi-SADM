@@ -3,8 +3,13 @@
 @section('content')
 <div class="container mx-auto px-4 py-6">
     <div class="w-24 mx-1 border-collapse border rounded-md bg-red-600 hover:bg-red-500 p-2 text-center mb-2">
-        <a href="{{route('walas.manajemen-absen.index')}}" class="text-white hover:text-gray-100 font-medium text-base">
-            < Kembali</a>
+        <a href="{{route('walas.manajemen-absen.index')}}" class="text-white flex items-center gap-1 justify-center hover:text-gray-100 font-medium text-base">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                </svg>
+
+                Kembali</a>
     </div>
     <h1 class="text-2xl font-bold mb-6 ml-1">Absensi</h1>
 
