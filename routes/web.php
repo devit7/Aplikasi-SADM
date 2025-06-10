@@ -8,9 +8,12 @@ use App\Http\Controllers\Walas\ManajemenNilai;
 use App\Http\Controllers\WalasController;
 use App\Http\Controllers\OrtuController;
 use App\Http\Controllers\StafAuthController;
+use App\Http\Controllers\Staff\StaffAlQuranLearningController;
 use App\Http\Controllers\Staff\StaffController;
+use App\Http\Controllers\Staff\StaffExtrakurikulerController;
 use App\Http\Controllers\Staff\StaffManajemenAbsen;
 use App\Http\Controllers\Staff\StaffManajemenNilai;
+use App\Http\Controllers\Staff\StaffWorshipCharacterController;
 use App\Http\Controllers\WalasAuthController;
 use App\Http\Controllers\WorshipCharacterController;
 use Illuminate\Support\Facades\Route;
@@ -62,9 +65,9 @@ Route::prefix('ortu')->middleware(['ortuAkses'])->group(function () {
 
 
 //STAF AUTH
-Route::get('/staff/login', [StafAuthController::class, 'showLoginForm'])->name('staf.login-staf');
+Route::get('/staff/login', [StafAuthController::class, 'showLoginForm'])->name('staff.login-staf');
 Route::post('/staff/login', [StafAuthController::class, 'loginStaf']);
-Route::post('/staff/logout', [StafAuthController::class, 'logoutStaf'])->name('staf.logout');
+Route::post('/staff/logout', [StafAuthController::class, 'logoutStaf'])->name('staff.logout');
 
 //STAFF MANAJEMEN
 Route::prefix('staff')->middleware(['stafAkses'])->group(function () {
@@ -78,90 +81,43 @@ Route::prefix('staff')->middleware(['stafAkses'])->group(function () {
     Route::post('/manajemen-absen/simpan', [StaffManajemenAbsen::class, 'simpanPresensi'])->name('staff.manajemen-absen.simpan');
     //End - MANAJEMEN ABSEN
 
+    //Start - MANAJEMEN NILAI
     Route::get('/manajemen-nilai', [StaffManajemenNilai::class, 'index'])->name('staff.manajemen-nilai.index');
     Route::get('/manajemen-nilai/{id}', [StaffManajemenNilai::class, 'show'])->name('staff.manajemen-nilai.show');
     Route::post('/manajemen-nilai', [StaffManajemenNilai::class, 'store'])->name('staff.manajemen-nilai.store');
     //End - MANAJEMEN NILAI
 
-    // Start - AL QURAN LEARNING ROUTES
+    // Start - AL QURAN LEARNING ASSESSMENTS
     Route::prefix('al-quran')->group(function () {
-        Route::get('/', [AlQuranLearningController::class, 'index'])->name('al-quran.index');
-        Route::get('/create', [AlQuranLearningController::class, 'createCategory'])->name('al-quran.create');
-        Route::post('/', [AlQuranLearningController::class, 'storeCategory'])->name('al-quran.store');
-        Route::get('/{id}/edit', [AlQuranLearningController::class, 'editCategory'])->name('al-quran.edit');
-        Route::put('/{id}', [AlQuranLearningController::class, 'updateCategory'])->name('al-quran.update');
-        Route::delete('/{id}', [AlQuranLearningController::class, 'destroyCategory'])->name('al-quran.destroy');
-
-        // Subcategory routes
-        Route::get('/{categoryId}/subcategory/create', [AlQuranLearningController::class, 'createSubcategory'])->name('al-quran.subcategory.create');
-        Route::post('/{categoryId}/subcategory', [AlQuranLearningController::class, 'storeSubcategory'])->name('al-quran.subcategory.store');
-        Route::get('/subcategory/{id}/edit', [AlQuranLearningController::class, 'editSubcategory'])->name('al-quran.subcategory.edit');
-        Route::put('/subcategory/{id}', [AlQuranLearningController::class, 'updateSubcategory'])->name('al-quran.subcategory.update');
-        Route::delete('/subcategory/{id}', [AlQuranLearningController::class, 'destroySubcategory'])->name('al-quran.subcategory.destroy');
-
-        // Assessment routes
-        Route::get('/subcategory/{id}/students', [AlQuranLearningController::class, 'showStudents'])->name('al-quran.students');
-        Route::get('/subcategory/{subcategoryId}/student/{siswaId}/assessment', [AlQuranLearningController::class, 'manageAssessment'])->name('al-quran.assessment');
-        Route::post('/subcategory/{subcategoryId}/student/{siswaId}/assessment', [AlQuranLearningController::class, 'storeAssessment'])->name('al-quran.assessment.store');
-
-        // Staff Access routes
-        Route::get('/subcategory/{id}/staff-access', [AlQuranLearningController::class, 'manageStaffAccess'])->name('al-quran.staff-access');
-        Route::post('/subcategory/{id}/staff-access', [AlQuranLearningController::class, 'updateStaffAccess'])->name('al-quran.staff-access.update');
-
-        // Class Assignments routes
-        Route::get('/subcategory/{id}/class-assignments', [AlQuranLearningController::class, 'manageClassAssignments'])->name('al-quran.class-assignments');
-        Route::post('/subcategory/{id}/class-assignments', [AlQuranLearningController::class, 'updateClassAssignments'])->name('al-quran.class-assignments.update');
+        Route::get('/', [StaffAlQuranLearningController::class, 'index'])->name('staff.al-quran.index');
+        Route::get('/create-assessment', [StaffAlQuranLearningController::class, 'createAssessment'])->name('staff.al-quran.create-assessment');
+        Route::post('/store-assessment', [StaffAlQuranLearningController::class, 'storeNewAssessment'])->name('staff.al-quran.store-new-assessment');
+        Route::post('/{subcategoryId}/students/{siswaId}/assessment', [StaffAlQuranLearningController::class, 'updateAssessment'])->name('staff.al-quran.update-assessment');
+        Route::delete('/assessment/{id}', [StaffAlQuranLearningController::class, 'deleteAssessment'])->name('staff.al-quran.delete-assessment');
     });
-    // End - AL QURAN LEARNING ROUTES
+    // End - AL QURAN LEARNING ASSESSMENTS
 
     // Start - EXTRAKURIKULER ROUTES
     Route::prefix('extrakurikuler')->group(function () {
-        Route::get('/', [ExtrakurikulerController::class, 'index'])->name('extrakurikuler.index');
-        Route::get('/create', [ExtrakurikulerController::class, 'createCategory'])->name('extrakurikuler.create');
-        Route::post('/', [ExtrakurikulerController::class, 'storeCategory'])->name('extrakurikuler.store');
-        Route::get('/{id}/edit', [ExtrakurikulerController::class, 'editCategory'])->name('extrakurikuler.edit');
-        Route::put('/{id}', [ExtrakurikulerController::class, 'updateCategory'])->name('extrakurikuler.update');
-        Route::delete('/{id}', [ExtrakurikulerController::class, 'destroyCategory'])->name('extrakurikuler.destroy');
-
-        // Assessment routes
-        Route::get('/{id}/students', [ExtrakurikulerController::class, 'showStudents'])->name('extrakurikuler.students');
-        Route::get('/{categoryId}/student/{siswaId}/assessment', [ExtrakurikulerController::class, 'manageAssessment'])->name('extrakurikuler.assessment');
-        Route::post('/{categoryId}/student/{siswaId}/assessment', [ExtrakurikulerController::class, 'storeAssessment'])->name('extrakurikuler.assessment.store');
-
-        // Staff Access routes
-        Route::get('/{id}/staff-access', [ExtrakurikulerController::class, 'manageStaffAccess'])->name('extrakurikuler.staff-access');
-        Route::post('/{id}/staff-access', [ExtrakurikulerController::class, 'updateStaffAccess'])->name('extrakurikuler.staff-access.update');
-
-        // Class Assignments routes
-        Route::get('/{id}/class-assignments', [ExtrakurikulerController::class, 'manageClassAssignments'])->name('extrakurikuler.class-assignments');
-        Route::post('/{id}/class-assignments', [ExtrakurikulerController::class, 'updateClassAssignments'])->name('extrakurikuler.class-assignments.update');
+        Route::get('/', [StaffExtrakurikulerController::class, 'index'])->name('staff.extrakurikuler.index');
+        Route::get('/create-assessment', [StaffExtrakurikulerController::class, 'createAssessment'])->name('staff.extrakurikuler.create-assessment');
+        Route::post('/store-assessment', [StaffExtrakurikulerController::class, 'storeNewAssessment'])->name('staff.extrakurikuler.store-new-assessment');
+        Route::put('/update-assessment/{id}', [StaffExtrakurikulerController::class, 'updateAssessment'])->name('staff.extrakurikuler.update-assessment');
+        Route::delete('/delete-assessment/{id}', [StaffExtrakurikulerController::class, 'deleteAssessment'])->name('staff.extrakurikuler.delete-assessment');
     });
     // End - EXTRAKURIKULER ROUTES
 
     // Start - WORSHIP CHARACTER ROUTES
     Route::prefix('worship')->group(function () {
-        Route::get('/', [WorshipCharacterController::class, 'index'])->name('worship.index');
-        Route::get('/create', [WorshipCharacterController::class, 'createCategory'])->name('worship.create');
-        Route::post('/', [WorshipCharacterController::class, 'storeCategory'])->name('worship.store');
-        Route::get('/{id}/edit', [WorshipCharacterController::class, 'editCategory'])->name('worship.edit');
-        Route::put('/{id}', [WorshipCharacterController::class, 'updateCategory'])->name('worship.update');
-        Route::delete('/{id}', [WorshipCharacterController::class, 'destroyCategory'])->name('worship.destroy');
-
-        // Assessment routes
-        Route::get('/{id}/students', [WorshipCharacterController::class, 'showStudents'])->name('worship.students');
-        Route::get('/{categoryId}/student/{siswaId}/assessment', [WorshipCharacterController::class, 'manageAssessment'])->name('worship.assessment');
-        Route::post('/{categoryId}/student/{siswaId}/assessment', [WorshipCharacterController::class, 'storeAssessment'])->name('worship.assessment.store');
-
-        // Staff Access routes
-        Route::get('/{id}/staff-access', [WorshipCharacterController::class, 'manageStaffAccess'])->name('worship.staff-access');
-        Route::post('/{id}/staff-access', [WorshipCharacterController::class, 'updateStaffAccess'])->name('worship.staff-access.update');
-
-        // Class Assignments routes
-        Route::get('/{id}/class-assignments', [WorshipCharacterController::class, 'manageClassAssignments'])->name('worship.class-assignments');
-        Route::post('/{id}/class-assignments', [WorshipCharacterController::class, 'updateClassAssignments'])->name('worship.class-assignments.update');
+        Route::get('/', [StaffWorshipCharacterController::class, 'index'])->name('staff.worship.index');
+        Route::get('/create-assessment', [StaffWorshipCharacterController::class, 'createAssessment'])->name('staff.worship.create-assessment');
+        Route::post('/store-assessment', [StaffWorshipCharacterController::class, 'storeNewAssessment'])->name('staff.worship.store-new-assessment');
+        Route::put('/update-assessment/{id}', [StaffWorshipCharacterController::class, 'updateAssessment'])->name('staff.worship.update-assessment');
+        Route::delete('/delete-assessment/{id}', [StaffWorshipCharacterController::class, 'deleteAssessment'])->name('staff.worship.delete-assessment');
     });
     // End - WORSHIP CHARACTER ROUTES
 });
+
 
 Route::fallback(function () {
     return view('<h1>404 Page Not Found</h1>');

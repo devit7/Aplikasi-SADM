@@ -20,7 +20,7 @@ class AlQuranLearningCategoryResource extends Resource
 {
    protected static ?string $model = AlQuranLearningCategory::class;
    protected static ?string $navigationGroup = 'Al-Quran Course';
-   protected static ?string $navigationLabel = 'Al-Quran Learning';
+   protected static ?string $navigationLabel = 'Al-Quran Categories';
    protected static ?string $navigationIcon = 'heroicon-o-book-open';
    protected static ?int $navigationSort = 1;
 
@@ -32,18 +32,6 @@ class AlQuranLearningCategoryResource extends Resource
                ->label('Nama Kategori')
                ->required()
                ->maxLength(255),
-            Textarea::make('deskripsi')
-               ->label('Deskripsi')
-               ->maxLength(65535)
-               ->columnSpanFull(),
-            TagsInput::make('predicates')
-               ->label('Predikat (A, B, C, D, E)')
-               ->placeholder('Tambahkan predikat')
-               ->helperText('Tekan Enter untuk menambahkan predikat baru'),
-            TagsInput::make('explanations')
-               ->label('Penjelasan (Excellent, Good, Enough, dll)')
-               ->placeholder('Tambahkan penjelasan')
-               ->helperText('Tekan Enter untuk menambahkan penjelasan baru'),
          ]);
    }
 
@@ -59,11 +47,7 @@ class AlQuranLearningCategoryResource extends Resource
                ->label('Deskripsi')
                ->limit(50)
                ->searchable(),
-            TextColumn::make('predicates')
-               ->label('Predikat')
-               ->formatStateUsing(fn(string $state): string => implode(', ', json_decode($state, true) ?? [])),
             TextColumn::make('created_at')
-               ->label('Dibuat')
                ->dateTime('d M Y')
                ->sortable(),
          ])

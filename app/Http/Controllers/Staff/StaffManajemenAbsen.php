@@ -35,10 +35,15 @@ class StaffManajemenAbsen extends Controller
         $staff_acces = (object)[
             'akses_nilai' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_nilai', 1) ? 1 : 0,
             'akses_absen' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_absen', 1) ? 1 : 0,
-            'kelas_id' => $kelas_id
+            'kelas_id' => $kelas_id,
+            'akses_alquran_learning' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_alquran_learning', 1) ? 1 : 0,
+
+            'akses_extrakurikuler' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_extrakurikuler', 1) ? 1 : 0,
+
+            'akses_worship_character' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_worship_character', 1) ? 1 : 0
         ];
 
-        $presensi = Presensi::where('kelas_id', $kelas->id)
+        $presensi = Presensi::where('kelas_id', $kelas_id)
             ->orderBy('tanggal', 'desc')
             ->paginate(10);
 
@@ -74,7 +79,12 @@ class StaffManajemenAbsen extends Controller
         $staff_acces = (object)[
             'akses_nilai' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_nilai', 1) ? 1 : 0,
             'akses_absen' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_absen', 1) ? 1 : 0,
-            'kelas_id' => $kelas_id
+            'kelas_id' => $kelas_id,
+            'akses_alquran_learning' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_alquran_learning', 1) ? 1 : 0,
+
+            'akses_extrakurikuler' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_extrakurikuler', 1) ? 1 : 0,
+
+            'akses_worship_character' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_worship_character', 1) ? 1 : 0
         ];
 
         // Check if presensi for this date already exists
@@ -133,7 +143,12 @@ class StaffManajemenAbsen extends Controller
         $staff_acces = (object)[
             'akses_nilai' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_nilai', 1) ? 1 : 0,
             'akses_absen' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_absen', 1) ? 1 : 0,
-            'kelas_id' => $kelas_id
+            'kelas_id' => $kelas_id,
+            'akses_alquran_learning' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_alquran_learning', 1) ? 1 : 0,
+
+            'akses_extrakurikuler' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_extrakurikuler', 1) ? 1 : 0,
+
+            'akses_worship_character' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_worship_character', 1) ? 1 : 0
         ];
 
         // Get presensi for this date
@@ -206,7 +221,10 @@ class StaffManajemenAbsen extends Controller
             $staff_acces = (object)[
                 'akses_nilai' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_nilai', 1) ? 1 : 0,
                 'akses_absen' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_absen', 1) ? 1 : 0,
-                'kelas_id' => $kelas_id
+                'kelas_id' => $kelas_id,
+                'akses_alquran_learning' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_alquran_learning', 1) ? 1 : 0,
+                'akses_extrakurikuler' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_extrakurikuler', 1) ? 1 : 0,
+                'akses_worship_character' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_worship_character', 1) ? 1 : 0
             ];
 
             // Store staff_acces in session to ensure it's available after redirect

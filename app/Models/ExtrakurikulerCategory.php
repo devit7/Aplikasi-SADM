@@ -12,12 +12,7 @@ class ExtrakurikulerCategory extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['nama', 'deskripsi', 'predicates', 'explanations'];
-
-    protected $casts = [
-        'predicates' => 'array',
-        'explanations' => 'array',
-    ];
+    protected $fillable = ['nama'];
 
     /**
      * Get all assessments for this category

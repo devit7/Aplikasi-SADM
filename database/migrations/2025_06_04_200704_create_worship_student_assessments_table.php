@@ -18,9 +18,7 @@ return new class extends Migration
                 $table->foreignId('siswa_id')->constrained('siswa')->cascadeOnDelete();
                 $table->string('predicate')->comment('Such as A, B, C, D, E');
                 $table->string('explanation')->nullable()->comment('Such as Excellent, Good, Enough, etc.');
-                $table->text('notes')->nullable();
-                $table->foreignId('created_by')->nullable()->constrained('users');
-                $table->foreignId('updated_by')->nullable()->constrained('users');
+                $table->string('created_by');
                 $table->timestamps();
 
                 $table->unique(['category_id', 'siswa_id'], 'worship_assessment_unique');

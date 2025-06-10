@@ -11,7 +11,7 @@ class AlQuranLearningCategory extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['nama', 'deskripsi'];
+    protected $fillable = ['nama'];
 
     /**
      * Get all subcategories for this category

@@ -46,21 +46,9 @@ class WorshipStudentAssessmentResource extends Resource
                ->required()
                ->maxLength(5),
             TextInput::make('explanation')
-               ->label('Penjelasan')
+               ->label('Explanation')
                ->placeholder('Misalnya: Excellent, Good, Enough, dll')
                ->maxLength(255),
-            Textarea::make('notes')
-               ->label('Catatan')
-               ->placeholder('Tambahkan catatan tambahan jika perlu')
-               ->maxLength(65535),
-            Select::make('created_by')
-               ->label('Dibuat oleh')
-               ->options(User::all()->pluck('name', 'id'))
-               ->default(Auth::id()),
-            Select::make('updated_by')
-               ->label('Diperbarui oleh')
-               ->options(User::all()->pluck('name', 'id'))
-               ->default(Auth::id()),
          ]);
    }
 
@@ -80,14 +68,9 @@ class WorshipStudentAssessmentResource extends Resource
                ->label('Predikat')
                ->searchable(),
             TextColumn::make('explanation')
-               ->label('Penjelasan')
+               ->label('Explanation')
                ->searchable(),
-            TextColumn::make('user_creator.name')
-               ->label('Dibuat oleh')
-               ->searchable()
-               ->sortable(),
             TextColumn::make('created_at')
-               ->label('Tanggal')
                ->dateTime('d M Y')
                ->sortable(),
          ])

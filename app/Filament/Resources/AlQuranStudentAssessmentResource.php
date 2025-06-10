@@ -32,35 +32,47 @@ class AlQuranStudentAssessmentResource extends Resource
       return $form
          ->schema([
             Select::make('subcategory_id')
-               ->label('Subkategori')
-               ->options(AlQuranLearningSubcategory::all()->pluck('nama', 'id'))
+               ->label('Sub-kategori')
+               ->options(function() {
+                  // Memastikan bahwa 'sub_nama' adalah field yang benar
+                  // dan juga memastikan tidak ada nilai null yang diteruskan
+                  return AlQuranLearningSubcategory::all()->mapWithKeys(function ($subcategory) {
+                     // Menggunakan sub_nama dan memastikan nilainya tidak null
+                     $nama = $subcategory->sub_nama ?? '(Nama tidak tersedia)';
+                     return [$subcategory->id => $nama];
+                  });
+               })
                ->searchable()
                ->required(),
             Select::make('siswa_id')
                ->label('Siswa')
-               ->options(Siswa::all()->pluck('nama', 'id'))
+               ->options(function() {
+                  // Memastikan bahwa 'nama' adalah field yang benar
+                  return Siswa::all()->mapWithKeys(function ($siswa) {
+                     $nama = $siswa->nama ?? '(Nama tidak tersedia)';
+                     return [$siswa->id => $nama];
+                  });
+               })
                ->searchable()
                ->required(),
-            TextInput::make('predicate')
-               ->label('Predikat (A, B, C, D, E)')
-               ->required()
-               ->maxLength(5),
+            Select::make('predicate')
+               ->label('Predikat')
+               ->options([
+                  'A' => 'A (Sangat Baik)',
+                  'B' => 'B (Baik)',
+                  'C' => 'C (Cukup)',
+                  'D' => 'D (Kurang)',
+                  'E' => 'E (Sangat Kurang)',
+               ])
+               ->required(),
             TextInput::make('explanation')
-               ->label('Penjelasan')
+               ->label('Explanation')
                ->placeholder('Misalnya: Excellent, Good, Enough, dll')
                ->maxLength(255),
             Textarea::make('notes')
-               ->label('Catatan')
-               ->placeholder('Tambahkan catatan tambahan jika perlu')
-               ->maxLength(65535),
-            Select::make('created_by')
-               ->label('Dibuat oleh')
-               ->options(User::all()->pluck('name', 'id'))
-               ->default(Auth::id()),
-            Select::make('updated_by')
-               ->label('Diperbarui oleh')
-               ->options(User::all()->pluck('name', 'id'))
-               ->default(Auth::id()),
+               ->label('Internal Notes')
+               ->placeholder('Catatan internal (tidak ditampilkan ke siswa/orangtua)')
+               ->maxLength(500),
          ]);
    }
 
@@ -68,7 +80,7 @@ class AlQuranStudentAssessmentResource extends Resource
    {
       return $table
          ->columns([
-            TextColumn::make('subcategory.nama')
+            TextColumn::make('subcategory.sub_nama') // Pastikan menggunakan sub_nama bukan nama
                ->label('Subkategori')
                ->searchable()
                ->sortable(),
@@ -80,14 +92,9 @@ class AlQuranStudentAssessmentResource extends Resource
                ->label('Predikat')
                ->searchable(),
             TextColumn::make('explanation')
-               ->label('Penjelasan')
+               ->label('Explanation')
                ->searchable(),
-            TextColumn::make('user_creator.name')
-               ->label('Dibuat oleh')
-               ->searchable()
-               ->sortable(),
             TextColumn::make('created_at')
-               ->label('Tanggal')
                ->dateTime('d M Y')
                ->sortable(),
          ])
