@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('al_quran_learning_categories', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->text('deskripsi')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -30,7 +30,10 @@ class StaffManajemenNilai extends Controller
         $staff_acces = (object)[
             'akses_nilai' => $staff_acces_collection->where('kelas_id', $kelas->id)->contains('akses_nilai', 1) ? 1 : 0,
             'akses_absen' => $staff_acces_collection->where('kelas_id', $kelas->id)->contains('akses_absen', 1) ? 1 : 0,
-            'kelas_id' => $kelas->id
+            'kelas_id' => $kelas->id,
+            'akses_alquran_learning' => $staff_acces_collection->where('kelas_id', $kelas->id)->contains('akses_alquran_learning', 1) ? 1 : 0,
+            'akses_extrakurikuler' => $staff_acces_collection->where('kelas_id', $kelas->id)->contains('akses_extrakurikuler', 1) ? 1 : 0,
+            'akses_worship_character' => $staff_acces_collection->where('kelas_id', $kelas->id)->contains('akses_worship_character', 1) ? 1 : 0
         ];
 
 
@@ -109,7 +112,10 @@ class StaffManajemenNilai extends Controller
             $staff_acces = (object)[
                 'akses_nilai' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_nilai', 1) ? 1 : 0,
                 'akses_absen' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_absen', 1) ? 1 : 0,
-                'kelas_id' => $kelas_id
+                'kelas_id' => $kelas_id,
+                'akses_alquran_learning' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_alquran_learning', 1) ? 1 : 0,
+                'akses_extrakurikuler' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_extrakurikuler', 1) ? 1 : 0,
+                'akses_worship_character' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_worship_character', 1) ? 1 : 0
             ];
 
             // Store staff_acces in session to ensure it's available after redirect
@@ -146,7 +152,10 @@ class StaffManajemenNilai extends Controller
         $staff_acces = (object)[
             'akses_nilai' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_nilai', 1) ? 1 : 0,
             'akses_absen' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_absen', 1) ? 1 : 0,
-            'kelas_id' => $kelas_id
+            'kelas_id' => $kelas_id,
+            'akses_alquran_learning' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_alquran_learning', 1) ? 1 : 0,
+            'akses_extrakurikuler' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_extrakurikuler', 1) ? 1 : 0,
+            'akses_worship_character' => $staff_acces_collection->where('kelas_id', $kelas_id)->contains('akses_worship_character', 1) ? 1 : 0
         ];
 
         // Dapatkan daftar matapelajaran_id yang dimiliki staff
@@ -184,7 +193,7 @@ class StaffManajemenNilai extends Controller
             'siswa' => $siswas
         ];
 
-        return view('staff.manajemen-nilai.show', compact('data', 'kelas', 'staff_acces'));
+        return view('staf.manajemen-nilai.show', compact('data', 'kelas', 'staff_acces'));
     }
 
     public function edit(string $id)

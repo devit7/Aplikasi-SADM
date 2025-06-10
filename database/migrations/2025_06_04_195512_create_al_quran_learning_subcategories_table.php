@@ -14,10 +14,7 @@ return new class extends Migration
         Schema::create('al_quran_learning_subcategories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained('al_quran_learning_categories')->cascadeOnDelete();
-            $table->string('nama');
-            $table->json('predicates')->nullable()->comment('JSON array of available predicates (A-E)');
-            $table->json('explanations')->nullable()->comment('JSON array of explanations (Excellent, Good, etc.)');
-            $table->text('deskripsi')->nullable();
+            $table->string('sub_nama');
             $table->timestamps();
             $table->softDeletes();
         });

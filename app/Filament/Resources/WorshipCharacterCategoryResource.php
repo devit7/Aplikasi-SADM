@@ -32,18 +32,6 @@ class WorshipCharacterCategoryResource extends Resource
                ->label('Nama Kategori')
                ->required()
                ->maxLength(255),
-            Textarea::make('deskripsi')
-               ->label('Deskripsi')
-               ->maxLength(65535)
-               ->columnSpanFull(),
-            TagsInput::make('predicates')
-               ->label('Predikat (A, B, C, D, E)')
-               ->placeholder('Tambahkan predikat')
-               ->helperText('Tekan Enter untuk menambahkan predikat baru'),
-            TagsInput::make('explanations')
-               ->label('Penjelasan (Excellent, Good, Enough, dll)')
-               ->placeholder('Tambahkan penjelasan')
-               ->helperText('Tekan Enter untuk menambahkan penjelasan baru'),
          ]);
    }
 
@@ -55,15 +43,7 @@ class WorshipCharacterCategoryResource extends Resource
                ->label('Nama Kategori')
                ->searchable()
                ->sortable(),
-            TextColumn::make('deskripsi')
-               ->label('Deskripsi')
-               ->limit(50)
-               ->searchable(),
-            TextColumn::make('predicates')
-               ->label('Predikat')
-               ->formatStateUsing(fn(string $state): string => implode(', ', json_decode($state, true) ?? [])),
             TextColumn::make('created_at')
-               ->label('Dibuat')
                ->dateTime('d M Y')
                ->sortable(),
          ])

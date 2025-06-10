@@ -15,7 +15,6 @@ class WorshipStudentAssessment extends Model
         'siswa_id',
         'predicate',
         'explanation',
-        'notes',
         'created_by',
         'updated_by'
     ];

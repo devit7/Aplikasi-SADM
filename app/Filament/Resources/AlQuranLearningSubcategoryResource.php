@@ -21,7 +21,7 @@ class AlQuranLearningSubcategoryResource extends Resource
 {
    protected static ?string $model = AlQuranLearningSubcategory::class;
    protected static ?string $navigationGroup = 'Al-Quran Course';
-   protected static ?string $navigationLabel = 'Al-Quran Subcategories';
+   protected static ?string $navigationLabel = 'Al-Quran Sub-Categories';
    protected static ?string $navigationIcon = 'heroicon-o-document-text';
    protected static ?int $navigationSort = 2;
 
@@ -34,14 +34,10 @@ class AlQuranLearningSubcategoryResource extends Resource
                ->options(AlQuranLearningCategory::all()->pluck('nama', 'id'))
                ->required()
                ->searchable(),
-            TextInput::make('nama')
+            TextInput::make('sub_nama')
                ->label('Nama Subkategori')
                ->required()
                ->maxLength(255),
-            Textarea::make('deskripsi')
-               ->label('Deskripsi')
-               ->maxLength(65535)
-               ->columnSpanFull(),
          ]);
    }
 
@@ -53,16 +49,11 @@ class AlQuranLearningSubcategoryResource extends Resource
                ->label('Kategori')
                ->searchable()
                ->sortable(),
-            TextColumn::make('nama')
+            TextColumn::make('sub_nama')
                ->label('Nama Subkategori')
                ->searchable()
                ->sortable(),
-            TextColumn::make('deskripsi')
-               ->label('Deskripsi')
-               ->limit(50)
-               ->searchable(),
             TextColumn::make('created_at')
-               ->label('Dibuat')
                ->dateTime('d M Y')
                ->sortable(),
          ])

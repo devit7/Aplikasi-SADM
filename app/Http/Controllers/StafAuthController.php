@@ -45,7 +45,7 @@ class StafAuthController extends Controller
     {
         Auth::logout();
         Session::forget('staff'); // Hapus sesi 'staff'
-        return redirect()->route('staf.login-staf');
+        return redirect()->route('staff.login-staf');
     }
 
     public function showLoginForm()
