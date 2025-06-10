@@ -1,4 +1,4 @@
-<div>
+<div class=" print:hidden">
     <nav class="navbar navbar-expand-lg navbar-light bg-[#ffffff] shadow-sm p-1 px-2">
         <div class="flex justify-between align-middle w-full">
             <a href="/ortu">

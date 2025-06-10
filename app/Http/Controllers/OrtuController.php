@@ -29,17 +29,17 @@ class OrtuController extends Controller
         $siswa = session('siswa');
 
         if (!$siswa) {
-            $siswa = \App\Models\Siswa::first();
+            $siswa = Siswa::first();
             session(['siswa' => $siswa]);
         }
         $ortu = $siswa;
 
-        $detailKelasList = \App\Models\DetailKelas::where('siswa_id', $siswa->id)->with('kelas')->get();
+        $detailKelasList = DetailKelas::where('siswa_id', $siswa->id)->with('kelas')->get();
 
         $histories = [];
         foreach ($detailKelasList as $detailKelas) {
             $kelas = $detailKelas->kelas;
-            $totalSiswa = \App\Models\DetailKelas::where('kelas_id', $kelas->id)->count();
+            $totalSiswa = DetailKelas::where('kelas_id', $kelas->id)->count();
 
             $totalPertemuan = $detailKelas->absen()->count();
             $hadir = $detailKelas->absen()->where('status', 'hadir')->count();
@@ -55,7 +55,7 @@ class OrtuController extends Controller
         }
 
         // Rata-rata nilai
-        $nilaiList = \App\Models\Nilai::whereHas('detailKelas', function ($q) use ($siswa) {
+        $nilaiList = Nilai::whereHas('detailKelas', function ($q) use ($siswa) {
             $q->where('siswa_id', $siswa->id);
         })->get();
 
