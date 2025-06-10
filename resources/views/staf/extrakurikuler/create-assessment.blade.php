@@ -2,11 +2,6 @@
 
 @section('content')
 <div class="w-full bg-gray-100 p-6">
-    <div class="w-24 mx-1 border-collapse border rounded-md bg-red-600 hover:bg-red-500 p-2 text-center mb-2">
-        <a href="{{ route('staff.extrakurikuler.index') }}" class="text-white hover:text-gray-100 font-medium text-base">
-            < Kembali</a>
-    </div>
-
     <h1 class="text-2xl font-bold mb-4">Extrakurikuler - Assessment</h1>
 
     <div class="bg-white p-6 shadow-md rounded-lg">

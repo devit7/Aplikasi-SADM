@@ -150,27 +150,6 @@ class StudentCourseEnrollmentResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('al_quran_courses_count')
-                    ->label('Al-Quran Courses')
-                    ->counts('alQuranCourses')
-                    ->sortable()
-                    ->badge()
-                    ->color('success'),
-
-                TextColumn::make('extrakurikuler_courses_count')
-                    ->label('Extrakurikuler Courses')
-                    ->counts('extrakurikulerCourses')
-                    ->sortable()
-                    ->badge()
-                    ->color('info'),
-
-                TextColumn::make('worship_courses_count')
-                    ->label('Worship Courses')
-                    ->counts('worshipCourses')
-                    ->sortable()
-                    ->badge()
-                    ->color('warning'),
-
                 TextColumn::make('alQuranCourses')
                     ->label('Al-Quran Courses')
                     ->formatStateUsing(function ($record) {
@@ -186,6 +165,12 @@ class StudentCourseEnrollmentResource extends Resource
                     })
                     ->wrap()
                     ->searchable(),
+                TextColumn::make('al_quran_courses_count')
+                    ->label('Jumlah Al-Quran Courses')
+                    ->counts('alQuranCourses')
+                    ->sortable()
+                    ->badge()
+                    ->color('success'),
 
                 TextColumn::make('extrakurikulerCourses')
                     ->label('Extrakurikuler Courses')
@@ -202,9 +187,15 @@ class StudentCourseEnrollmentResource extends Resource
                     })
                     ->wrap()
                     ->searchable(),
+                TextColumn::make('extrakurikuler_courses_count')
+                    ->label('Jumlah Extrakurikuler Courses')
+                    ->counts('extrakurikulerCourses')
+                    ->sortable()
+                    ->badge()
+                    ->color('info'),
 
                 TextColumn::make('worshipCourses')
-                    ->label('Worship Courses')
+                    ->label('Jumlah Worship Courses')
                     ->formatStateUsing(function ($record) {
                         $courses = $record->worshipCourses;
                         if ($courses->isEmpty()) {
@@ -218,6 +209,12 @@ class StudentCourseEnrollmentResource extends Resource
                     })
                     ->wrap()
                     ->searchable(),
+                TextColumn::make('worship_courses_count')
+                    ->label('Worship Courses')
+                    ->counts('worshipCourses')
+                    ->sortable()
+                    ->badge()
+                    ->color('warning'),
             ])
             ->filters([
                 Tables\Filters\Filter::make('course_tahun_ajaran')
