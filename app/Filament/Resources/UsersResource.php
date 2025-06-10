@@ -78,8 +78,7 @@ class UsersResource extends Resource
                     ->required()
                     ->native(false)
                     ->maxDate(now()->subYears(20))
-                    ->placeholder('Contoh: May 5, 2005')
-                    ->default(now()->subYears(30)->format('Y-m-d')),
+                    ->placeholder('Contoh: May 5, 2005'),
                 TextInput::make('tempat_lahir')
                     ->label('Tempat Lahir')
                     ->required()
