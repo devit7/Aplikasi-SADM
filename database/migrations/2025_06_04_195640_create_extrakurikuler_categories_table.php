@@ -15,9 +15,6 @@ return new class extends Migration
             Schema::create('extrakurikuler_categories', function (Blueprint $table) {
                 $table->id();
                 $table->string('nama');
-                $table->text('deskripsi')->nullable();
-                $table->json('predicates')->nullable()->comment('JSON array of available predicates (A-E)');
-                $table->json('explanations')->nullable()->comment('JSON array of explanations (Excellent, Good, etc.)');
                 $table->timestamps();
                 $table->softDeletes();
             });

@@ -11,13 +11,13 @@ class AlQuranStudentAssessment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'subcategory_id',
         'siswa_id',
+        'subcategory_id',
         'predicate',
         'explanation',
-        'notes',
+        'updated_at',
         'created_by',
-        'updated_by'
+        'staff_id',
     ];
 
     /**
@@ -45,10 +45,10 @@ class AlQuranStudentAssessment extends Model
     }
 
     /**
-     * Get the user who last updated this assessment
+     * Get the staff who assessed this student
      */
-    public function updater(): BelongsTo
+    public function staff(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'updated_by');
+        return $this->belongsTo(Staff::class, 'staff_id');
     }
 }

@@ -9,6 +9,19 @@ class StaffAcces extends Model
     protected $table = 'staff_access';
     protected $guarded = ['id'];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'akses_nilai' => 'boolean',
+        'akses_absen' => 'boolean',
+        'akses_alquran_learning' => 'boolean',
+        'akses_extrakurikuler' => 'boolean',
+        'akses_worship_character' => 'boolean',
+    ];
+
     public function staff()
     {
         return $this->belongsTo(Staff::class, 'staff_id');

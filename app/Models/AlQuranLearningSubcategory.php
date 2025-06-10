@@ -13,12 +13,7 @@ class AlQuranLearningSubcategory extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['category_id', 'nama', 'predicates', 'explanations', 'deskripsi'];
-
-    protected $casts = [
-        'predicates' => 'array',
-        'explanations' => 'array',
-    ];
+    protected $fillable = ['category_id', 'sub_nama'];
 
     /**
      * Get the category that owns this subcategory

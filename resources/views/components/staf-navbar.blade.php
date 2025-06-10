@@ -25,7 +25,7 @@
                     <!-- Dropdown Menu -->
                     <div id="dropdownMenu"
                         class="hidden absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg">
-                        <form method="POST" action="{{ route('staf.logout') }}">
+                        <form method="POST" action="{{ route('staff.logout') }}">
                             @csrf
                             <button type="submit" class="flex items-center w-full px-4 py-3 text-gray-700 rounded-lg hover:bg-red-100 hover:text-red-600 transition-colors duration-200">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 mr-3">
