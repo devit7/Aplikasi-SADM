@@ -13,7 +13,7 @@ class AlQuranLearningSubcategory extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['category_id', 'sub_nama'];
+    protected $fillable = ['category_id', 'sub_nama', 'tahun_ajaran'];
 
     /**
      * Get the category that owns this subcategory
@@ -46,6 +46,13 @@ class AlQuranLearningSubcategory extends Model
     public function kelas(): BelongsToMany
     {
         return $this->belongsToMany(Kelas::class, 'al_quran_subcategory_kelas', 'subcategory_id', 'kelas_id')
+            ->withTimestamps();
+    }
+
+    public function enrolledStudents()
+    {
+        return $this->belongsToMany(Siswa::class, 'siswa_alquran_courses', 'subcategory_id', 'siswa_id')
+            ->withPivot('assigned_by')
             ->withTimestamps();
     }
 }

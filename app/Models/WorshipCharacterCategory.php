@@ -12,7 +12,7 @@ class WorshipCharacterCategory extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['nama'];
+    protected $fillable = ['nama', 'tahun_ajaran'];
 
     /**
      * Get all assessments for this category
@@ -37,6 +37,13 @@ class WorshipCharacterCategory extends Model
     public function kelas(): BelongsToMany
     {
         return $this->belongsToMany(Kelas::class, 'worship_category_kelas', 'category_id', 'kelas_id')
+            ->withTimestamps();
+    }
+
+    public function enrolledStudents()
+    {
+        return $this->belongsToMany(Siswa::class, 'siswa_worship_courses', 'category_id', 'siswa_id')
+            ->withPivot('assigned_by')
             ->withTimestamps();
     }
 }
