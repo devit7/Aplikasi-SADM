@@ -72,20 +72,13 @@ class SiswaResource extends Resource
                             ->label('Tanggal Lahir')
                             ->required()
                             ->native(false)
-                            ->maxDate(now())
-                            ->disabledDates(
-                                collect(Carbon::parse(now()->subYears(6))->daysUntil(now()))
-                                    ->map(fn($date) => $date->format('Y-m-d'))
-                                    ->toArray()
-                            )
-                            ->placeholder('Masukkan Tanggal Lahir')
-                            ->default(now()->subYears(16)->format('Y-m-d')),
+                            ->maxDate(now()->subYears(6))
+                            ->placeholder('Masukkan Tanggal Lahir'),
                         DatePicker::make('tanggal_masuk')
                             ->label('Tanggal Masuk')
                             ->required()
                             ->native(false)
-                            ->placeholder('Masukkan Tanggal Masuk')
-                            ->default(now()->format('Y-m-d')),
+                            ->placeholder('Masukkan Tanggal Masuk'),
                         Textarea::make('alamat')
                             ->label('Alamat')
                             ->required()
