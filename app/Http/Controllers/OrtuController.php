@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Siswa;
 use Illuminate\Support\Facades\Session;
 use App\Models\Nilai;
-use App\Models\MataPelajaran;
+use App\Models\Matapelajaran;
 use App\Models\Absen;
 use App\Models\AlQuranStudentAssessment;
 use App\Models\DetailKelas;
