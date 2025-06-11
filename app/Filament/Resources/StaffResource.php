@@ -36,7 +36,7 @@ class StaffResource extends Resource
                 TextInput::make('nip')
                     ->label('NIP')
                     ->required()
-                    ->minLength(18)
+                    ->length(18)
                     ->unique(ignoreRecord: true)
                     ->placeholder('Contoh: 198601232010011007'),
                 TextInput::make('email')

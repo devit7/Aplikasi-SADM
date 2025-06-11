@@ -22,7 +22,7 @@ class MatapelajaranResource extends Resource
 
     protected static ?string $navigationGroup = 'Management';
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
-    protected static ? string $navigationLabel = 'Matapelajaran';
+    protected static ?string $navigationLabel = 'Matapelajaran';
     protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
@@ -58,6 +58,8 @@ class MatapelajaranResource extends Resource
                     ->label('KKM')
                     ->required()
                     ->numeric()
+                    ->minValue(0)
+                    ->maxValue(100)
                     ->placeholder('Contoh: 75'),
             ]);
     }

@@ -41,7 +41,7 @@ class UsersResource extends Resource
                     ->label('NIP')
                     ->numeric()
                     ->required()
-                    ->minLength(18)
+                    ->length(18)
                     ->unique(ignoreRecord: true)
                     ->placeholder('Contoh: 198507262015051001'),
                 TextInput::make('name')
