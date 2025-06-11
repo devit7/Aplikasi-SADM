@@ -48,6 +48,7 @@ Route::prefix('walas')->middleware(['WebAkses:walikelas'])->group(function () {
     //End - MANAJEMEN ABSEN
 });
 
+Route::get('/test', [OrtuController::class, ''])->name('test');
 Route::get('/ortu/login', [OrtuAuthController::class, 'showLoginForm'])->name('ortu.login-ortu');
 Route::post('/ortu/login', [OrtuAuthController::class, 'loginOrtu']);
 Route::post('/ortu/logout', [OrtuAuthController::class, 'logoutOrtu'])->name('ortu.logout');

@@ -6,6 +6,10 @@
             Print Report Card
         </button>
     </div>
+    @foreach ($nilaiBySemester as $semester => $nilai)
+    @php
+        // dd($nilai);
+    @endphp
     <!-- Main container for the report card -->
     <div class="report-card">
         <!-- Header Section -->
@@ -40,15 +44,19 @@
         <section class="mt-6">
             <div class="grid grid-cols-[1fr_3fr] gap-y-2 max-w-md">
                 <div class="text-sm">Name</div>
-                <div>:  </div>
+                <div>: {{ $siswa->nama }}</div>
                 <div class="text-sm">NISN/NIS</div>
-                <div>:  </div>
+                <div>: {{ $siswa->nisn }}</div>
                 <div class="text-sm">Grade/Fase</div>
-                <div>:  </div>
+                <div>: {{ $detailKelas->kelas->nama_kelas }}</div>
                 <div class="text-sm">Semester</div>
-                <div>:  </div>
+                <div>:
+                    {{
+                        $semester == 'ganjil' ? 'I' : ($semester == 'genap' ? 'II' : '-')
+                    }}
+                </div>
                 <div class="text-sm">Academic Year</div>
-                <div>:  </div>
+                <div>: {{ $tahunAjaran }}</div>
             </div>
         </section>
 
@@ -67,61 +75,97 @@
                     <tr>
                         <td class="text-center">1</td>
                         <td>Islamic Education</td>
-                        <td class="text-center"></td>
+                        <td class="text-center">{{ $nilai['Islamic Education'][0]['nilai'] ?? '-' }}</td>
                         <td class="text-sm">Show good understanding in reading, memorizing, understanding verses of Ad Dhuha, Al Lail, As Syam, Asmaul Husna, Akhlakul karimah, Jum'at praying, tahajud praying, and other sunnah praying and also the history of Prophet Muhammad also able to apply in life.</td>
                     </tr>
                     <tr>
                         <td class="text-center">2</td>
                         <td>PPKn/ Civic</td>
-                        <td class="text-center"></td>
+                        <td class="text-center">{{ $nilai['PPKn/ Civic'][0]['nilai'] ?? '-' }}</td>
                         <td class="text-sm">Has good understanding in village and Sub-District Government, need assistance in "Bhinneka Tunggal Ika".</td>
                     </tr>
                     <tr>
                         <td class="text-center">3</td>
                         <td>Indonesian</td>
-                        <td class="text-center"></td>
+                        <td class="text-center">{{ $nilai['Indonesian'][0]['nilai'] ?? '-' }}</td>
                         <td class="text-sm">Has good understanding in "informasi teks" and "Unsur Intrisik Cerita".</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">4</td>
+                        <td>Math</td>
+                        <td class="text-center">{{ $nilai['Math'][0]['nilai'] ?? '-' }}</td>
+                        <td class="text-sm">Has good understanding in Area and Perimeter, need assistance in collecting and recording data.</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">5</td>
+                        <td>Science and Social</td>
+                        <td class="text-center">{{ $nilai['Science and Social'][0]['nilai'] ?? '-' }}</td>
+                        <td class="text-sm">Has good understanding in Area and Perimeter, need assistance in collecting and recording data.</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">6</td>
+                        <td>Science</td>
+                        <td class="text-center">{{ $nilai['Science'][0]['nilai'] ?? '-' }}</td>
+                        <td class="text-sm">Has good understanding in Area and Perimeter, need assistance in collecting and recording data.</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">7</td>
+                        <td>Social</td>
+                        <td class="text-center">{{ $nilai['Social'][0]['nilai'] ?? '-' }}</td>
+                        <td class="text-sm">Has good understanding in Area and Perimeter, need assistance in collecting and recording data.</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">8</td>
+                        <td>SBdP(Fine Arts)</td>
+                        <td class="text-center">{{ $nilai['SBdP(Fine Arts)'][0]['nilai'] ?? '-' }}</td>
+                        <td class="text-sm">Has good understanding in Area and Perimeter, need assistance in collecting and recording data.</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">9</td>
+                        <td>Sports Physical Education and Health (PJOK)</td>
+                        <td class="text-center">{{ $nilai['Sports Physical Education and Health (PJOK)'][0]['nilai'] ?? '-' }}</td>
+                        <td class="text-sm">Has good understanding in Area and Perimeter, need assistance in collecting and recording data.</td>
                     </tr>
                     <tr>
                         <td class="text-center">10</td>
                         <td>English/ Writting</td>
-                        <td class="text-center"></td>
+                        <td class="text-center">{{ $nilai['English/ Writting'][0]['nilai'] ?? '-' }}</td>
                         <td class="text-sm">Has mastered in quantitative pronoun and quantifiers, need assistance in modal verb and connectives.</td>
                     </tr>
                     <tr>
                          <td class="text-center"></td>
                         <td>English/ Reading</td>
-                        <td class="text-center"></td>
+                        <td class="text-center">{{ $nilai['English/ Reading'][0]['nilai'] ?? '-' }}</td>
                         <td class="text-sm">Need assistance in understanding the reading text..</td>
                     </tr>
                     <tr>
                          <td class="text-center"></td>
                         <td>English/ Listening</td>
-                        <td class="text-center"></td>
+                        <td class="text-center">{{ $nilai['English/ Listening'][0]['nilai'] ?? '-' }}</td>
                         <td class="text-sm">Has good skill in understanding the native speakers.</td>
                     </tr>
                      <tr>
                          <td class="text-center"></td>
                         <td>English/ Speaking</td>
-                        <td class="text-center"></td>
+                        <td class="text-center">{{ $nilai['English/ Speaking'][0]['nilai'] ?? '-' }}</td>
                         <td class="text-sm">Has good speaking skill in english</td>
                     </tr>
                     <tr>
                         <td class="text-center">11</td>
                         <td>Arabic</td>
-                        <td class="text-center"></td>
+                        <td class="text-center">{{ $nilai['Arabic'][0]['nilai'] ?? '-' }}</td>
                         <td class="text-sm">Show the mastery in using question word, need assistance in family and jobs.</td>
                     </tr>
                     <tr>
                         <td class="text-center">12</td>
                         <td>Java</td>
-                        <td class="text-center"></td>
+                        <td class="text-center">{{ $nilai['Java'][0]['nilai'] ?? '-' }}</td>
                         <td class="text-sm">Had mastered "Unggah Ungguh Basa", need assistance in "Aksara Jawa".</td>
                     </tr>
                     <tr>
                         <td class="text-center">13</td>
                         <td>Kemuhammadiyahan</td>
-                        <td class="text-center"></td>
+                        <td class="text-center">{{ $nilai['Kemuhammadiyahan'][0]['nilai'] ?? '-' }}</td>
                         <td class="text-sm">Show the mastery in understanding Muhammadiyah movement, Muhammadiyah otonomous organization and its symbols, also able to apply in life.</td>
                     </tr>
                 </tbody>
@@ -136,31 +180,31 @@
                         <tr>
                             <th colspan="2" class=" w-[39%]">Al-Quran Learning</th>
                             <th class=" w-[14%] ">Predicate</th>
-                            <th class=" w-3/6 ">Explainations</th>
+                            <th class=" w-3/6 ">Explanations</th>
                         </tr>
                         <tr>
                             <td class="w-[5%]">12</td>
-                            <td class="font-bold">Tartil Al-Qur'an</td>
+                            <td class="font-bold">{{ $quranLearning[$semester][0]['subcategory']['category']['nama'] ?? '-' }}</td>
                             <td class="text-center"></td>
                             <td></td>
                         </tr>
                          <tr>
                             <td class="w-[5%]"></td>
-                            <td class="pl-8">Jilid 5</td>
-                            <td class="text-center font-bold"></td>
-                             <td></td>
+                            <td class="pl-8">{{ $quranLearning[$semester][0]['subcategory']['sub_nama'] ?? '-' }}</td>
+                            <td class="text-center font-bold">{{ $quranLearning[$semester][0]['predicate'] ?? '-' }}</td>
+                             <td>{{ $quranLearning[$semester][0]['explanation'] ?? '-' }}</td>
                         </tr>
                          <tr>
                             <td class="w-[5%]">13</td>
-                            <td class="font-bold">Tahfidz Al-Qur'an</td>
+                            <td class="font-bold">{{ $quranLearning[$semester][1]['subcategory']['category']['nama'] ?? '-' }}</td>
                              <td class="text-center"></td>
                              <td></td>
                         </tr>
                          <tr>
                             <td class="w-[5%]"></td>
-                            <td class="pl-8">Al-Gosiyyah</td>
-                             <td class="text-center font-bold"></td>
-                             <td></td>
+                            <td class="pl-8">{{ $quranLearning[$semester][1]['subcategory']['sub_nama'] ?? '-' }}</td>
+                             <td class="text-center font-bold">{{ $quranLearning[$semester][1]['predicate'] ?? '-' }}</td>
+                             <td>{{ $quranLearning[$semester][1]['explanation'] ?? '-' }}</td>
                         </tr>
                     </thead>
                  </table>
@@ -175,27 +219,27 @@
                             <th class="w-[5%]">No.</th>
                             <th class="w-2/6">Extrakurikuler</th>
                             <th class=" w-[14%]">Predicate</th>
-                            <th class="">Explainations</th>
+                            <th class="">Explanations</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td class="text-center">1</td>
-                            <td>Science Club</td>
-                            <td class="text-center font-bold"></td>
-                            <td></td>
+                            <td>{{ $extrakurikuler[$semester][0]['category']['nama'] ?? '-' }}</td>
+                            <td class="text-center font-bold">{{ $extrakurikuler[$semester][0]['predicate'] ?? '-' }}</td>
+                            <td>{{ $extrakurikuler[$semester][0]['explanation'] ?? '-' }}</td>
                         </tr>
                          <tr>
                             <td class="text-center">2</td>
-                            <td>Hizbul Wathan</td>
-                            <td class="text-center font-bold"></td>
-                            <td></td>
+                            <td>{{ $extrakurikuler[$semester][1]['category']['nama'] ?? '-' }}</td>
+                            <td class="text-center font-bold">{{ $extrakurikuler[$semester][1]['predicate'] ?? '-' }}</td>
+                            <td>{{ $extrakurikuler[$semester][1]['explanation'] ?? '-' }}</td>
                         </tr>
                          <tr>
                             <td class="text-center">3</td>
-                            <td>Robotik</td>
-                            <td class="text-center font-bold"></td>
-                            <td></td>
+                            <td>{{ $extrakurikuler[$semester][2]['category']['nama'] ?? '-' }}</td>
+                            <td class="text-center font-bold">{{ $extrakurikuler[$semester][2]['predicate'] ?? '-' }}</td>
+                            <td>{{ $extrakurikuler[$semester][2]['explanation'] ?? '-' }}</td>
                         </tr>
                     </tbody>
                  </table>
@@ -216,9 +260,9 @@
                         <tbody>
                             <tr>
                                 <td class="text-center">1</td>
-                                <td>Gen-Q Smart</td>
-                                <td class="text-center font-bold"></td>
-                                <td></td>
+                                <td>{{ $worship[$semester]['0']['category']['nama'] }}</td>
+                                <td class="text-center font-bold">{{ $worship[$semester]['0']['predicate'] }}</td>
+                                <td>{{ $worship[$semester]['0']['explanation'] }}</td>
                             </tr>
                         </tbody>
                      </table>
@@ -238,17 +282,17 @@
                             <tr>
                                 <td class="text-center">1</td>
                                 <td>Sick</td>
-                                <td></td>
+                                <td class=" text-center">{{ $statusCount['sakit'] }}</td>
                             </tr>
                             <tr>
                                 <td class="text-center">2</td>
                                 <td>Permission</td>
-                                <td></td>
+                                <td class=" text-center">{{ $statusCount['izin'] }}</td>
                             </tr>
-                             <tr>
+                            <tr>
                                 <td class="text-center">3</td>
-                                <td>No Explainations</td>
-                                <td></td>
+                                <td>No Explanations</td>
+                                <td class=" text-center">{{ $statusCount['alpha'] }}</td>
                             </tr>
                         </tbody>
                      </table>
@@ -270,7 +314,7 @@
                 <div>
                     <p>Known By</p>
                     <p>Student Guardian,</p>
-                    <!-- In Laravel, you can have a space for a signature image or just the name -->
+
                     <div class="mt-20">
                         <p class="border-b-2 border-black">(.............................)</p>
                     </div>
@@ -287,6 +331,7 @@
         </footer>
 
     </div>
+    @endforeach
 @endsection
 
 @push('styles')
@@ -320,7 +365,6 @@
         .bordered-table td {
             border: 2px solid black;
             padding: 8px;
-            text-align: left;
         }
         .bordered-table th {
             background-color: #e5e7eb; /* Light gray for headers */
