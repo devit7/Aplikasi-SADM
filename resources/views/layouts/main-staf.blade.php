@@ -36,7 +36,6 @@
 <body class="bg-white">
     <x-staf-navbar />
     <div class="flex">
-        <!-- Check if we are on a page with a kelas object -->
         @if((isset($kelas) && isset($kelas->id)) ||
         (isset($staff_acces) && (
         isset($staff_acces->akses_nilai) ||
@@ -53,6 +52,7 @@
         isset($staffAcces->akses_worship_character)
         ))
         )
+
         @php
         $kelasId = isset($kelas->id) ? $kelas->id :
         (isset($staff_acces->kelas_id) ? $staff_acces->kelas_id :
@@ -65,6 +65,22 @@
         $staffAksesAlQuran = $staff_acces->akses_alquran_learning ?? ($staffAcces->akses_alquran_learning ?? 0);
         $staffAksesExtra = $staff_acces->akses_extrakurikuler ?? ($staffAcces->akses_extrakurikuler ?? 0);
         $staffAksesWorship = $staff_acces->akses_worship_character ?? ($staffAcces->akses_worship_character ?? 0);
+
+        $alQuranCategories = collect();
+        $extrakurikulerCategories = collect();
+        $worshipCategories = collect();
+
+        if ($kelasId) {
+        if ($staffAksesAlQuran == 1) {
+        $alQuranCategories = \App\Models\AlQuranLearningCategory::with('subcategories')->get();
+        }
+        if ($staffAksesExtra == 1) {
+        $extrakurikulerCategories = \App\Models\ExtrakurikulerCategory::all();
+        }
+        if ($staffAksesWorship == 1) {
+        $worshipCategories = \App\Models\WorshipCharacterCategory::all();
+        }
+        }
         @endphp
         <x-alternative-staf-sidebar
             :kelasId="$kelasId"
@@ -72,7 +88,10 @@
             :staffAksesAbsen="$staffAksesAbsen"
             :staffAksesAlQuran="$staffAksesAlQuran"
             :staffAksesExtra="$staffAksesExtra"
-            :staffAksesWorship="$staffAksesWorship" />
+            :staffAksesWorship="$staffAksesWorship"
+            :alQuranCategories="$alQuranCategories"
+            :extrakurikulerCategories="$extrakurikulerCategories"
+            :worshipCategories="$worshipCategories" />
         @else
         <x-staf-sidebar />
         @endif

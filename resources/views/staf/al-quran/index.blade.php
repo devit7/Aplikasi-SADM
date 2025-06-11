@@ -333,7 +333,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="10" class="p-8 text-center text-gray-500 font-semibold">
+                            <td colspan="8" class="p-8 text-center text-gray-500 font-semibold">
                                 No Assessments found
                             </td>
                         </tr>
