@@ -6,6 +6,7 @@ use App\Filament\Resources\UsersResource\Pages\CreateUsers;
 use App\Filament\Resources\UsersResource\Pages\EditUsers;
 use App\Filament\Resources\UsersResource\Pages\ListUsers;
 
+// ./vendor/bin/pest .\tests\Unit\Admin\WaliKelas\ManajemenWaliKelasTest.php --filter="Validasi data wali kelas saat ditambahkan di Filament"
 test('Validasi data wali kelas saat ditambahkan di Filament', function() {
     //Arrange
     $dataWaliKelas = [
