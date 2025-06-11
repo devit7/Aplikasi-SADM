@@ -8,8 +8,11 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Nilai;
 use App\Models\MataPelajaran;
 use App\Models\Absen;
+use App\Models\AlQuranStudentAssessment;
 use App\Models\DetailKelas;
 use App\Models\DetailPresensi;
+use App\Models\ExtrakurikulerStudentAssessment;
+use App\Models\WorshipStudentAssessment;
 use Illuminate\Support\Facades\DB;
 // use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\Tfpdf\Fpdi;
@@ -81,17 +84,17 @@ class OrtuController extends Controller
         $siswa = Session::get('siswa');
         // dd($siswa);
         $detailPresensi = DetailPresensi::where('siswa_id', $siswa->id)
-        ->whereHas('presensi', function ($presensiQuery) use ($siswa) {
-            $presensiQuery->whereHas('kelas', function ($kelasQuery) use ($siswa) {
-                $kelasQuery->whereHas('detailKelas', function ($detailKelasQuery) use ($siswa) {
-                    $detailKelasQuery->where('siswa_id', $siswa->id);
+            ->whereHas('presensi', function ($presensiQuery) use ($siswa) {
+                $presensiQuery->whereHas('kelas', function ($kelasQuery) use ($siswa) {
+                    $kelasQuery->whereHas('detailKelas', function ($detailKelasQuery) use ($siswa) {
+                        $detailKelasQuery->where('siswa_id', $siswa->id);
+                    });
                 });
-            });
-        })
-        ->with('presensi')
-        ->get();
-    // dd($detailPresensi);
-    return $detailPresensi;
+            })
+            ->with('presensi')
+            ->get();
+        // dd($detailPresensi);
+        return $detailPresensi;
     }
 
     private function getStatusCount()
@@ -148,6 +151,72 @@ class OrtuController extends Controller
         return null;
     }
 
+    private function getWorshipStudentAssessment($studentId)
+    {
+        return WorshipStudentAssessment::with('category')
+            ->where('siswa_id', $studentId)
+            ->get()
+            ->groupBy('category.semester');
+    }
+
+    private function getExtrakurikulerStudentAssessment($studentId)
+    {
+        return ExtrakurikulerStudentAssessment::with('category')
+            ->where('siswa_id', $studentId)
+            ->get()
+            ->groupBy('category.semester');
+    }
+
+    private function getAlQuranStudentAssessment($studentId)
+    {
+        return AlQuranStudentAssessment::with('subcategory.category')
+            ->where('siswa_id', $studentId)
+            ->get()
+            ->groupBy('subcategory.semester');
+    }
+
+    private function getNilaiSiswaBySemester($studentId)
+    {
+        $student = Siswa::with([
+            'detailKelas.nilai.mataPelajaran'
+        ])->find($studentId);
+
+        // Get all nilai for this student and group by semester
+        $nilaiGrouped = $student->detailKelas
+            ->flatMap(function ($detailKelas) {
+                return $detailKelas->nilai->map(function ($nilai) {
+                    // Add mata pelajaran name to each nilai object
+                    $nilai->nama_mapel = $nilai->mataPelajaran->nama;
+                    return $nilai;
+                });
+            })
+            ->groupBy(function ($nilai) {
+                return $nilai->mataPelajaran->semester;
+            });
+
+        $nilaiBySemester = [];
+        foreach ($nilaiGrouped as $semester => $nilaiCollection) {
+            $nilaiBySemester[$semester] = [];
+            foreach ($nilaiCollection as $nilai) {
+                $namaMapel = $nilai['mataPelajaran']['nama_mapel'] ?? '-';
+                // dd($nilaiCollection, $semester ,$namaMapel);
+                // Group by mata pelajaran name within each semester
+                if (!isset($nilaiBySemester[$semester][$namaMapel])) {
+                    $nilaiBySemester[$semester][$namaMapel] = [];
+                }
+
+                $nilaiBySemester[$semester][$namaMapel][] = [
+                    'id' => $nilai->id,
+                    'nilai' => ($nilai->nilai_uas + $nilai->nilai_uts) / 2,
+                    'keterangan' => $nilai->keterangan ?? null,
+                    'semester' => $semester,
+
+                ];
+            }
+        }
+        return $nilaiBySemester;
+    }
+
     public function showPageNilai()
     {
         $siswa = Session::get('siswa');
@@ -164,47 +233,15 @@ class OrtuController extends Controller
             ->select('id', 'nama_mapel', 'semester')
             ->get();
         $semester = $matapelajaran->first()->semester ?? 'N/A';
-        // Get nilai related to the student
-    //     $nilaiBySemester = Nilai::join('matapelajaran', 'nilai.matapelajaran_id', '=', 'matapelajaran.id')
-    // ->select('nilai.*', 'matapelajaran.semester', 'matapelajaran.nama_mapel as matapelajaran_nama')
-    // ->get()
-    // ->groupBy('semester');
-        // Check if the student has any grades
-
-            $student = Siswa::with([
-        'detailKelas.nilai.mataPelajaran'
-    ])->find($siswa->id);
-
-    // Get all nilai for this student and group by semester
-    $nilaiGrouped = $student->detailKelas
-        ->flatMap(function ($detailKelas) {
-            return $detailKelas->nilai->map(function ($nilai) {
-                // Add mata pelajaran name to each nilai object
-                $nilai->nama_mapel = $nilai->mataPelajaran->nama;
-                return $nilai;
-            });
-        })
-        ->groupBy(function ($nilai) {
-            return $nilai->mataPelajaran->semester;
-        });
-
-        $nilaiBySemester = [];
-    foreach ($nilaiGrouped as $semester => $nilaiCollection) {
-        $nilaiBySemester[$semester] = $nilaiCollection->map(function ($nilai) {
-            return [
-                'id' => $nilai->id,
-                'nilai' => $nilai->nilai_uas + $nilai->nilai_uts / 2 ,
-                'nama_mapel' => $nilai->nama_mapel,
-                'semester' => $nilai->mataPelajaran->semester,
-                'keterangan' => $nilai->keterangan ?? null
-            ];
-        });
-    }
-        // dd($student, $nilaiGrouped);
+        $nilaiBySemester = $this->getNilaiSiswaBySemester($siswa->id);
         $statusCount = $this->getStatusCount();
-        return view('ortu.nilai-ortu', compact('matapelajaran', 'nilaiBySemester', 'detailKelas', 'siswa', 'semester', 'tahunAjaran', 'studentRanking', 'statusCount'));
+        $quranLearning = $this->getAlQuranStudentAssessment($siswa->id);
+        $extrakurikuler = $this->getExtrakurikulerStudentAssessment($siswa->id);
+        $worship = $this->getWorshipStudentAssessment($siswa->id);
+        // dd($worship);
+        // dd($nilaiBySemester, $nilaiGrouped);
+        return view('ortu.nilai-ortu', compact('matapelajaran', 'nilaiBySemester', 'detailKelas', 'siswa', 'semester', 'tahunAjaran', 'studentRanking', 'statusCount', 'quranLearning', 'extrakurikuler', 'worship'));
     }
-
     public function showPageKehadiran()
     {
         $siswa = Session::get('siswa');
@@ -222,47 +259,5 @@ class OrtuController extends Controller
         $statusCount = $this->getStatusCount();
         // dd($absences);
         return view('ortu.kehadiran-ortu', compact('absences', 'detailKelas', 'siswa', 'semester', 'tahunAjaran', 'statusCount'));
-    }
-
-    public function showRaport()
-    {
-        // $siswa = Session::get('siswa');
-        // $detailKelas = $this->getKelasSiswa($siswa->id);
-
-        // $pdf = new Fpdi();
-        // $pdf->setSourceFile(storage_path('app/private/template_rapot.pdf'));
-
-        // // === Page 1 ===
-        // $pdf->AddPage('P', [215.9, 355.6]);
-        // $template1 = $pdf->importPage(1);
-        // $pdf->useTemplate($template1);
-
-        // $pdf->SetFont('Helvetica', '',11);
-        // $pdf->SetTextColor(0, 0, 0);
-        // // Example writing on page 1
-        // $pdf->SetXY(42, 70.5);
-        // $pdf->Write(0, ucwords($siswa->nama));
-        // $pdf->SetXY(42, 77);
-        // $pdf->Write(0, $siswa->nisn . ' / ' . $siswa->nis);
-        // $pdf->SetXY(42, 83.5);
-        // $pdf->Write(0, $detailKelas->kelas->nama_kelas);
-        // $pdf->SetXY(42, 90.5);
-        // $pdf->Write(0, $detailKelas->kelas->semester);
-        // $pdf->SetXY(42, 96);
-        // $pdf->Write(0, $detailKelas->kelas->tahun_ajaran);
-
-        // // === Page 2 ===
-        // $pdf->AddPage('P', [215.9, 355.6]);
-        // $template2 = $pdf->importPage(2);
-        // $pdf->useTemplate($template2);
-
-        // // You can also write something on page 2 if needed:
-        // // $pdf->SetXY(30, 50);
-        // // $pdf->Write(0, "Page 2 Data Here");
-
-        // $pdfContent = $pdf->Output('S'); // S = Return as string
-
-        // return response($pdfContent, 200)
-        //     ->header('Content-Type', 'application/pdf');
     }
 }
