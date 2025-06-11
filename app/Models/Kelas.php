@@ -28,7 +28,7 @@ class Kelas extends Model
 
     public function matapelajaran()
     {
-        return $this->hasMany(MataPelajaran::class, 'kelas_id');
+        return $this->hasMany(Matapelajaran::class, 'kelas_id');
     }
 
     public function countSiswa()
