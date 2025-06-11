@@ -48,4 +48,34 @@ class Siswa extends Model
     {
         return $this->hasMany(WorshipStudentAssessment::class, 'siswa_id');
     }
+
+    /**
+     * Get all Al-Quran courses for this student
+     */
+    public function alQuranCourses()
+    {
+        return $this->belongsToMany(AlQuranLearningSubcategory::class, 'siswa_alquran_courses', 'siswa_id', 'subcategory_id')
+            ->withPivot('assigned_by')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get all Extrakurikuler courses for this student
+     */
+    public function extrakurikulerCourses()
+    {
+        return $this->belongsToMany(ExtrakurikulerCategory::class, 'siswa_extrakurikuler_courses', 'siswa_id', 'category_id')
+            ->withPivot('assigned_by')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get all Worship courses for this student
+     */
+    public function worshipCourses()
+    {
+        return $this->belongsToMany(WorshipCharacterCategory::class, 'siswa_worship_courses', 'siswa_id', 'category_id')
+            ->withPivot('assigned_by')
+            ->withTimestamps();
+    }
 }

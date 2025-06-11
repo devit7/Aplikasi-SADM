@@ -130,4 +130,9 @@ class CreateStaffAcces extends CreateRecord
 
         return $record;
     }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

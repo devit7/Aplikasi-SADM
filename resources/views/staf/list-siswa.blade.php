@@ -23,16 +23,16 @@
                 <tbody>
                     @foreach ($kelas->siswa->unique('id') as $siswa)
                     <tr class="text-center">
-                        <td class="border p-3 whitespace-wrap font-medium text-base">{{ $siswa->nisn }}</td>
-                        <td class="border p-3 whitespace-wrap font-medium text-base">{{ $siswa->nis }}</td>
-                        <td class="border p-3 whitespace-wrap font-medium text-base">{{ $siswa->nama }}</td>
-                        <td class="border p-3 whitespace-wrap font-medium text-base">{{ $siswa->nama_bapak }}</td>
-                        <td class="border p-3 whitespace-wrap font-medium text-base">{{ $siswa->no_hp_bapak }}</td>
-                        <td class="border p-3 whitespace-wrap font-medium text-base">{{ $siswa->jenis_kelamin }}</td>
-                        <td class="border p-3 whitespace-wrap font-medium text-base">{{ $siswa->tempat_lahir }}</td>
-                        <td class="border p-3 whitespace-wrap font-medium text-base">{{ $siswa->tanggal_lahir }}</td>
-                        <td class="border p-3 whitespace-wrap font-medium text-base">{{ $siswa->alamat }}</td>
-                        <td class="border p-3 whitespace-wrap font-medium text-base">{{ $kelas->tahun_ajaran }}</td>
+                        <td class="border p-3 whitespace-wrap font-normal text-base">{{ $siswa->nisn }}</td>
+                        <td class="border p-3 whitespace-wrap font-normal text-base">{{ $siswa->nis }}</td>
+                        <td class="border p-3 whitespace-wrap font-normal text-base">{{ $siswa->nama }}</td>
+                        <td class="border p-3 whitespace-wrap font-normal text-base">{{ $siswa->nama_bapak }}</td>
+                        <td class="border p-3 whitespace-wrap font-normal text-base">{{ $siswa->no_hp_bapak }}</td>
+                        <td class="border p-3 whitespace-wrap font-normal text-base">{{ $siswa->jenis_kelamin }}</td>
+                        <td class="border p-3 whitespace-wrap font-normal text-base">{{ $siswa->tempat_lahir }}</td>
+                        <td class="border p-3 whitespace-wrap font-normal text-base">{{ $siswa->tanggal_lahir }}</td>
+                        <td class="border p-3 whitespace-wrap font-normal text-base">{{ $siswa->alamat }}</td>
+                        <td class="border p-3 whitespace-wrap font-normal text-base">{{ $kelas->tahun_ajaran }}</td>
                     </tr>
                     @endforeach
                 </tbody>

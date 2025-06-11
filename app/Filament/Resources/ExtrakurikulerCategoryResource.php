@@ -32,6 +32,12 @@ class ExtrakurikulerCategoryResource extends Resource
                ->label('Nama Kategori')
                ->required()
                ->maxLength(255),
+
+            TextInput::make('tahun_ajaran')
+               ->label('Tahun Ajaran')
+               ->required()
+               ->placeholder('Contoh: 2023/2024')
+               ->maxLength(20),
          ]);
    }
 
@@ -43,6 +49,12 @@ class ExtrakurikulerCategoryResource extends Resource
                ->label('Nama Ekstrakurikuler')
                ->searchable()
                ->sortable(),
+
+            TextColumn::make('tahun_ajaran')
+               ->label('Tahun Ajaran')
+               ->searchable()
+               ->sortable(),
+
             TextColumn::make('created_at')
                ->dateTime('d M Y')
                ->sortable(),
