@@ -6,6 +6,14 @@
             Print Report Card
         </button>
     </div>
+    {{-- @php
+    dd($nilaiBySemester);
+    @endphp --}}
+    @foreach ($nilaiBySemester as $nilai)
+    @php
+        dd($nilai);
+        $semester = $nilai[0]['matapelajaran']['semester'];
+    @endphp
     <!-- Main container for the report card -->
     <div class="report-card">
         <!-- Header Section -->
@@ -40,15 +48,19 @@
         <section class="mt-6">
             <div class="grid grid-cols-[1fr_3fr] gap-y-2 max-w-md">
                 <div class="text-sm">Name</div>
-                <div>:  </div>
+                <div>: {{ $siswa->nama }}</div>
                 <div class="text-sm">NISN/NIS</div>
-                <div>:  </div>
+                <div>: {{ $siswa->nisn }}</div>
                 <div class="text-sm">Grade/Fase</div>
-                <div>:  </div>
+                <div>: {{ $detailKelas->kelas->nama_kelas }}</div>
                 <div class="text-sm">Semester</div>
-                <div>:  </div>
+                <div>:
+                    {{
+                        $semester == 'ganjil' ? 'I' : ($semester == 'genap' ? 'II' : '-')
+                    }}
+                </div>
                 <div class="text-sm">Academic Year</div>
-                <div>:  </div>
+                <div>: {{ $tahunAjaran }}</div>
             </div>
         </section>
 
@@ -81,6 +93,42 @@
                         <td>Indonesian</td>
                         <td class="text-center"></td>
                         <td class="text-sm">Has good understanding in "informasi teks" and "Unsur Intrisik Cerita".</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">4</td>
+                        <td>Math</td>
+                        <td class="text-center"></td>
+                        <td class="text-sm">Has good understanding in Area and Perimeter, need assistance in collecting and recording data.</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">5</td>
+                        <td>Science and Social</td>
+                        <td class="text-center"></td>
+                        <td class="text-sm">Has good understanding in Area and Perimeter, need assistance in collecting and recording data.</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">6</td>
+                        <td>Science</td>
+                        <td class="text-center"></td>
+                        <td class="text-sm">Has good understanding in Area and Perimeter, need assistance in collecting and recording data.</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">7</td>
+                        <td>Social</td>
+                        <td class="text-center"></td>
+                        <td class="text-sm">Has good understanding in Area and Perimeter, need assistance in collecting and recording data.</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">8</td>
+                        <td>SBdP(Fine Arts)</td>
+                        <td class="text-center"></td>
+                        <td class="text-sm">Has good understanding in Area and Perimeter, need assistance in collecting and recording data.</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">9</td>
+                        <td>Sports Physical Education and Health (PJOK)</td>
+                        <td class="text-center"></td>
+                        <td class="text-sm">Has good understanding in Area and Perimeter, need assistance in collecting and recording data.</td>
                     </tr>
                     <tr>
                         <td class="text-center">10</td>
@@ -136,7 +184,7 @@
                         <tr>
                             <th colspan="2" class=" w-[39%]">Al-Quran Learning</th>
                             <th class=" w-[14%] ">Predicate</th>
-                            <th class=" w-3/6 ">Explainations</th>
+                            <th class=" w-3/6 ">Explanations</th>
                         </tr>
                         <tr>
                             <td class="w-[5%]">12</td>
@@ -175,7 +223,7 @@
                             <th class="w-[5%]">No.</th>
                             <th class="w-2/6">Extrakurikuler</th>
                             <th class=" w-[14%]">Predicate</th>
-                            <th class="">Explainations</th>
+                            <th class="">Explanations</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -238,17 +286,17 @@
                             <tr>
                                 <td class="text-center">1</td>
                                 <td>Sick</td>
-                                <td></td>
+                                <td class=" text-center">{{ $statusCount['sakit'] }}</td>
                             </tr>
                             <tr>
                                 <td class="text-center">2</td>
                                 <td>Permission</td>
-                                <td></td>
+                                <td class=" text-center">{{ $statusCount['izin'] }}</td>
                             </tr>
-                             <tr>
+                            <tr>
                                 <td class="text-center">3</td>
-                                <td>No Explainations</td>
-                                <td></td>
+                                <td>No Explanations</td>
+                                <td class=" text-center">{{ $statusCount['alpha'] }}</td>
                             </tr>
                         </tbody>
                      </table>
@@ -287,6 +335,7 @@
         </footer>
 
     </div>
+    @endforeach
 @endsection
 
 @push('styles')
@@ -320,7 +369,6 @@
         .bordered-table td {
             border: 2px solid black;
             padding: 8px;
-            text-align: left;
         }
         .bordered-table th {
             background-color: #e5e7eb; /* Light gray for headers */

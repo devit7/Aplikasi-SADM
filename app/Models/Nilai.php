@@ -15,5 +15,9 @@ class Nilai extends Model
     {
         return $this->belongsTo(DetailKelas::class, 'detail_kelas_id');
     }
+    public function mataPelajaran()
+    {
+        return $this->belongsTo(Matapelajaran::class, 'matapelajaran_id');
+    }
 
 }
