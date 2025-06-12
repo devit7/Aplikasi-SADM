@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\Controller;
+use App\Models\ExtrakurikulerCategory;
+use App\Models\ExtrakurikulerStudentAssessment;
 use App\Models\WorshipCharacterCategory;
 use App\Models\WorshipStudentAssessment;
 use App\Models\Siswa;
@@ -14,7 +16,7 @@ class StaffWorshipCharacterController extends Controller
     /**
      * Display a listing of the Worship & Character categories
      */
-    public function index()
+    public function index($kelasId, $subcategoryId)
     {
         // Check if the staff has access to Worship & Character
         $staff = StaffAcces::where('staff_id', session('staff')->id)
@@ -259,5 +261,47 @@ class StaffWorshipCharacterController extends Controller
 
         return redirect()->route('staff.worship.index')
             ->with('success', 'Penilaian berhasil dihapus');
+    }
+
+    public function assessmentByCategory($kelasId, $categoryId)
+    {
+        // Verify staff access
+        $staff = StaffAcces::where('staff_id', session('staff')->id)
+            ->where('kelas_id', $kelasId)
+            ->where('akses_extrakurikuler', 1)
+            ->whereHas('extrakurikulerCategories', function ($query) use ($categoryId) {
+                $query->where('extrakurikuler_categories.id', $categoryId);
+            })
+            ->first();
+
+        if (!$staff) {
+            return redirect()->route('staff.dashboard')
+                ->with('error', 'Anda tidak memiliki akses untuk kategori ini');
+        }
+
+        $category = ExtrakurikulerCategory::findOrFail($categoryId);
+
+        // Get students in this class with their assessments for this category
+        $students = Siswa::whereHas('kelas', function ($query) use ($kelasId) {
+            $query->where('kelas.id', $kelasId);
+        })->with(['extrakurikulerAssessments' => function ($query) use ($categoryId) {
+            $query->where('category_id', $categoryId);
+        }])->get();
+
+        // Get assessments for this category and class
+        $assessments = ExtrakurikulerStudentAssessment::where('category_id', $categoryId)
+            ->whereHas('siswa.kelas', function ($query) use ($kelasId) {
+                $query->where('kelas.id', $kelasId);
+            })
+            ->with(['siswa', 'category'])
+            ->latest()
+            ->get();
+
+        return view('staf.extrakurikuler.assessment-by-category', compact(
+            'category',
+            'students',
+            'assessments',
+            'kelasId'
+        ));
     }
 }

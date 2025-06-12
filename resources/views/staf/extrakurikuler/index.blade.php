@@ -315,7 +315,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="10" class="p-8 text-center text-gray-500 font-semibold">
+                            <td colspan="7" class="p-8 text-center text-gray-500 font-semibold">
                                 No Assessments found
                             </td>
                         </tr>
@@ -329,49 +329,25 @@
 
 @push('scripts')
 <script>
-    $(document).ready(function() {
-        if (!$.fn.DataTable.isDataTable('#table')) {
-            $('#table').DataTable({
-                "paging": true,
-                "ordering": true,
-                "info": true,
-                "searching": true,
-                "responsive": true,
-                "columnDefs": [{
-                    "orderable": false,
-                    "targets": [6]
-                }],
-                "language": {
-                    "paginate": {
-                        "previous": "Sebelumnya",
-                        "next": "Selanjutnya",
-
-                    }
-                }
+    // Enhance radio button styling
+    document.querySelectorAll('input[name="predicate"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            // Remove styling from all labels in the same form
+            const form = this.closest('form');
+            form.querySelectorAll('input[name="predicate"]').forEach(r => {
+                r.closest('label').classList.remove('bg-blue-50',
+                    'border-blue-500');
+                r.closest('label').classList.add('hover:bg-gray-50');
             });
-        }
 
-        // Enhance radio button styling
-        document.querySelectorAll('input[name="predicate"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                // Remove styling from all labels in the same form
-                const form = this.closest('form');
-                form.querySelectorAll('input[name="predicate"]').forEach(r => {
-                    r.closest('label').classList.remove('bg-blue-50',
-                        'border-blue-500');
-                    r.closest('label').classList.add('hover:bg-gray-50');
-                });
-
-                // Add styling to selected label
-                if (this.checked) {
-                    this.closest('label').classList.add('bg-blue-50', 'border-blue-500');
-                    this.closest('label').classList.remove('hover:bg-gray-50');
-                }
-            });
+            // Add styling to selected label
+            if (this.checked) {
+                this.closest('label').classList.add('bg-blue-50', 'border-blue-500');
+                this.closest('label').classList.remove('hover:bg-gray-50');
+            }
         });
     });
 
-    // Delete form handling
     document.querySelectorAll('.delete-form').forEach(form => {
         form.addEventListener('submit', function(e) {
             const button = this.querySelector('.confirm-delete-btn');
@@ -383,7 +359,6 @@
         });
     });
 
-    // Edit form handling
     document.querySelectorAll('.edit-form').forEach(form => {
         form.addEventListener('submit', function(e) {
             const button = this.querySelector('.update-btn');
