@@ -7,6 +7,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Landing Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.2/tailwind.min.css">
+    <script>
+        (function(m, a, z, e) {
+            var s, t;
+            try {
+                t = m.sessionStorage.getItem('maze-us');
+            } catch (err) {}
+
+            if (!t) {
+                t = new Date().getTime();
+                try {
+                    m.sessionStorage.setItem('maze-us', t);
+                } catch (err) {}
+            }
+
+            s = a.createElement('script');
+            s.src = z + '?apiKey=' + e;
+            s.async = true;
+            a.getElementsByTagName('head')[0].appendChild(s);
+            m.mazeUniversalSnippetApiKey = e;
+        })(window, document, 'https://snippet.maze.co/maze-universal-loader.js', 'db08c225-5ce2-4bf7-9f44-8c88c999648d');
+    </script>
 </head>
 
 <body>
@@ -28,8 +49,8 @@
                     @csrf
                     <div>
                         <label class="block text-white">NIP</label>
-                        <input required type="number" name="nip" id="nip" placeholder="Contoh: 198507262015051001"
-                            value="{{ old('nip') }}"
+                        <input required type="number" name="nip" id="nip"
+                            placeholder="Contoh: 198507262015051001" value="{{ old('nip') }}"
                             class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none @error('nip') border-red-500 @enderror"
                             autofocus autocomplete>
                         @error('nip')

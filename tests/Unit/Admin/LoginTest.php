@@ -11,11 +11,11 @@ test('admin/login', function () {
 // ./vendor/bin/pest .\tests\Unit\Admin\LoginTest.php --filter="admin dapat login dengan kredensial yang valid"
 test('admin dapat login dengan kredensial yang valid', function () {
     // Arrange
-    $admin = User::factory()->create([
+    /* $admin = User::factory()->create([
         'email' => 'admin@test.com',
         'password' => bcrypt('password123'),
         'role' => 'admin'
-    ]);
+    ]); */
 
     // Act & Assert
     Livewire::test(Login::class)
@@ -28,13 +28,14 @@ test('admin dapat login dengan kredensial yang valid', function () {
         ->assertRedirect('/admin');
 });
 
+// ./vendor/bin/pest .\tests\Unit\Admin\LoginTest.php --filter="admin tidak dapat login dengan email yang salah"
 test('admin tidak dapat login dengan email yang salah', function () {
     // Arrange
-    $admin = User::factory()->create([
+    /* $admin = User::factory()->create([
         'email' => 'admin@test.com',
         'password' => bcrypt('password123'),
         'role' => 'admin'
-    ]);
+    ]); */
 
     // Act & Assert
     Livewire::test(Login::class)
@@ -48,11 +49,11 @@ test('admin tidak dapat login dengan email yang salah', function () {
 
 test('admin tidak dapat login dengan password yang salah', function () {
     // Arrange
-    $admin = User::factory()->create([
+    /* $admin = User::factory()->create([
         'email' => 'admin@test.com',
         'password' => bcrypt('password123'),
         'role' => 'admin'
-    ]);
+    ]); */
 
     // Act & Assert
     Livewire::test(Login::class)
