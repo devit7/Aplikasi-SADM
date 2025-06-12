@@ -83,7 +83,7 @@ test('Admin dapat memperbarui data wali kelas', function () {
     ]);
     
     $dataUpdate = [
-        'nip' => '135799753113501010',
+        'nip' => '213121313131321312313123123123123123123123123',
         'name' => 'Wali Kelas Update',
         'email' => 'walikelasupdate@gmail.com',
         'jenis_kelamin' => 'L',

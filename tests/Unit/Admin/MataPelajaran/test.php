@@ -60,3 +60,33 @@ test('Admin dapat memperbarui data mata pelajaran', function() {
         'kkm' => '80',
     ]);
 });
+
+test('Admin dapat menghapus data mata pelajran', function() {
+    // Arrange
+    $kelas = Kelas::create([
+        'nama_kelas' => 'X IPA 11',
+        'tahun_ajaran' => '2023/2024',
+        'walikelas_id' => 6, 
+    ]);
+    
+    // Buat mata pelajaran yang akan dihapus
+    $matapelajaran = Matapelajaran::create([
+        'nama_mapel' => 'Bahasa Indonesia',
+        'kode_mapel' => 'BIN001',
+        'kelas_id' => $kelas->id,
+        'semester' => 'ganjil',
+        'kkm' => '75',
+    ]);
+
+    // Act & Assert
+    Livewire::test(EditMatapelajaran::class, ['record' => $matapelajaran->id])
+        ->callAction('delete')
+        ->assertHasNoActionErrors();
+    
+    // Verifikasi data berhasil dihapus dari database
+    $this->assertDatabaseMissing('matapelajaran', [
+        'id' => $matapelajaran->id,
+    ]);
+});
+
+

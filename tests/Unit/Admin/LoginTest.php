@@ -21,7 +21,7 @@ test('admin dapat login dengan kredensial yang valid', function () {
     Livewire::test(Login::class)
         ->fillForm([
             'email' => 'admin@test.com',
-            'password' => 'password123',
+            'password' => 'passwodwadd123',
         ])
         ->call('authenticate')
         ->assertHasNoFormErrors()
