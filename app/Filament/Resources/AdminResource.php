@@ -2,20 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UsersResource\Pages;
-use App\Filament\Resources\UsersResource\RelationManagers;
-use App\Models\User;
-use App\Models\Users;
-use App\Models\WaliKelas;
-use Carbon\Carbon;
-use Faker\Provider\ar_EG\Text;
+use App\Filament\Resources\AdminResource\Pages;
+use App\Filament\Resources\AdminResource\RelationManagers;
+use App\Models\Admin;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Pages\Page;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -25,26 +20,17 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Hash;
 
-class UsersResource extends Resource
+class AdminResource extends Resource
 {
-    protected static ?string $model = WaliKelas::class;
-    protected static ?string $navigationGroup = 'Management';
-    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
-    protected static ?string $navigationLabel = 'Walas';
-    protected static ?int $navigationSort = 1;
+    protected static ?string $model = Admin::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 //
-                TextInput::make('nip')
-                    ->label('NIP')
-                    ->numeric()
-                    ->required()
-                    ->length(18)
-                    ->unique(ignoreRecord: true)
-                    ->placeholder('Contoh: 198507262015051001'),
                 TextInput::make('name')
                     ->label('Nama')
                     ->required()
@@ -58,7 +44,7 @@ class UsersResource extends Resource
                         column: 'email',
                         ignoreRecord: true,
                         modifyRuleUsing: function ($rule) {
-                            return $rule->where('role', 'walikelas');
+                            return $rule->where('role', 'admin');
                         }
                     )
                     ->placeholder('Contoh: budi.santoso@gmail.com'),
@@ -109,12 +95,9 @@ class UsersResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->query(WaliKelas::where('role', '!=', 'admin'))
+            ->query(Admin::where('role', '!=', 'walikelas'))
             ->columns([
                 //
-                TextColumn::make('nip')
-                    ->searchable()
-                    ->sortable(),
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
@@ -145,26 +128,6 @@ class UsersResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()
-                    ->requiresConfirmation()
-                    ->modalHeading('Hapus Wali Kelas')
-                    ->modalDescription(
-                        fn($record) =>
-                        $record->kelas()->exists()
-                            ? 'Wali Kelas ini tidak dapat dihapus karena masih memiliki kelas terkait.'
-                            : 'Apakah Anda yakin ingin menghapus wali kelas ini?'
-                    )
-                    ->modalSubmitAction(
-                        fn($record) => $record->kelas()->exists()
-                            ?  false
-                            :  null
-                    )
-                    ->color(fn($record) => $record->kelas()->exists() ? 'gray' : 'danger')
-                    ->tooltip(
-                        fn($record) => $record->kelas()->exists()
-                            ? 'Tidak dapat dihapus: Wali kelas masih memiliki kelas yang terkait'
-                            : 'Hapus wali kelas'
-                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -183,9 +146,9 @@ class UsersResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUsers::route('/create'),
-            'edit' => Pages\EditUsers::route('/{record}/edit'),
+            'index' => Pages\ListAdmins::route('/'),
+            'create' => Pages\CreateAdmin::route('/create'),
+            'edit' => Pages\EditAdmin::route('/{record}/edit'),
         ];
     }
 }

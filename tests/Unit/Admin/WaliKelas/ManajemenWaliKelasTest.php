@@ -1,6 +1,6 @@
 <?php
 // use function Pest\Laravel\{actingAs, get, post, delete};
-use App\Models\User;
+use App\Models\WaliKelas;
 use Livewire\Livewire;
 use App\Filament\Resources\UsersResource\Pages\CreateUsers;
 use App\Filament\Resources\UsersResource\Pages\EditUsers;
@@ -18,8 +18,7 @@ test('Validasi data wali kelas saat ditambahkan di Filament', function () {
         'tanggal_lahir' => '1999-01-01',
         'no_hp' => '085846374759',
         'alamat' => 'JL. rumah wali kelas baru',
-        'password' => 'password',
-        'role' => 'walikelas'
+        'password' => 'password'
     ];
 
     //Act & Assert
@@ -69,18 +68,6 @@ test('Admin tidak dapat menambahkan wali kelas dengan NIP yang sudah ada', funct
 // ./vendor/bin/pest .\tests\Unit\Admin\WaliKelas\ManajemenWaliKelasTest.php --filter="Admin dapat memperbarui data wali kelas"
 test('Admin dapat memperbarui data wali kelas', function () {
     //Arrange
-    $waliKelasCanEdit = User::factory()->create([
-        'nip' => '135799753113501010',
-        'name' => 'Wali Kelas Can Edit',
-        'email' => 'walikelascanedit@gmail.com',
-        'jenis_kelamin' => 'L',
-        'tempat_lahir' => 'Surabaya',
-        'tanggal_lahir' => '1999-01-01',
-        'no_hp' => '085846374769',
-        'alamat' => 'JL. rumah wali kelas can edit',
-        'password' => 'password-can-edit',
-        'role' => 'walikelas'
-    ]);
     
     $dataUpdate = [
         'nip' => '213121313131321312313123123123123123123123123',
@@ -94,13 +81,13 @@ test('Admin dapat memperbarui data wali kelas', function () {
     ];
     
     //Act & Assert
-    Livewire::test(EditUsers::class, ['record' => $waliKelasCanEdit->id])
+    Livewire::test(EditUsers::class, ['record' => 6])
     ->fillForm($dataUpdate)
     ->call('save')
     ->assertHasNoFormErrors();
     
     $this->assertDatabaseHas('users', [
-        'id' => $waliKelasCanEdit->id,
+        'id' => 6,
         'name' => 'Wali Kelas Update',
         'email' => 'walikelasupdate@gmail.com'
     ]);
@@ -174,7 +161,7 @@ test('Validasi data wali kelas tidak bisa di edit di Filament', function () {
 // ./vendor/bin/pest .\tests\Unit\Admin\WaliKelas\ManajemenWaliKelasTest.php --filter="Admin dapat menghapus data wali kelas"
 test('Admin dapat menghapus data wali kelas', function () {
     // Arrange
-    $waliKelas = User::factory()->create([
+    $waliKelas = WaliKelas::factory()->create([
         'nip' => '135799753113500303',
         'name' => 'Wali Kelas Test Hapus',
         'email' => 'walikelashapus@gmail.com',
@@ -183,8 +170,7 @@ test('Admin dapat menghapus data wali kelas', function () {
         'tanggal_lahir' => '1998-01-01',
         'no_hp' => '085846374753',
         'alamat' => 'JL. rumah wali kelas hapus',
-        'password' => 'password-hapus',
-        'role' => 'walikelas'
+        'password' => 'password-hapus'
     ]);
 
     //Act & Assert
