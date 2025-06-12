@@ -22,7 +22,7 @@ class StafAuthController extends Controller
                 'digits:18',
                 'numeric'
             ],
-            'password' => 'required',
+            'password' => 'required|min:8',
         ]);
         // Ambil data dari request
         $nip = $request->input('nip');
@@ -55,6 +55,6 @@ class StafAuthController extends Controller
             return redirect('/staff');
         }
 
-        return view('staf.login-staf'); 
+        return view('staf.login-staf');
     }
 }

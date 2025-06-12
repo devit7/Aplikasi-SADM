@@ -28,7 +28,11 @@
                         <label class="block ">NIP</label>
                         <input type="text" name="nip" id="nip" placeholder="Masukan NIP"
                             class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none">
-                        <p id="nip-error" class="hidden text-red-500 text-sm mt-1">NIP tidak boleh kosong</p>
+                        @error('nip')
+                        <p id="outlined_error_help" class="mt-2 text-xs text-red-700">
+                            {{ $message }}
+                        </p>
+                        @enderror
                     </div>
 
                     <div class="mt-4">
@@ -36,7 +40,11 @@
                         <input type="password" name="password" id="password" placeholder="Masukan Password"
                             minlength="6"
                             class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none">
-                        <p id="password-error" class="hidden text-red-500 text-sm mt-1">Password tidak boleh kosong</p>
+                        @error('password')
+                        <p id="outlined_error_help" class="mt-2 text-xs text-red-700">
+                            {{ $message }}
+                        </p>
+                        @enderror
                     </div>
 
                     <button type="submit"
@@ -50,31 +58,6 @@
         </div>
 
     </section>
-
-    <script>
-        function validateForm() {
-            const nip = document.getElementById('nip').value.trim();
-            const password = document.getElementById('password').value.trim();
-
-            // Reset error messages
-            document.getElementById('nip-error').classList.add('hidden');
-            document.getElementById('password-error').classList.add('hidden');
-
-            let isValid = true;
-
-            if (nip === "") {
-                document.getElementById('nip-error').classList.remove('hidden');
-                isValid = false;
-            }
-
-            if (password === "") {
-                document.getElementById('password-error').classList.remove('hidden');
-                isValid = false;
-            }
-
-            return isValid;
-        }
-    </script>
 </body>
 
 </html>
