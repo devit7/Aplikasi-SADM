@@ -260,9 +260,9 @@
                         <tbody>
                             <tr>
                                 <td class="text-center">1</td>
-                                <td>{{ $worship[$semester]['0']['category']['nama'] }}</td>
-                                <td class="text-center font-bold">{{ $worship[$semester]['0']['predicate'] }}</td>
-                                <td>{{ $worship[$semester]['0']['explanation'] }}</td>
+                                <td>{{ $worship[$semester]['0']['category']['nama'] ?? '-' }}</td>
+                                <td class="text-center font-bold">{{ $worship[$semester]['0']['predicate'] ?? '-' }}</td>
+                                <td>{{ $worship[$semester]['0']['explanation'] ?? '-' }}</td>
                             </tr>
                         </tbody>
                      </table>
