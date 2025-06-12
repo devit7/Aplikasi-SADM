@@ -26,17 +26,16 @@
 
                 <form class="mt-6" action="{{ route('ortu.login-ortu') }}" method="POST">
                     @csrf
-
-
-
                     <div>
                         <label class="block text-white">NISN</label>
-                        <input  required type="number" name="nisn" id="nisn" placeholder="Contoh: 0098765432"
+                        <input required type="number" name="nisn" id="nisn" placeholder="Contoh: 0098765432"
                             value="{{ old('nisn') }}"
                             class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none @error('nisn') border-red-500 @enderror"
                             autofocus autocomplete>
                         @error('nisn')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        <p id="outlined_error_help" class="mt-2 text-xs text-red-700">
+                            {{ $message }}
+                        </p>
                         @enderror
                     </div>
 
@@ -46,7 +45,9 @@
                             value="{{ old('nis') }}"
                             class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none @error('nis') border-red-500 @enderror">
                         @error('nis')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        <p id="outlined_error_help" class="mt-2 text-xs text-red-700">
+                            {{ $message }}
+                        </p>
                         @enderror
                     </div>
 
@@ -56,9 +57,9 @@
 
                 <!-- Display general login error -->
                 @if ($errors->has('login'))
-                    <div class="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-                        {{ $errors->first('login') }}
-                    </div>
+                <div class="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                    {{ $errors->first('login') }}
+                </div>
                 @endif
             </div>
         </div>

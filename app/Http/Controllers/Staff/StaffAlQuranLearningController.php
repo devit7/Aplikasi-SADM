@@ -18,7 +18,7 @@ class StaffAlQuranLearningController extends Controller
     /**
      * Display the main Al-Quran Assessment dashboard
      */
-    public function index($kelasId, $subcategoryId)
+    public function index()
     {
         // Filter only records with Al-Quran access and get kelas_id
         $staff = StaffAcces::where('staff_id', session('staff')->id)
@@ -241,50 +241,5 @@ class StaffAlQuranLearningController extends Controller
 
         return redirect()->route('staff.al-quran.index')
             ->with('success', 'Penilaian berhasil dihapus');
-    }
-
-    /**
-     * Display assessments by subcategory
-     */
-    public function assessmentBySubcategory($kelasId, $subcategoryId)
-    {
-        // Verify staff access
-        $staff = StaffAcces::where('staff_id', session('staff')->id)
-            ->where('kelas_id', $kelasId)
-            ->where('akses_alquran_learning', 1)
-            ->whereHas('alQuranSubcategories', function ($query) use ($subcategoryId) {
-                $query->where('al_quran_learning_subcategories.id', $subcategoryId);
-            })
-            ->first();
-
-        if (!$staff) {
-            return redirect()->route('staff.dashboard')
-                ->with('error', 'Anda tidak memiliki akses untuk subcategory ini');
-        }
-
-        $subcategory = AlQuranLearningSubcategory::with('category')->findOrFail($subcategoryId);
-
-        // Get students in this class with their assessments for this subcategory
-        $students = Siswa::whereHas('kelas', function ($query) use ($kelasId) {
-            $query->where('kelas.id', $kelasId);
-        })->with(['alQuranAssessments' => function ($query) use ($subcategoryId) {
-            $query->where('subcategory_id', $subcategoryId);
-        }])->get();
-
-        // Get assessments for this subcategory and class
-        $assessments = AlQuranStudentAssessment::where('subcategory_id', $subcategoryId)
-            ->whereHas('siswa.kelas', function ($query) use ($kelasId) {
-                $query->where('kelas.id', $kelasId);
-            })
-            ->with(['siswa', 'subcategory.category'])
-            ->latest()
-            ->get();
-
-        return view('staf.al-quran.assessment-by-subcategory', compact(
-            'subcategory',
-            'students',
-            'assessments',
-            'kelasId'
-        ));
     }
 }

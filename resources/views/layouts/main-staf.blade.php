@@ -43,44 +43,20 @@
         isset($staff_acces->akses_alquran_learning) ||
         isset($staff_acces->akses_extrakurikuler) ||
         isset($staff_acces->akses_worship_character)
-        )) ||
-        (isset($staffAcces) && (
-        isset($staffAcces->akses_nilai) ||
-        isset($staffAcces->akses_absen) ||
-        isset($staffAcces->akses_alquran_learning) ||
-        isset($staffAcces->akses_extrakurikuler) ||
-        isset($staffAcces->akses_worship_character)
-        ))
-        )
+        )))
 
         @php
         $kelasId = isset($kelas->id) ? $kelas->id :
         (isset($staff_acces->kelas_id) ? $staff_acces->kelas_id :
-        (isset($staffAcces->kelas_id) ? $staffAcces->kelas_id :
-        (isset($kelas) ? $kelas->id : null)));
+        (isset($kelas) ? $kelas->id : null));
 
         // Normalize variable names for consistency
-        $staffAksesNilai = $staff_acces->akses_nilai ?? ($staffAcces->akses_nilai ?? 0);
-        $staffAksesAbsen = $staff_acces->akses_absen ?? ($staffAcces->akses_absen ?? 0);
-        $staffAksesAlQuran = $staff_acces->akses_alquran_learning ?? ($staffAcces->akses_alquran_learning ?? 0);
-        $staffAksesExtra = $staff_acces->akses_extrakurikuler ?? ($staffAcces->akses_extrakurikuler ?? 0);
-        $staffAksesWorship = $staff_acces->akses_worship_character ?? ($staffAcces->akses_worship_character ?? 0);
+        $staffAksesNilai = $staff_acces->akses_nilai ?? 0;
+        $staffAksesAbsen = $staff_acces->akses_absen ?? 0;
+        $staffAksesAlQuran = $staff_acces->akses_alquran_learning ?? 0;
+        $staffAksesExtra = $staff_acces->akses_extrakurikuler ?? 0;
+        $staffAksesWorship = $staff_acces->akses_worship_character ?? 0;
 
-        $alQuranCategories = collect();
-        $extrakurikulerCategories = collect();
-        $worshipCategories = collect();
-
-        if ($kelasId) {
-        if ($staffAksesAlQuran == 1) {
-        $alQuranCategories = \App\Models\AlQuranLearningCategory::with('subcategories')->get();
-        }
-        if ($staffAksesExtra == 1) {
-        $extrakurikulerCategories = \App\Models\ExtrakurikulerCategory::all();
-        }
-        if ($staffAksesWorship == 1) {
-        $worshipCategories = \App\Models\WorshipCharacterCategory::all();
-        }
-        }
         @endphp
         <x-alternative-staf-sidebar
             :kelasId="$kelasId"
@@ -88,10 +64,7 @@
             :staffAksesAbsen="$staffAksesAbsen"
             :staffAksesAlQuran="$staffAksesAlQuran"
             :staffAksesExtra="$staffAksesExtra"
-            :staffAksesWorship="$staffAksesWorship"
-            :alQuranCategories="$alQuranCategories"
-            :extrakurikulerCategories="$extrakurikulerCategories"
-            :worshipCategories="$worshipCategories" />
+            :staffAksesWorship="$staffAksesWorship" />
         @else
         <x-staf-sidebar />
         @endif

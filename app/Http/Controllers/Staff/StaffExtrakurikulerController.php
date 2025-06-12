@@ -14,66 +14,69 @@ class StaffExtrakurikulerController extends Controller
     /**
      * Display a listing of the Extrakurikuler categories
      */
-    public function index($categoryId)
+    public function index()
     {
         // Check if the staff has access to Extrakurikuler
         $staff = StaffAcces::where('staff_id', session('staff')->id)
-            ->where('akses_extrakurikuler', 1)
-            ->whereHas('extrakurikulerCategories', function ($query) use ($categoryId) {
-                $query->where('extrakurikuler_categories.id', $categoryId);
-            })
-            ->first();
-        if (!$staff) {
+            ->where('akses_extrakurikuler', true)
+            ->get();
+
+        if ($staff->isEmpty()) {
             return redirect()->route('staff.dashboard')->with('error', 'Anda tidak memiliki akses untuk Extrakurikuler');
         }
 
-        // Filter only records with Extrakurikuler access and get kelas_id
-        // $staff_extrakurikuler_access = $staff->where('akses_extrakurikuler', 1)->first();
-        // $kelas_id = $staff ? $staff_extrakurikuler_access->kelas_id : $staff->first()->kelas_id;
+        // Filter only records with Worship access and get kelas_id
+        $staff_extrakurikuler_access = $staff->where('akses_extrakurikuler', 1)->first();
+        $kelas_id = $staff_extrakurikuler_access ? $staff_extrakurikuler_access->kelas_id : $staff->first()->kelas_id;
 
         // Get categories from staff access
-        // $categoryIds = [];
-        // foreach ($staff as $access) {
-        //     if ($access->extrakurikulerCategories && $access->extrakurikulerCategories->count() > 0) {
-        //         $categoryIds = array_merge(
-        //             $categoryIds,
-        //             $access->extrakurikulerCategories->pluck('id')->toArray()
-        //         );
-        //     }
-        // }
+        $categoryIds = [];
+        foreach ($staff as $access) {
+            if ($access->extrakurikulerCategories && $access->extrakurikulerCategories->count() > 0) {
+                $categoryIds = array_merge(
+                    $categoryIds,
+                    $access->extrakurikulerCategories->pluck('id')->toArray()
+                );
+            }
+        }
 
-        // // Get unique category IDs
-        // $categoryIds = array_unique($categoryIds);
+        // Get unique category IDs
+        $categoryIds = array_unique($categoryIds);
 
-        // Get categories 
-        $category = ExtrakurikulerCategory::findOrFail($categoryId);
+        // Get categories
+        $categories = ExtrakurikulerCategory::whereIn('id', $categoryIds)->get();
 
         // Get recent assessments
-        $recentAssessments = ExtrakurikulerStudentAssessment::where('category_id', $categoryId)
-            ->whereHas('siswa.kelas', function ($query) use ($staff) {
-                $query->where('kelas.id', $staff->kelas_id);
-            })
-            ->with(['siswa', 'category'])
-            ->latest()
-            ->get();
+        $recentAssessments = ExtrakurikulerStudentAssessment::whereIn('category_id', $categoryIds)
+            ->with(['category', 'siswa'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
 
-        // Get data for sub-categories if needed (similar to Al-Quran structure)
-        $students = Siswa::whereHas('kelas', function ($query) use ($staff) {
-            $query->where('kelas.id', $staff->kelas_id);
-        })->with(['extrakurikulerAssessments' => function ($query) use ($categoryId) {
-            $query->where('category_id', $categoryId);
-        }])->get();
+        // Get students from the class that staff has access to
+        $students = Siswa::whereHas('detailKelas', function ($query) use ($kelas_id) {
+            $query->where('kelas_id', $kelas_id);
+        })->get();
 
         $staff_acces = (object)[
-            'akses_nilai' => $staff->where('kelas_id', $staff->kelas_id)->contains('akses_nilai', 1) ? 1 : 0,
-            'akses_absen' => $staff->where('kelas_id', $staff->kelas_id)->contains('akses_absen', 1) ? 1 : 0,
-            'kelas_id' => $staff->kelas_id,
-            'akses_alquran_learning' => $staff->where('kelas_id', $staff->kelas_id)->contains('akses_alquran_learning', 1) ? 1 : 0,
-            'akses_extrakurikuler' => $staff->where('kelas_id', $staff->kelas_id)->contains('akses_extrakurikuler', 1) ? 1 : 0,
-            'akses_worship_character' => $staff->where('kelas_id', $staff->kelas_id)->contains('akses_worship_character', 1) ? 1 : 0
+            'akses_nilai' => $staff->filter(function ($item) use ($kelas_id) {
+                return $item->kelas_id == $kelas_id && $item->akses_nilai == 1;
+            })->count() > 0 ? 1 : 0,
+            'akses_absen' => $staff->filter(function ($item) use ($kelas_id) {
+                return $item->kelas_id == $kelas_id && $item->akses_absen == 1;
+            })->count() > 0 ? 1 : 0,
+            'kelas_id' => $kelas_id,
+            'akses_alquran_learning' => $staff->filter(function ($item) use ($kelas_id) {
+                return $item->kelas_id == $kelas_id && $item->akses_alquran_learning == 1;
+            })->count() > 0 ? 1 : 0,
+            'akses_extrakurikuler' => $staff->filter(function ($item) use ($kelas_id) {
+                return $item->kelas_id == $kelas_id && $item->akses_extrakurikuler == 1;
+            })->count() > 0 ? 1 : 0,
+            'akses_worship_character' => $staff->filter(function ($item) use ($kelas_id) {
+                return $item->kelas_id == $kelas_id && $item->akses_worship_character == 1;
+            })->count() > 0 ? 1 : 0
         ];
 
-        return view('staf.extrakurikuler.index', compact('category', 'recentAssessments', 'staff_acces', 'students', 'kelas_id'));
+        return view('staf.extrakurikuler.index', compact('category', 'recentAssessments', 'staff_acces', 'students',));
     }
 
     /**
@@ -252,47 +255,5 @@ class StaffExtrakurikulerController extends Controller
 
         return redirect()->route('staff.extrakurikuler.index')
             ->with('success', 'Penilaian berhasil dihapus');
-    }
-
-    public function assessmentByCategory($kelasId, $categoryId)
-    {
-        // Verify staff access
-        // $staff = StaffAcces::where('staff_id', session('staff')->id)
-        //     ->where('kelas_id', $kelasId)
-        //     ->where('akses_extrakurikuler', 1)
-        //     ->whereHas('extrakurikulerCategories', function ($query) use ($categoryId) {
-        //         $query->where('extrakurikuler_categories.id', $categoryId);
-        //     })
-        //     ->first();
-
-        // if (!$staff) {
-        //     return redirect()->route('staff.dashboard')
-        //         ->with('error', 'Anda tidak memiliki akses untuk kategori ini');
-        // }
-
-        // $category = ExtrakurikulerCategory::findOrFail($categoryId);
-
-        // Get students in this class with their assessments for this category
-        // $students = Siswa::whereHas('kelas', function ($query) use ($kelasId) {
-        //     $query->where('kelas.id', $kelasId);
-        // })->with(['extrakurikulerAssessments' => function ($query) use ($categoryId) {
-        //     $query->where('category_id', $categoryId);
-        // }])->get();
-
-        // Get assessments for this category and class
-        // $assessments = ExtrakurikulerStudentAssessment::where('category_id', $categoryId)
-        //     ->whereHas('siswa.kelas', function ($query) use ($kelasId) {
-        //         $query->where('kelas.id', $kelasId);
-        //     })
-        //     ->with(['siswa', 'category'])
-        //     ->latest()
-        //     ->get();
-
-        // return view('staf.extrakurikuler.assessment-by-category', compact(
-        //     'category',
-        //     'students',
-        //     'assessments',
-        //     'kelasId'
-        // ));
     }
 }

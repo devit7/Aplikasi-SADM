@@ -71,24 +71,6 @@ Route::post('/staff/logout', [StafAuthController::class, 'logoutStaf'])->name('s
 
 //STAFF MANAJEMEN
 Route::prefix('staff')->middleware(['stafAkses'])->group(function () {
-    // Al-Quran assessment by subcategory
-    // Route::get(
-    //     '/al-quran/kelas/{kelasId}/subcategory/{subcategoryId}',
-    //     [StaffAlQuranLearningController::class, 'assessmentBySubcategory']
-    // )->name('staff.al-quran.assessment-by-subcategory');
-
-    // // Extrakurikuler assessment by category  
-    // Route::get(
-    //     '/extrakurikuler/kelas/{kelasId}/category/{categoryId}',
-    //     [StaffExtrakurikulerController::class, 'assessmentByCategory']
-    // )->name('staff.extrakurikuler.assessment-by-category');
-
-    // // Worship assessment by category
-    // Route::get(
-    //     '/worship/kelas/{kelasId}/category/{categoryId}',
-    //     [StaffWorshipCharacterController::class, 'assessmentByCategory']
-    // )->name('staff.worship.assessment-by-category');
-
     Route::get('/', [StaffController::class, 'index'])->name('staff.dashboard');
     Route::get('/list-siswa/{id}', [StaffController::class, 'show'])->name('staff.list-siswa');
 
