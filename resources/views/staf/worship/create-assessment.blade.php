@@ -44,7 +44,9 @@
                         </select>
                      </div>
                      @error('category_id')
-                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                     <p id="outlined_error_help" class="mt-2 text-xs text-red-700">
+                        {{ $message }}
+                     </p>
                      @enderror
                   </div>
 
@@ -66,7 +68,9 @@
                         </select>
                      </div>
                      @error('siswa_id')
-                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                     <p id="outlined_error_help" class="mt-2 text-xs text-red-700">
+                        {{ $message }}
+                     </p>
                      @enderror
                   </div>
                </div>
@@ -90,7 +94,9 @@
                         @endforeach
                      </div>
                      @error('predicate')
-                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                     <p id="outlined_error_help" class="mt-2 text-xs text-red-700">
+                        {{ $message }}
+                     </p>
                      @enderror
                   </div>
                </div>
@@ -106,7 +112,9 @@
                      class="shadow-sm p-4 font-medium text-gray-700 border focus:outline-none focus:ring-gray-500 focus:border-gray-500 block w-full sm:text-base rounded-md"
                      placeholder="Add details about the student's worship and character performance">{{ old('explanation') }}</textarea>
                   @error('explanation')
-                  <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                  <p id="outlined_error_help" class="mt-2 text-xs text-red-700">
+                     {{ $message }}
+                  </p>
                   @enderror
                </div>
 

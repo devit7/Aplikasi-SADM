@@ -201,6 +201,11 @@
                                                                             required>
                                                                         <span class="ml-2 text-sm">{{ $predicate }}</span>
                                                                     </label>
+                                                                    @error('predicate')
+                                                                    <p id="outlined_error_help" class="mt-2 text-xs text-red-700">
+                                                                        {{ $message }}
+                                                                    </p>
+                                                                    @enderror
                                                                     @endforeach
                                                                 </div>
                                                             </div>
@@ -213,6 +218,11 @@
                                                                 <textarea id="explanation-{{ $assessment->id }}" name="explanation" rows="3"
                                                                     class="shadow-sm p-3 w-full border border-gray-500 rounded-md resize-none ring-gray-500"
                                                                     placeholder="Add details about the student's performance" required>{{ $assessment->explanation }}</textarea>
+                                                                @error('explanation')
+                                                                <p id="outlined_error_help" class="mt-2 text-xs text-red-700">
+                                                                    {{ $message }}
+                                                                </p>
+                                                                @enderror
                                                             </div>
 
                                                             <!-- Pengajar Field (Read-only) -->
@@ -366,34 +376,6 @@
             // Show loading state without disabling the button
             button.innerHTML =
                 '<svg class="animate-spin h-5 w-5 text-white inline mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Updating...';
-        });
-    });
-
-    // Form validation
-    document.querySelectorAll('.edit-form').forEach(form => {
-        form.addEventListener('submit', function(e) {
-            const explanation = this.querySelector('textarea[name="explanation"]');
-
-            if (!explanation.value.trim()) {
-                e.preventDefault();
-                alert('Explanation is required');
-                explanation.focus();
-                return false;
-            }
-
-            if (explanation.value.trim().length > 255) {
-                e.preventDefault();
-                alert('Explanation should not exceed 255 characters');
-                explanation.focus();
-                return false;
-            }
-
-            const predicate = this.querySelector('input[name="predicate"]:checked');
-            if (!predicate) {
-                e.preventDefault();
-                alert('Please select a predicate');
-                return false;
-            }
         });
     });
 </script>
