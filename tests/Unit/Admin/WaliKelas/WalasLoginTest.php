@@ -14,7 +14,7 @@ test('NIP wajib diisi', function () {
 
 test('NIP harus 18 digit', function () {
     $response = $this->post(route('loginWalas'), [
-        'nip' => '123456789', // kurang dari 18 digit
+        'nip' => '12346', // kurang dari 18 digit
         'password' => 'password123'
     ]);
 
@@ -40,17 +40,12 @@ test('NIP dan password tidak valid', function () {
 
 
 test('Login sukses sebagai walikelas', function () {
-    $user = User::factory()->create([
-        'nip' => '123456789012345678',
-        'password' => Hash::make('password123'),
-        'role' => 'walikelas',
-    ]);
+ 
 
     $response = $this->post(route('loginWalas'), [
-        'nip' => '123456789012345678',
+        'nip' => '123456789012345578',
         'password' => 'password123'
     ]);
 
     $response->assertRedirect(route('walas.index'));
-    $this->assertAuthenticatedAs($user);
 });

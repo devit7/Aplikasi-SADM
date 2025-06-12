@@ -7,6 +7,27 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>APLIKASI - SADM</title>
     @vite('resources/css/app.css')
+    <script>
+        (function(m, a, z, e) {
+            var s, t;
+            try {
+                t = m.sessionStorage.getItem('maze-us');
+            } catch (err) {}
+
+            if (!t) {
+                t = new Date().getTime();
+                try {
+                    m.sessionStorage.setItem('maze-us', t);
+                } catch (err) {}
+            }
+
+            s = a.createElement('script');
+            s.src = z + '?apiKey=' + e;
+            s.async = true;
+            a.getElementsByTagName('head')[0].appendChild(s);
+            m.mazeUniversalSnippetApiKey = e;
+        })(window, document, 'https://snippet.maze.co/maze-universal-loader.js', 'db08c225-5ce2-4bf7-9f44-8c88c999648d');
+    </script>
 </head>
 
 <body>
@@ -56,7 +77,7 @@
                                     <p class="text-black font-semibold mt-2">KELAS
                                         {{-- {{ $kelas->nama_kelas }}<br>{{ $kelas->matapelajaran->first()->semester }}-{{ $kelas->tahun_ajaran }} --}}
                                         {{ $kelas->nama_kelas }}<br>
-                                        @if($kelas->matapelajaran->count() > 0 && $kelas->matapelajaran->first())
+                                        @if ($kelas->matapelajaran->count() > 0 && $kelas->matapelajaran->first())
                                             {{ $kelas->matapelajaran->first()->semester }}-{{ $kelas->tahun_ajaran }}
                                         @else
                                             {{ $kelas->tahun_ajaran }}
