@@ -11,4 +11,14 @@ use App\Models\Staff;
 
         $response->assertRedirect(route('staff.dashboard'));
     });
+
+    test('Login gagal karena field kosong', function () {
+
+        $response = $this->post('/staff/login', [
+        'nip' => '',
+        'password' => '',
+        ]);
+
+    $response->assertSessionHasErrors(['nip', 'password']);
+});
 ?>
