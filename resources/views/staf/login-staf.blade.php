@@ -38,7 +38,6 @@
                     <div class="mt-4">
                         <label class="block ">Password</label>
                         <input type="password" name="password" id="password" placeholder="Masukan Password"
-                            minlength="6"
                             class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none">
                         @error('password')
                         <p id="outlined_error_help" class="mt-2 text-xs text-red-700">
