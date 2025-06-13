@@ -36,7 +36,6 @@
 <body class="bg-white">
     <x-staf-navbar />
     <div class="flex">
-        <!-- Check if we are on a page with a kelas object -->
         @if((isset($kelas) && isset($kelas->id)) ||
         (isset($staff_acces) && (
         isset($staff_acces->akses_nilai) ||
@@ -44,27 +43,20 @@
         isset($staff_acces->akses_alquran_learning) ||
         isset($staff_acces->akses_extrakurikuler) ||
         isset($staff_acces->akses_worship_character)
-        )) ||
-        (isset($staffAcces) && (
-        isset($staffAcces->akses_nilai) ||
-        isset($staffAcces->akses_absen) ||
-        isset($staffAcces->akses_alquran_learning) ||
-        isset($staffAcces->akses_extrakurikuler) ||
-        isset($staffAcces->akses_worship_character)
-        ))
-        )
+        )))
+
         @php
         $kelasId = isset($kelas->id) ? $kelas->id :
         (isset($staff_acces->kelas_id) ? $staff_acces->kelas_id :
-        (isset($staffAcces->kelas_id) ? $staffAcces->kelas_id :
-        (isset($kelas) ? $kelas->id : null)));
+        (isset($kelas) ? $kelas->id : null));
 
         // Normalize variable names for consistency
-        $staffAksesNilai = $staff_acces->akses_nilai ?? ($staffAcces->akses_nilai ?? 0);
-        $staffAksesAbsen = $staff_acces->akses_absen ?? ($staffAcces->akses_absen ?? 0);
-        $staffAksesAlQuran = $staff_acces->akses_alquran_learning ?? ($staffAcces->akses_alquran_learning ?? 0);
-        $staffAksesExtra = $staff_acces->akses_extrakurikuler ?? ($staffAcces->akses_extrakurikuler ?? 0);
-        $staffAksesWorship = $staff_acces->akses_worship_character ?? ($staffAcces->akses_worship_character ?? 0);
+        $staffAksesNilai = $staff_acces->akses_nilai ?? 0;
+        $staffAksesAbsen = $staff_acces->akses_absen ?? 0;
+        $staffAksesAlQuran = $staff_acces->akses_alquran_learning ?? 0;
+        $staffAksesExtra = $staff_acces->akses_extrakurikuler ?? 0;
+        $staffAksesWorship = $staff_acces->akses_worship_character ?? 0;
+
         @endphp
         <x-alternative-staf-sidebar
             :kelasId="$kelasId"

@@ -39,7 +39,6 @@ class StaffAlQuranLearningController extends Controller
                 );
             }
         }
-
         // Get unique subcategory IDs
         $subcategoryIds = array_unique($subcategoryIds);
 
@@ -49,7 +48,6 @@ class StaffAlQuranLearningController extends Controller
         })->with(['subcategories' => function ($query) use ($subcategoryIds) {
             $query->whereIn('id', $subcategoryIds);
         }])->get();
-
 
         // Get recent assessments
         $recentAssessments = AlQuranStudentAssessment::whereIn('subcategory_id', $subcategoryIds)

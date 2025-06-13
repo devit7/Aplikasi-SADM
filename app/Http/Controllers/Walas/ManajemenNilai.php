@@ -21,9 +21,9 @@ class ManajemenNilai extends Controller
     public function index()
     {
         // Get the current role by wali kelas 
-        $user = Auth::user();
+        /*  $user = Auth::user();
         $kelas = Kelas::where('walikelas_id', $user->id)->first();
-        
+
         if (!$kelas) {
             return redirect()->back()->with('error', 'Anda belum memiliki kelas yang dikelola');
         }
@@ -36,6 +36,27 @@ class ManajemenNilai extends Controller
         // Transform data untuk mendapatkan status nilai per mata pelajaran
         $mapel_with_nilai = $mapel_with_nilai->map(function ($mapel) {
             $mapel->status_nilai = $mapel->nilai->count() > 0 ? 'Dinilai' : 'Belum Dinilai';
+            return $mapel;
+        }); */
+        // Get the current role by wali kelas 
+        $user = Auth::user();
+        $kelas = Kelas::where('walikelas_id', $user->id)->first();
+
+        if (!$kelas) {
+            return redirect()->back()->with('error', 'Anda belum memiliki kelas yang dikelola');
+        }
+
+        // Filter mata pelajaran berdasarkan kelas wali kelas
+        $mapel_with_nilai = Matapelajaran::with(['nilai'])
+            ->where('kelas_id', $kelas->id) // Filter berdasarkan kelas
+            ->get();
+
+        // Transform data untuk mendapatkan status nilai per mata pelajaran
+        $mapel_with_nilai = $mapel_with_nilai->map(function ($mapel) {
+            $nilaiCount = $mapel->nilai->where('nilai_uts', '!=', '0')
+                ->where('nilai_uas', '!=', '0')
+                ->count();
+            $mapel->status_nilai = $nilaiCount > 0 ? 'Dinilai' : 'Belum Dinilai';
             return $mapel;
         });
 
@@ -106,11 +127,11 @@ class ManajemenNilai extends Controller
         // Get the current role by wali kelas
         $user = Auth::user();
         $kelas = Kelas::where('walikelas_id', $user->id)->first();
-        
+
         if (!$kelas) {
             return redirect()->back()->with('error', 'Anda belum memiliki kelas yang dikelola');
         }
-        
+
         // Get mata pelajaran dengan relasinya
         $nilai_siswa = Matapelajaran::with(['nilai.detailKelas.siswa', 'kelas.detailKelas.siswa'])
             ->where('id', $id)
@@ -134,7 +155,10 @@ class ManajemenNilai extends Controller
             'siswa' => $siswas
         ];
 
-        return view('walas.manajemen-nilai.show', compact('data', 'kelas'));
+        return view('walas.manajemen-nilai.show', [
+            'data' => $data,
+            'kelas' => $kelas,
+        ]);
     }
 
     /**

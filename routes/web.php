@@ -89,7 +89,7 @@ Route::prefix('staff')->middleware(['stafAkses'])->group(function () {
 
     // Start - AL QURAN LEARNING ASSESSMENTS
     Route::prefix('al-quran')->group(function () {
-        Route::get('/', [StaffAlQuranLearningController::class, 'index'])->name('staff.al-quran.index');
+        Route::get('/subcategory/{subcategoryId}', [StaffAlQuranLearningController::class, 'index'])->name('staff.al-quran.index');
         Route::get('/create-assessment', [StaffAlQuranLearningController::class, 'createAssessment'])->name('staff.al-quran.create-assessment');
         Route::post('/store-assessment', [StaffAlQuranLearningController::class, 'storeNewAssessment'])->name('staff.al-quran.store-new-assessment');
         Route::post('/{subcategoryId}/students/{siswaId}/assessment', [StaffAlQuranLearningController::class, 'updateAssessment'])->name('staff.al-quran.update-assessment');
@@ -99,7 +99,7 @@ Route::prefix('staff')->middleware(['stafAkses'])->group(function () {
 
     // Start - EXTRAKURIKULER ROUTES
     Route::prefix('extrakurikuler')->group(function () {
-        Route::get('/', [StaffExtrakurikulerController::class, 'index'])->name('staff.extrakurikuler.index');
+        Route::get('/category/{categoryId}', [StaffExtrakurikulerController::class, 'index'])->name('staff.extrakurikuler.index');
         Route::get('/create-assessment', [StaffExtrakurikulerController::class, 'createAssessment'])->name('staff.extrakurikuler.create-assessment');
         Route::post('/store-assessment', [StaffExtrakurikulerController::class, 'storeNewAssessment'])->name('staff.extrakurikuler.store-new-assessment');
         Route::put('/update-assessment/{id}', [StaffExtrakurikulerController::class, 'updateAssessment'])->name('staff.extrakurikuler.update-assessment');
@@ -109,7 +109,7 @@ Route::prefix('staff')->middleware(['stafAkses'])->group(function () {
 
     // Start - WORSHIP CHARACTER ROUTES
     Route::prefix('worship')->group(function () {
-        Route::get('/', [StaffWorshipCharacterController::class, 'index'])->name('staff.worship.index');
+        Route::get('/category/{categoryId}', [StaffWorshipCharacterController::class, 'index'])->name('staff.worship.index');
         Route::get('/create-assessment', [StaffWorshipCharacterController::class, 'createAssessment'])->name('staff.worship.create-assessment');
         Route::post('/store-assessment', [StaffWorshipCharacterController::class, 'storeNewAssessment'])->name('staff.worship.store-new-assessment');
         Route::put('/update-assessment/{id}', [StaffWorshipCharacterController::class, 'updateAssessment'])->name('staff.worship.update-assessment');

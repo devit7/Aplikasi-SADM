@@ -25,7 +25,7 @@ class StaffExtrakurikulerController extends Controller
             return redirect()->route('staff.dashboard')->with('error', 'Anda tidak memiliki akses untuk Extrakurikuler');
         }
 
-        // Filter only records with Extrakurikuler access and get kelas_id
+        // Filter only records with Worship access and get kelas_id
         $staff_extrakurikuler_access = $staff->where('akses_extrakurikuler', 1)->first();
         $kelas_id = $staff_extrakurikuler_access ? $staff_extrakurikuler_access->kelas_id : $staff->first()->kelas_id;
 
@@ -43,7 +43,7 @@ class StaffExtrakurikulerController extends Controller
         // Get unique category IDs
         $categoryIds = array_unique($categoryIds);
 
-        // Get categories 
+        // Get categories
         $categories = ExtrakurikulerCategory::whereIn('id', $categoryIds)->get();
 
         // Get recent assessments
@@ -52,21 +52,31 @@ class StaffExtrakurikulerController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        // Get data for sub-categories if needed (similar to Al-Quran structure)
+        // Get students from the class that staff has access to
         $students = Siswa::whereHas('detailKelas', function ($query) use ($kelas_id) {
             $query->where('kelas_id', $kelas_id);
         })->get();
 
         $staff_acces = (object)[
-            'akses_nilai' => $staff->where('kelas_id', $kelas_id)->contains('akses_nilai', 1) ? 1 : 0,
-            'akses_absen' => $staff->where('kelas_id', $kelas_id)->contains('akses_absen', 1) ? 1 : 0,
+            'akses_nilai' => $staff->filter(function ($item) use ($kelas_id) {
+                return $item->kelas_id == $kelas_id && $item->akses_nilai == 1;
+            })->count() > 0 ? 1 : 0,
+            'akses_absen' => $staff->filter(function ($item) use ($kelas_id) {
+                return $item->kelas_id == $kelas_id && $item->akses_absen == 1;
+            })->count() > 0 ? 1 : 0,
             'kelas_id' => $kelas_id,
-            'akses_alquran_learning' => $staff->where('kelas_id', $kelas_id)->contains('akses_alquran_learning', 1) ? 1 : 0,
-            'akses_extrakurikuler' => $staff->where('kelas_id', $kelas_id)->contains('akses_extrakurikuler', 1) ? 1 : 0,
-            'akses_worship_character' => $staff->where('kelas_id', $kelas_id)->contains('akses_worship_character', 1) ? 1 : 0
+            'akses_alquran_learning' => $staff->filter(function ($item) use ($kelas_id) {
+                return $item->kelas_id == $kelas_id && $item->akses_alquran_learning == 1;
+            })->count() > 0 ? 1 : 0,
+            'akses_extrakurikuler' => $staff->filter(function ($item) use ($kelas_id) {
+                return $item->kelas_id == $kelas_id && $item->akses_extrakurikuler == 1;
+            })->count() > 0 ? 1 : 0,
+            'akses_worship_character' => $staff->filter(function ($item) use ($kelas_id) {
+                return $item->kelas_id == $kelas_id && $item->akses_worship_character == 1;
+            })->count() > 0 ? 1 : 0
         ];
 
-        return view('staf.extrakurikuler.index', compact('categories', 'recentAssessments', 'staff_acces', 'students'));
+        return view('staf.extrakurikuler.index', compact('category', 'recentAssessments', 'staff_acces', 'students',));
     }
 
     /**

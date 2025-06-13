@@ -20,4 +20,9 @@ class AlQuranLearningCategory extends Model
     {
         return $this->hasMany(AlQuranLearningSubcategory::class, 'category_id');
     }
+
+    public function staffAccesses()
+    {
+        return $this->belongsToMany(StaffAcces::class, 'al_quran_category_staff_access', 'category_id', 'staff_access_id');
+    }
 }

@@ -59,7 +59,7 @@ class KelasResource extends Resource
                     ->label('Wali Kelas')
                     ->required()
                     ->preload()
-                    ->relationship('user', 'name')
+                    ->relationship('user', 'name', fn ($query) => $query->where('role', 'walikelas'))
                     ->placeholder('Contoh: Budi Santoso, S.Pd'),
             ]);
     }

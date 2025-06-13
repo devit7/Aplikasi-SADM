@@ -68,7 +68,9 @@
                             </select>
                         </div>
                         @error('subcategory_id')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p id="outlined_error_help" class="mt-2 text-xs text-red-700">
+                            {{ $message }}
+                        </p>
                         @enderror
                     </div>
 
@@ -89,8 +91,10 @@
                                 @endforeach
                             </select>
                         </div>
-                        @error('siswa_id')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @error('subcategory_id')
+                        <p id="outlined_error_help" class="mt-2 text-xs text-red-700">
+                            {{ $message }}
+                        </p>
                         @enderror
                     </div>
                 </div>
@@ -113,8 +117,10 @@
                             </label>
                             @endforeach
                         </div>
-                        @error('predicate')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @error('subcategory_id')
+                        <p id="outlined_error_help" class="mt-2 text-xs text-red-700">
+                            {{ $message }}
+                        </p>
                         @enderror
                     </div>
                 </div>
@@ -129,8 +135,10 @@
                     <textarea id="explanation" name="explanation" rows="4"
                         class="shadow-sm p-4 border ring-gray-500 border-gray-500 block w-full sm:text-base rounded-md"
                         placeholder="Add details about the student's performance">{{ old('explanation') }}</textarea>
-                    @error('explanation')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @error('subcategory_id')
+                    <p id="outlined_error_help" class="mt-2 text-xs text-red-700">
+                        {{ $message }}
+                    </p>
                     @enderror
                 </div>
 
@@ -142,18 +150,6 @@
                         value="{{ session('staff')->nama }}" readonly>
                     <input type="hidden" name="created_by_id" value="{{ session('staff')->id }}">
                 </div>
-
-                <!-- Notes Field -->
-                {{-- <div>
-                        <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Internal Notes (not shown
-                            to students/parents)</label>
-                        <textarea id="notes" name="notes" rows="2"
-                            class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                            placeholder="Add any internal notes here">{{ old('notes') }}</textarea>
-                @error('notes')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div> --}}
     </div>
 
     <!-- Form Buttons -->

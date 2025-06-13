@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\Controller;
+use App\Models\ExtrakurikulerCategory;
+use App\Models\ExtrakurikulerStudentAssessment;
 use App\Models\WorshipCharacterCategory;
 use App\Models\WorshipStudentAssessment;
 use App\Models\Siswa;

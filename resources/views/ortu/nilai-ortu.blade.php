@@ -8,7 +8,7 @@
     </div>
     @foreach ($nilaiBySemester as $semester => $nilai)
     @php
-        // dd($nilai);
+        // dd($nilai, $nilaiBySemester);
     @endphp
     <!-- Main container for the report card -->
     <div class="report-card">
@@ -129,25 +129,25 @@
                     <tr>
                         <td class="text-center">10</td>
                         <td>English/ Writting</td>
-                        <td class="text-center">{{ $nilai['English/ Writting'][0]['nilai'] ?? '-' }}</td>
+                        <td class="text-center">{{ $nilai['English/Writing'][0]['nilai'] ?? '-' }}</td>
                         <td class="text-sm">Has mastered in quantitative pronoun and quantifiers, need assistance in modal verb and connectives.</td>
                     </tr>
                     <tr>
                          <td class="text-center"></td>
                         <td>English/ Reading</td>
-                        <td class="text-center">{{ $nilai['English/ Reading'][0]['nilai'] ?? '-' }}</td>
+                        <td class="text-center">{{ $nilai['English/Reading'][0]['nilai'] ?? '-' }}</td>
                         <td class="text-sm">Need assistance in understanding the reading text..</td>
                     </tr>
                     <tr>
                          <td class="text-center"></td>
                         <td>English/ Listening</td>
-                        <td class="text-center">{{ $nilai['English/ Listening'][0]['nilai'] ?? '-' }}</td>
+                        <td class="text-center">{{ $nilai['English/Listening'][0]['nilai'] ?? '-' }}</td>
                         <td class="text-sm">Has good skill in understanding the native speakers.</td>
                     </tr>
                      <tr>
                          <td class="text-center"></td>
                         <td>English/ Speaking</td>
-                        <td class="text-center">{{ $nilai['English/ Speaking'][0]['nilai'] ?? '-' }}</td>
+                        <td class="text-center">{{ $nilai['English/Speaking'][0]['nilai'] ?? '-' }}</td>
                         <td class="text-sm">Has good speaking skill in english</td>
                     </tr>
                     <tr>
@@ -260,9 +260,9 @@
                         <tbody>
                             <tr>
                                 <td class="text-center">1</td>
-                                <td>{{ $worship[$semester]['0']['category']['nama'] }}</td>
-                                <td class="text-center font-bold">{{ $worship[$semester]['0']['predicate'] }}</td>
-                                <td>{{ $worship[$semester]['0']['explanation'] }}</td>
+                                <td>{{ $worship[$semester]['0']['category']['nama'] ?? '-' }}</td>
+                                <td class="text-center font-bold">{{ $worship[$semester]['0']['predicate'] ?? '-' }}</td>
+                                <td>{{ $worship[$semester]['0']['explanation'] ?? '-' }}</td>
                             </tr>
                         </tbody>
                      </table>
@@ -304,7 +304,7 @@
         <section class="mt-6">
             <div class="border-2 border-black p-2">
                 <span class="font-bold">Notes:</span>
-                Otka Mumtazah B. has good understanding in learning "KMD", need assistance to understand long instruction. Less confident when speaking in the front, but started to be confident.
+                {{ $siswa->nama }} has good understanding in learning "KMD", need assistance to understand long instruction. Less confident when speaking in the front, but started to be confident.
             </div>
         </section>
 

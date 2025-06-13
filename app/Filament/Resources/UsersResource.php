@@ -6,6 +6,7 @@ use App\Filament\Resources\UsersResource\Pages;
 use App\Filament\Resources\UsersResource\RelationManagers;
 use App\Models\User;
 use App\Models\Users;
+use App\Models\WaliKelas;
 use Carbon\Carbon;
 use Faker\Provider\ar_EG\Text;
 use Filament\Forms;
@@ -26,10 +27,10 @@ use Illuminate\Support\Facades\Hash;
 
 class UsersResource extends Resource
 {
-    protected static ?string $model = User::class;
+    protected static ?string $model = WaliKelas::class;
     protected static ?string $navigationGroup = 'Management';
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
-    protected static ?string $navigationLabel = 'Users';
+    protected static ?string $navigationLabel = 'Walas';
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -52,7 +53,14 @@ class UsersResource extends Resource
                     ->label('Email')
                     ->required()
                     ->email()
-                    ->unique(ignoreRecord: true)
+                    ->unique(
+                        table: 'users',
+                        column: 'email',
+                        ignoreRecord: true,
+                        modifyRuleUsing: function ($rule) {
+                            return $rule->where('role', 'walikelas');
+                        }
+                    )
                     ->placeholder('Contoh: budi.santoso@gmail.com'),
                 TextInput::make('password')
                     ->label('Password')
@@ -95,21 +103,13 @@ class UsersResource extends Resource
                     ->maxLength(200)
                     ->required()
                     ->placeholder('Contoh: Jl. Raya Bogor No. 123, RT 01/RW 02, Kec. Bogor Tengah, Kota Bogor'),
-                Select::make('role')
-                    ->label('Role')
-                    ->required()
-                    ->options([
-                        'admin' => 'Admin',
-                        'walikelas' => 'WaliKelas',
-                    ])
-                    ->placeholder('Pilih Role'),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->query(User::where('role', '!=', 'admin'))
+            ->query(WaliKelas::where('role', '!=', 'admin'))
             ->columns([
                 //
                 TextColumn::make('nip')
@@ -145,7 +145,26 @@ class UsersResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->requiresConfirmation()
+                    ->modalHeading('Hapus Wali Kelas')
+                    ->modalDescription(
+                        fn($record) =>
+                        $record->kelas()->exists()
+                            ? 'Wali Kelas ini tidak dapat dihapus karena masih memiliki kelas terkait.'
+                            : 'Apakah Anda yakin ingin menghapus wali kelas ini?'
+                    )
+                    ->modalSubmitAction(
+                        fn($record) => $record->kelas()->exists()
+                            ?  false
+                            :  null
+                    )
+                    ->color(fn($record) => $record->kelas()->exists() ? 'gray' : 'danger')
+                    ->tooltip(
+                        fn($record) => $record->kelas()->exists()
+                            ? 'Tidak dapat dihapus: Wali kelas masih memiliki kelas yang terkait'
+                            : 'Hapus wali kelas'
+                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
