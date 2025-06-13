@@ -29,8 +29,15 @@ class Absen extends Model
 
         // Validasi saat mengupdate absen
         static::updating(function ($absen) {
-            if ($absen->tanggal != now()->format('Y-m-d')) {
-                throw new Exception('Tanggal absen hanya boleh diisi untuk hari ini.');
+            $today = now()->format('Y-m-d');
+            $sixMonthsFromNow = now()->addMonths(6)->format('Y-m-d');
+
+            if ($absen->tanggal < $today) {
+                throw new Exception('Tanggal absen tidak boleh diisi dengan tanggal sebelum hari ini.');
+            }
+
+            if ($absen->tanggal > $sixMonthsFromNow) {
+                throw new Exception('Tanggal absen tidak boleh lebih dari 6 bulan ke depan.');
             }
         });
     }

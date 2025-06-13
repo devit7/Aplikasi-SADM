@@ -49,6 +49,7 @@ describe('Absensi Unit Tests', function () {
 
         // Act
         $absen->update([
+            'tanggal' => '2026-01-13',
             'status' => 'izin',
         ]);
 
