@@ -40,6 +40,22 @@ class ManajemenAbsen extends Controller
 
     public function store(Request $request)
     {
+
+        $request->validate([
+            'kelas_id' => 'required|exists:kelas,id',
+            'tanggal' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) {
+                    if ($value != now()->format('Y-m-d')) {
+                        $fail('Tanggal absen hanya boleh untuk hari ini.');
+                    }
+                }
+            ],
+            'status' => 'required|in:hadir,izin,sakit,alpha',
+
+        ]);
+
         $user = Auth::user();
         $kelas = Kelas::where('walikelas_id', $user->id)->first();
 

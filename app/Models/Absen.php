@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 
 class Absen extends Model
@@ -13,5 +14,24 @@ class Absen extends Model
     public function detailKelas()
     {
         return $this->belongsTo(DetailKelas::class, 'detail_kelas_id');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Validasi saat membuat absen baru
+        static::creating(function ($absen) {
+            if ($absen->tanggal != now()->format('Y-m-d')) {
+                throw new Exception('Tanggal absen hanya boleh diisi untuk hari ini.');
+            }
+        });
+
+        // Validasi saat mengupdate absen
+        static::updating(function ($absen) {
+            if ($absen->tanggal != now()->format('Y-m-d')) {
+                throw new Exception('Tanggal absen hanya boleh diisi untuk hari ini.');
+            }
+        });
     }
 }

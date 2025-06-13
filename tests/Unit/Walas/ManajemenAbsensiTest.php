@@ -19,7 +19,7 @@ describe('Absensi Unit Tests', function () {
         // Arrange
         $absenData = [
             'detail_kelas_id' => 1,
-            'tanggal' => '2024-01-15',
+            'tanggal' => '2025-06-13',
             'status' => 'hadir',
         ];
 
@@ -29,12 +29,12 @@ describe('Absensi Unit Tests', function () {
         // Assert
         expect($absen)->toBeInstanceOf(Absen::class);
         expect($absen->detail_kelas_id)->toBe(1);
-        expect($absen->tanggal)->toBe('2024-01-15');
+        expect($absen->tanggal)->toBe('2025-06-13');
         expect($absen->status)->toBe('hadir');
 
         $this->assertDatabaseHas('absen', [
             'detail_kelas_id' => 1,
-            'tanggal' => '2024-01-15',
+            'tanggal' => '2025-06-13',
             'status' => 'hadir'
         ]);
     });
@@ -43,7 +43,7 @@ describe('Absensi Unit Tests', function () {
         // Arrange
         $absen = Absen::create([
             'detail_kelas_id' => 1,
-            'tanggal' => '2024-01-16',
+            'tanggal' => '2025-06-13',
             'status' => 'hadir'
         ]);
 
@@ -77,7 +77,7 @@ describe('Absensi Unit Tests', function () {
         // Arrange
         $absen = Absen::create([
             'detail_kelas_id' => 7,
-            'tanggal' => '2023-01-01',
+            'tanggal' => '2025-06-13',
             'status' => 'hadir'
         ]);
 

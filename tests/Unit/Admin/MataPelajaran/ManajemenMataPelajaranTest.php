@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\Matapelajaran;
 use App\Models\Kelas;
 use Livewire\Livewire;
@@ -7,11 +8,11 @@ use App\Filament\Resources\MatapelajaranResource\Pages\EditMatapelajaran;
 use App\Filament\Resources\MatapelajaranResource\Pages\ListMatapelajarans;
 use Carbon\Carbon;
 
-test('Validasi dapat menambahkan data mata pelajaran', function() {
-    
+test('Validasi dapat menambahkan data mata pelajaran', function () {
+
     $dataMatapelajaran = [
         'nama_mapel' => 'Matematika',
-        'kode_mapel' => 'MTK001', 
+        'kode_mapel' => 'MTK001',
         'kelas_id' => '10',
         'semester' => 'ganjil',
         'kkm' => '75',
@@ -30,10 +31,10 @@ test('Validasi dapat menambahkan data mata pelajaran', function() {
     ]);
 });
 
-test('Admin tidak dapat menambahkan mata pelajaran dengan kode yang sudah ada', function() {
+test('Admin tidak dapat menambahkan mata pelajaran dengan kode yang sudah ada', function () {
     // Arrange
 
-      Matapelajaran::create([
+    Matapelajaran::create([
         'nama_mapel' => 'Fisika',
         'kode_mapel' => 'FIS001',
         'kelas_id' => '10',
@@ -50,7 +51,7 @@ test('Admin tidak dapat menambahkan mata pelajaran dengan kode yang sudah ada', 
     Livewire::test(CreateMatapelajaran::class)
         ->fillForm([
             'nama_mapel' => 'Fisika Lanjutan',
-            'kode_mapel' => 'FIS001', 
+            'kode_mapel' => 'FIS001',
             'kelas_id' => '10',
             'semester' => 'genap',
             'kkm' => '80',
@@ -59,7 +60,7 @@ test('Admin tidak dapat menambahkan mata pelajaran dengan kode yang sudah ada', 
         ->assertHasFormErrors(['kode_mapel' => 'unique']);
 });
 
-test('Validasi data mata pelajaran tidak bisa di edit di Filament dengan data kosong', function() {
+test('Validasi data mata pelajaran tidak bisa di edit di Filament dengan data kosong', function () {
     // Buat mata pelajaran
     $matapelajaran = Matapelajaran::create([
         'nama_mapel' => 'Bahasa Inggris',
@@ -90,6 +91,3 @@ test('Validasi data mata pelajaran tidak bisa di edit di Filament dengan data ko
             'kkm' => 'required',
         ]);
 });
-
-
-
