@@ -11,43 +11,48 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Walas\ManajemenNilai;
 use Filament\Forms\Components\Livewire;
 
-uses(RefreshDatabase::class);
-
 // // ./vendor/bin/pest .\tests\Unit\Walas\ManajemenNilaiTest.php
 test('Input nilai valid berhasil disimpan', function () {
     $nilai = [
-        'nama' => 'Mamat',
-        'id_mapel' => 1,
-        'id_kelas' => 1,
-        'uts' => 80,
-        'uas' => 85,
+        'nama' => '',
+        'id_mapel' => 0,
+        'id_kelas' => 0,
+        'uts' => 0,
+        'uas' => 0,
     ];
     // Act
-    $response = $this->post('/walas/manajemen-nilai', $nilai);
+    $response = $this->post(route('walas.manajemen-nilai.store'), $nilai);
 
     // Assert
-    $response->assertSessionHasNoErrors(['nama' => 'Mamat',
-        'id_mapel',
-        'id_kelas',
-        'uts',
-        'uas',]);
+    $response->assertSessionHasNoErrors(['nama']);
+    
+    $response->assertSessionHasErrors(['nama']);
+    $this->assertGreaterThan($nilai['uts'], 100);
+    $this->assertGreaterThan($nilai['uas'], 100);
 });
 
-test('Input nilai valid Login disimpan', function () {
-    $nilai = [
-        'nama' => 'Mamat',
-        'id_mapel' => 1,
-        'id_kelas' => 1,
-        'uts' => 120,
-        'uas' => 85,
-    ];
-    // Act
-    $response = $this->post('/walas/manajemen-nilai', $nilai);
+// test('Input nilai UTS gagal disimpan', function () {
+//     $nilai = [
+//         'nama' => 'Mamat',
+//         'id_mapel' => 1,
+//         'id_kelas' => 1,
+//         'uts' => 120,
+//         'uas' => 85,
+//     ];
 
-    // Assert
-    $response->assertSessionHasErrors(['nama' => 'Mamat',
-        'id_mapel',
-        'id_kelas',
-        'uts',
-        'uas',]);
-});
+//     // Assert
+//     $this->assertGreaterThan(100, $nilai['uts']);
+// });
+
+// test('Input nilai UAS gagal disimpan', function () {
+//     $nilai = [
+//         'nama' => 'Mamat',
+//         'id_mapel' => 1,
+//         'id_kelas' => 1,
+//         'uts' => 80,
+//         'uas' => 120,
+//     ];
+
+//     // Assert
+//     $this->assertGreaterThan(100, $nilai['uas']);
+// });

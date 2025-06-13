@@ -11,6 +11,7 @@ use App\Models\Siswa;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class ManajemenNilai extends Controller
 {
@@ -93,7 +94,7 @@ class ManajemenNilai extends Controller
 
             return redirect()->back()->with('success', 'Nilai berhasil disimpan');
         } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('errors', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 

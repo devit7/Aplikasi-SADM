@@ -11,6 +11,7 @@ use App\Models\Siswa;
 
         $response->assertRedirect(route('ortu.index'));
     });
+    
     test('Login Gagal', function () {
     
         $response = $this->post('/ortu/login', [
@@ -18,6 +19,6 @@ use App\Models\Siswa;
             'nis' => '12345'
         ]);
 
-        $response->assertRedirect(route('ortu.index'));
+        $response->assertSessionHasErrors(['login']);
     });
 ?>
