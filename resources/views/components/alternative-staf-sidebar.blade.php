@@ -41,7 +41,7 @@
                 @endif
 
                 <!-- Al-Quran Learning Section -->
-                @if($staffAksesAlQuran == 1 && $alQuranCategories->count() > 0)
+                @if($staffAksesAlQuran == 1)
                 <span class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider mt-4">
                     Al-Quran Learning
                 </span>
@@ -57,7 +57,7 @@
                 @endif
 
                 <!-- Extrakurikuler Section -->
-                @if($staffAksesExtra == 1 && $extrakurikulerCategories->count() > 0)
+                @if($staffAksesExtra == 1)
                 <span class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider mt-4">
                     Extrakurikuler
                 </span>
@@ -73,7 +73,7 @@
                 @endif
 
                 <!-- Worship & Character Section -->
-                @if($staffAksesWorship == 1 && $worshipCategories->count() > 0)
+                @if($staffAksesWorship == 1)
                 <span class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider mt-4">
                     Worship & Character
                 </span>

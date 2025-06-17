@@ -15,20 +15,20 @@ class ExtrakurikulerCategory extends Model
     protected $fillable = ['nama', 'tahun_ajaran'];
 
     /**
-     * Get all assessments for this category
-     */
-    public function assessments(): HasMany
-    {
-        return $this->hasMany(ExtrakurikulerStudentAssessment::class, 'category_id');
-    }
-
-    /**
      * Get all staff accesses for this category
      */
     public function staffAccesses(): BelongsToMany
     {
         return $this->belongsToMany(StaffAcces::class, 'extrakurikuler_category_staff_access', 'category_id', 'staff_access_id')
             ->withTimestamps();
+    }
+
+    /**
+     * Get all assessments for this category
+     */
+    public function assessments(): HasMany
+    {
+        return $this->hasMany(ExtrakurikulerStudentAssessment::class, 'category_id');
     }
 
     /**

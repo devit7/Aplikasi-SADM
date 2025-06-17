@@ -6,12 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\AlQuranLearningCategory;
 use App\Models\AlQuranLearningSubcategory;
 use App\Models\AlQuranStudentAssessment;
-use App\Models\DetailKelas;
 use App\Models\Siswa;
-use App\Models\Staff;
 use App\Models\StaffAcces;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class StaffAlQuranLearningController extends Controller
 {

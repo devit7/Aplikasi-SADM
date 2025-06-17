@@ -76,7 +76,7 @@ class StaffExtrakurikulerController extends Controller
             })->count() > 0 ? 1 : 0
         ];
 
-        return view('staf.extrakurikuler.index', compact('category', 'recentAssessments', 'staff_acces', 'students',));
+        return view('staf.extrakurikuler.index', compact('categories', 'recentAssessments', 'staff_acces', 'students'));
     }
 
     /**
@@ -107,13 +107,15 @@ class StaffExtrakurikulerController extends Controller
             }
         }
 
-        $categories = ExtrakurikulerCategory::whereIn('id', $categoryIds)->get();
+        // $categories = ExtrakurikulerCategory::whereIn('id', $categoryIds)->get();
 
         // Get students from classes staff has access to
         $kelasIds = $staff->pluck('kelas_id')->unique()->toArray();
         $students = Siswa::whereHas('detailKelas', function ($query) use ($kelasIds) {
             $query->whereIn('kelas_id', $kelasIds);
         })->get();
+
+        $categories = ExtrakurikulerCategory::whereIn('id', $categoryIds)->get();
 
         $staff_acces = (object)[
             'akses_nilai' => $staff->where('kelas_id', $kelas_id)->contains('akses_nilai', 1) ? 1 : 0,
@@ -125,6 +127,56 @@ class StaffExtrakurikulerController extends Controller
         ];
 
         return view('staf.extrakurikuler.create-assessment', compact('categories', 'students', 'staff_acces'));
+    }
+
+    /**
+     * Get students by category (AJAX endpoint)
+     */
+    public function getStudentsByCategory(Request $request)
+    {
+        $categoryId = $request->category_id;
+
+        if (!$categoryId) {
+            return response()->json(['students' => []]);
+        }
+
+        $staff = session('staff');
+
+        // Check if staff has access to this category
+        $hasAccess = StaffAcces::where('staff_id', $staff->id)
+            ->where('akses_extrakurikuler', true)
+            ->whereHas('extrakurikulerCategories', function ($query) use ($categoryId) {
+                $query->where('extrakurikuler_categories.id', $categoryId);
+            })
+            ->exists();
+
+        if (!$hasAccess) {
+            return response()->json(['error' => 'Access denied'], 403);
+        }
+
+        // Get staff's accessible class IDs
+        $staffClassIds = StaffAcces::where('staff_id', $staff->id)
+            ->where('akses_extrakurikuler', true)
+            ->pluck('kelas_id')
+            ->unique()
+            ->toArray();
+
+        // Get category with enrolled students who are also in staff's classes
+        $category = ExtrakurikulerCategory::with(['enrolledStudents' => function ($query) use ($staffClassIds) {
+            $query->whereHas('detailKelas', function ($subQuery) use ($staffClassIds) {
+                $subQuery->whereIn('kelas_id', $staffClassIds);
+            })
+                ->select('siswa.id', 'siswa.nama', 'siswa.nisn')
+                ->orderBy('siswa.nama');
+        }])->find($categoryId);
+
+        if (!$category) {
+            return response()->json(['students' => []]);
+        }
+
+        $students = $category->enrolledStudents;
+
+        return response()->json(['students' => $students]);
     }
 
     /**

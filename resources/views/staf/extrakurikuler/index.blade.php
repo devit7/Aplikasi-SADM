@@ -94,7 +94,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($recentAssessments as $index => $assessment)
+                        @foreach($recentAssessments as $index => $assessment)
                         <tr class="border-b hover:bg-gray-100">
                             <td class="p-3 whitespace-nowrap font-medium text-base">{{ $index + 1 }}</td>
                             <td class="p-3 whitespace-nowrap font-medium text-base">
@@ -323,13 +323,7 @@
                                 </span>
                             </td>
                         </tr>
-                        @empty
-                        <tr>
-                            <td colspan="7" class="p-8 text-center text-gray-500 font-semibold">
-                                No Assessments found
-                            </td>
-                        </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </x-tables>
@@ -339,7 +333,6 @@
 
 @push('scripts')
 <script>
-    // Enhance radio button styling
     document.querySelectorAll('input[name="predicate"]').forEach(radio => {
         radio.addEventListener('change', function() {
             // Remove styling from all labels in the same form
