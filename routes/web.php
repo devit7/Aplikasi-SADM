@@ -94,6 +94,8 @@ Route::prefix('staff')->middleware(['stafAkses'])->group(function () {
         Route::post('/store-assessment', [StaffAlQuranLearningController::class, 'storeNewAssessment'])->name('staff.al-quran.store-new-assessment');
         Route::post('/{subcategoryId}/students/{siswaId}/assessment', [StaffAlQuranLearningController::class, 'updateAssessment'])->name('staff.al-quran.update-assessment');
         Route::delete('/assessment/{id}', [StaffAlQuranLearningController::class, 'deleteAssessment'])->name('staff.al-quran.delete-assessment');
+        Route::get('/students-by-subcategory', [StaffAlQuranLearningController::class, 'getStudentsBySubcategory'])
+            ->name('staff.al-quran.students-by-subcategory');
     });
     // End - AL QURAN LEARNING ASSESSMENTS
 
@@ -102,11 +104,10 @@ Route::prefix('staff')->middleware(['stafAkses'])->group(function () {
         Route::get('/', [StaffExtrakurikulerController::class, 'index'])->name('staff.extrakurikuler.index');
         Route::get('/create-assessment', [StaffExtrakurikulerController::class, 'createAssessment'])->name('staff.extrakurikuler.create-assessment');
         Route::post('/store-assessment', [StaffExtrakurikulerController::class, 'storeNewAssessment'])->name('staff.extrakurikuler.store-new-assessment');
-        // Add this route for getting students by category
-        Route::get('/students-by-category', [StaffExtrakurikulerController::class, 'getStudentsByCategory'])
-            ->name('staff.extrakurikuler.students-by-category');
         Route::put('/update-assessment/{id}', [StaffExtrakurikulerController::class, 'updateAssessment'])->name('staff.extrakurikuler.update-assessment');
         Route::delete('/delete-assessment/{id}', [StaffExtrakurikulerController::class, 'deleteAssessment'])->name('staff.extrakurikuler.delete-assessment');
+        Route::get('/students-by-category', [StaffExtrakurikulerController::class, 'getStudentsByCategory'])
+            ->name('staff.extrakurikuler.students-by-category');
     });
     // End - EXTRAKURIKULER ROUTES
 
@@ -117,6 +118,8 @@ Route::prefix('staff')->middleware(['stafAkses'])->group(function () {
         Route::post('/store-assessment', [StaffWorshipCharacterController::class, 'storeNewAssessment'])->name('staff.worship.store-new-assessment');
         Route::put('/update-assessment/{id}', [StaffWorshipCharacterController::class, 'updateAssessment'])->name('staff.worship.update-assessment');
         Route::delete('/delete-assessment/{id}', [StaffWorshipCharacterController::class, 'deleteAssessment'])->name('staff.worship.delete-assessment');
+        Route::get('/students-by-category', [StaffWorshipCharacterController::class, 'getStudentsByCategory'])
+            ->name('staff.worship.students-by-category');
     });
     // End - WORSHIP CHARACTER ROUTES
 });

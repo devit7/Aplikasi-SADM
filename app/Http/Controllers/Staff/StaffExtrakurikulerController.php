@@ -129,9 +129,6 @@ class StaffExtrakurikulerController extends Controller
         return view('staf.extrakurikuler.create-assessment', compact('categories', 'students', 'staff_acces'));
     }
 
-    /**
-     * Get students by category (AJAX endpoint)
-     */
     public function getStudentsByCategory(Request $request)
     {
         $categoryId = $request->category_id;
@@ -161,20 +158,20 @@ class StaffExtrakurikulerController extends Controller
             ->unique()
             ->toArray();
 
-        // Get category with enrolled students who are also in staff's classes
-        $category = ExtrakurikulerCategory::with(['enrolledStudents' => function ($query) use ($staffClassIds) {
-            $query->whereHas('detailKelas', function ($subQuery) use ($staffClassIds) {
-                $subQuery->whereIn('kelas_id', $staffClassIds);
+        // 1. Siswa Terdaftar pada kategori ekstrakurikuler ini
+        // 2. Siswa tidak memiliki data Predicate & Explanation yang ada untuk kategori ini
+        $students = Siswa::whereHas('detailKelas', function ($query) use ($staffClassIds) {
+            $query->whereIn('kelas_id', $staffClassIds);
+        })
+            ->whereHas('extrakurikulerCourses', function ($query) use ($categoryId) {
+                $query->where('extrakurikuler_categories.id', $categoryId);
             })
-                ->select('siswa.id', 'siswa.nama', 'siswa.nisn')
-                ->orderBy('siswa.nama');
-        }])->find($categoryId);
-
-        if (!$category) {
-            return response()->json(['students' => []]);
-        }
-
-        $students = $category->enrolledStudents;
+            ->whereDoesntHave('extrakurikulerAssessments', function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            })
+            ->select('siswa.id', 'siswa.nama', 'siswa.nisn')
+            ->orderBy('siswa.nama')
+            ->get();
 
         return response()->json(['students' => $students]);
     }

@@ -112,7 +112,7 @@
                                        @click="openEditModal = false"></div>
 
                                     <!-- Modal Content -->
-                                    <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full md:max-w-xl">
+                                    <div class="bg-white rounded-lg text-start overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full md:max-w-xl">
                                        <!-- Modal Header -->
                                        <div class="bg-blue-600 py-4 px-6 text-white flex justify-between">
                                           <h3 class="text-lg font-semibold">Edit Assessment</h3>

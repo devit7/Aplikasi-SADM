@@ -179,7 +179,7 @@
                                                     <!-- Modal Body -->
                                                     <form
                                                         action="{{ route('staff.al-quran.update-assessment', [$assessment->subcategory_id, $assessment->siswa_id]) }}"
-                                                        method="POST" class="p-6">
+                                                        method="POST" class="p-6 edit-form">
                                                         @csrf
                                                         <div class="mb-4">
                                                             <div
@@ -371,34 +371,34 @@
     });
 
     // Enhance Delete Modal functionality
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('deleteModal', () => ({
-            openDeleteModal: false,
+    // document.addEventListener('alpine:init', () => {
+    //     Alpine.data('deleteModal', () => ({
+    //         openDeleteModal: false,
 
-            closeModal() {
-                this.openDeleteModal = false;
-            },
+    //         closeModal() {
+    //             this.openDeleteModal = false;
+    //         },
 
-            openModal() {
-                this.openDeleteModal = true;
-            }
-        }));
-    });
+    //         openModal() {
+    //             this.openDeleteModal = true;
+    //         }
+    //     }));
+    // });
 
-    // Directly handle cancel button if needed
-    document.querySelectorAll('[data-cancel-delete]').forEach(button => {
-        button.addEventListener('click', function() {
-            // Find closest parent with x-data containing openDeleteModal
-            const modalContainer = this.closest('[x-data]');
-            if (modalContainer) {
-                // Get Alpine instance
-                const alpine = window.Alpine.getComponent(modalContainer);
-                if (alpine && typeof alpine.closeModal === 'function') {
-                    alpine.closeModal();
-                }
-            }
-        });
-    });
+    // // Directly handle cancel button if needed
+    // document.querySelectorAll('[data-cancel-delete]').forEach(button => {
+    //     button.addEventListener('click', function() {
+    //         // Find closest parent with x-data containing openDeleteModal
+    //         const modalContainer = this.closest('[x-data]');
+    //         if (modalContainer) {
+    //             // Get Alpine instance
+    //             const alpine = window.Alpine.getComponent(modalContainer);
+    //             if (alpine && typeof alpine.closeModal === 'function') {
+    //                 alpine.closeModal();
+    //             }
+    //         }
+    //     });
+    // });
 
     document.querySelectorAll('.delete-form').forEach(form => {
         form.addEventListener('submit', function(e) {
