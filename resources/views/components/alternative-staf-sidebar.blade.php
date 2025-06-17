@@ -6,9 +6,23 @@
             <!-- Navigation -->
             <div class="flex flex-col flex-grow p-4 overflow-y-auto">
                 <span class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    DASHBOARD
+                </span>
+                <!-- Home Menu Item -->
+                <a href="{{ route('staff.dashboard') }}"
+                    class="mt-1 flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-100 hover:text-blue-600 transition-colors duration-200 {{ request()->routeIs('staff.dashboard') ? 'bg-blue-100 text-blue-800' : '' }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 mr-3">
+                        <path
+                            d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
+                        <path
+                            d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
+                    </svg>
+                    <span class="font-semibold text-lg">Home</span>
+                </a>
+
+                <span class=" px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                     MANAJEMEN
                 </span>
-
                 <!-- Siswa Menu Item -->
                 <a href="{{ route('staff.list-siswa', $kelasId) }}"
                     class="mt-1 flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-100 hover:text-blue-600 transition-colors duration-200 {{ request()->routeIs('staff.list-siswa') ? 'bg-blue-100 text-blue-800' : '' }}">

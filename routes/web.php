@@ -63,7 +63,6 @@ Route::prefix('ortu')->middleware(['ortuAkses'])->group(function () {
     Route::get('/nilai-kehadiran/showReport', [OrtuController::class, 'showRaport'])->name('ortu.showRaport');
 });
 
-
 //STAF AUTH
 Route::get('/staff/login', [StafAuthController::class, 'showLoginForm'])->name('staff.login-staf');
 Route::post('/staff/login', [StafAuthController::class, 'loginStaf']);
