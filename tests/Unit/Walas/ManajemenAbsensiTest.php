@@ -15,11 +15,11 @@ use Carbon\Carbon;
 
 describe('Absensi Unit Tests', function () {
 
-    test('Absen can be created with valid data', function () {
+    test('Absen dapat dibuat dengan data yang valid', function () {
         // Arrange
         $absenData = [
             'detail_kelas_id' => 1,
-            'tanggal' => '2025-06-13',
+            'tanggal' => now()->format('Y-m-d'), // Menggunakan tanggal saat ini
             'status' => 'hadir',
         ];
 
@@ -29,27 +29,27 @@ describe('Absensi Unit Tests', function () {
         // Assert
         expect($absen)->toBeInstanceOf(Absen::class);
         expect($absen->detail_kelas_id)->toBe(1);
-        expect($absen->tanggal)->toBe('2025-06-13');
+        expect($absen->tanggal)->toBe(now()->format('Y-m-d'));
         expect($absen->status)->toBe('hadir');
 
         $this->assertDatabaseHas('absen', [
             'detail_kelas_id' => 1,
-            'tanggal' => '2025-06-13',
+            'tanggal' => now()->format('Y-m-d'),
             'status' => 'hadir'
         ]);
     });
 
-    test('Absen can be updated', function () {
+    test('Absen dapat diupdate dengan data yang valid', function () {
         // Arrange
         $absen = Absen::create([
             'detail_kelas_id' => 1,
-            'tanggal' => '2025-06-13',
+            'tanggal' => now()->format('Y-m-d'),
             'status' => 'hadir'
         ]);
 
         // Act
         $absen->update([
-            'tanggal' => '2026-01-13',
+            'tanggal' => now()->addDay()->format('Y-m-d'),
             'status' => 'izin',
         ]);
 
@@ -60,31 +60,47 @@ describe('Absensi Unit Tests', function () {
         ]);
     });
 
-    test('Absen creation fails with invalid status', function () {
+    test('Absen tidak dapat dibuat dengan data yang tidak valid', function () {
         // Arrange
         $invalidAbsenData = [
             'detail_kelas_id' => 1,
-            'tanggal' => '2024-01-15',
-            'status' => 'invalid_status',
+            'tanggal' => '2025-06-18',
+            'status' => 'hadir',
         ];
 
         // Act & Assert
         expect(function () use ($invalidAbsenData) {
             Absen::create($invalidAbsenData);
         })->toThrow(Exception::class);
+        
+        // // Act
+        // $absenUpdate = Absen::create($invalidAbsenData);
+        // // Assert
+        // expect($absenUpdate)->toBeInstanceOf(Absen::class);
+        // expect($absenUpdate->detail_kelas_id)->toBe(1);
+        // expect($absenUpdate->tanggal)->toBe(now()->format('Y-m-d'));
+        // expect($absenUpdate->status)->toBe('hadir');
+
     });
 
-    test('Absen update fails with invalid status', function () {
+    test('Absen tidak dapat diupdate dengan status yang tidak valid', function () {
         // Arrange
-        $absen = Absen::create([
+        $invalidAbsenData = Absen::create([
             'detail_kelas_id' => 7,
-            'tanggal' => '2025-06-13',
+            'tanggal' => now()->format('Y-m-d'),
             'status' => 'hadir'
         ]);
-
         // Act & Assert
-        expect(function () use ($absen) {
-            $absen->update(['status' => 'invalid_status']);
+        expect(function () use ($invalidAbsenData) {
+            $invalidAbsenData->update(['status' => 'invalid_status']);
         })->toThrow(Exception::class);
+
+        // // Act
+        // $absenUpdate = $invalidAbsenData->update(['status' => 'invalid_status']);
+        // // Assert
+        // expect($absenUpdate)->toBeInstanceOf(Absen::class);
+        // expect($absenUpdate->detail_kelas_id)->toBe(7);
+        // expect($absenUpdate->tanggal)->toBe(now()->format('Y-m-d'));
+        // expect($absenUpdate->status)->toBe('hadir');
     });
 });
