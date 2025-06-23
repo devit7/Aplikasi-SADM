@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Validation\ValidationException;
 
 class StaffAcces extends Model
 {
@@ -21,6 +22,45 @@ class StaffAcces extends Model
         'akses_extrakurikuler' => 'boolean',
         'akses_worship_character' => 'boolean',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            // Validasi sebelum create
+            $model->validateUniqueAccess();
+        });
+
+        static::updating(function ($model) {
+            // Validasi sebelum update
+            $model->validateUniqueAccess($model->id);
+        });
+    }
+
+    /**
+     * Validate unique staff access combination
+     */
+    protected function validateUniqueAccess($excludeId = null)
+    {
+        $query = self::where('staff_id', $this->staff_id)
+            ->where('kelas_id', $this->kelas_id)
+            ->where('matapelajaran_id', $this->matapelajaran_id);
+
+        if ($excludeId) {
+            $query->where('id', '!=', $excludeId);
+        }
+
+        if ($query->exists()) {
+            $staff = $this->staff;
+            $kelas = $this->kelas;
+            $matapelajaran = $this->matapelajaran;
+
+            throw ValidationException::withMessages([
+                'duplicate_access' => "Staff {$staff->nama} sudah memiliki akses untuk mata pelajaran {$matapelajaran->nama_mapel} di kelas {$kelas->nama_kelas}"
+            ]);
+        }
+    }
 
     public function staff()
     {

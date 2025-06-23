@@ -116,7 +116,7 @@
 
 <!-- Using the confirmation-modal component with Tailwind CSS -->
 <x-confirmation-modal id="confirmationModal" title="Konfirmasi">
-    <p class="text-sm text-gray-500">
+    <p class="text-base text-gray-500 mb-7">
         Apakah anda yakin menyimpan presensi?
     </p>
 

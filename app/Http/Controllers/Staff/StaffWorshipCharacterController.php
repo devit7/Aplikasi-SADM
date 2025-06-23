@@ -86,7 +86,7 @@ class StaffWorshipCharacterController extends Controller
      */
     public function createAssessment()
     {
-        // Filter only records with Worship access and get kelas_id
+        // Filter only records with Worship access
         $staff = StaffAcces::where('staff_id', session('staff')->id)
             ->where('akses_worship_character', true)
             ->get();
@@ -138,6 +138,54 @@ class StaffWorshipCharacterController extends Controller
 
         return view('staf.worship.create-assessment', compact('categories', 'students', 'staff_acces'));
     }
+
+    public function getStudentsByCategory(Request $request)
+    {
+        $categoryId = $request->category_id;
+
+        if (!$categoryId) {
+            return response()->json(['students' => []]);
+        }
+
+        $staff = session('staff');
+
+        // Check if staff has access to this category
+        $hasAccess = StaffAcces::where('staff_id', $staff->id)
+            ->where('akses_worship_character', true)
+            ->whereHas('worshipCategories', function ($query) use ($categoryId) {
+                $query->where('worship_character_categories.id', $categoryId);
+            })
+            ->exists();
+
+        if (!$hasAccess) {
+            return response()->json(['error' => 'Access denied'], 403);
+        }
+
+        // Get staff's accessible class IDs
+        $staffClassIds = StaffAcces::where('staff_id', $staff->id)
+            ->where('akses_worship_character', true)
+            ->pluck('kelas_id')
+            ->unique()
+            ->toArray();
+
+        // 1. Siswa Terdaftar pada kategori ekstrakurikuler ini
+        // 2. Siswa tidak memiliki data Predicate & Explanation yang ada untuk kategori ini
+        $students = Siswa::whereHas('detailKelas', function ($query) use ($staffClassIds) {
+            $query->whereIn('kelas_id', $staffClassIds);
+        })
+            ->whereHas('worshipCourses', function ($query) use ($categoryId) {
+                $query->where('worship_character_categories.id', $categoryId);
+            })
+            ->whereDoesntHave('worshipAssessments', function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            })
+            ->select('siswa.id', 'siswa.nama', 'siswa.nisn')
+            ->orderBy('siswa.nama')
+            ->get();
+
+        return response()->json(['students' => $students]);
+    }
+
 
     /**
      * Store a newly created assessment

@@ -6,12 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\AlQuranLearningCategory;
 use App\Models\AlQuranLearningSubcategory;
 use App\Models\AlQuranStudentAssessment;
-use App\Models\DetailKelas;
 use App\Models\Siswa;
-use App\Models\Staff;
 use App\Models\StaffAcces;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class StaffAlQuranLearningController extends Controller
 {
@@ -77,16 +74,21 @@ class StaffAlQuranLearningController extends Controller
             ->where('akses_alquran_learning', 1)
             ->get();
 
-        // If no specific Al-Quran access, fall back to any access
+        if ($staff->isEmpty()) {
+            return redirect()->route('staff.dashboard')->with('error', 'Anda tidak memiliki akses untuk Al-Quran Learning');
+        }
+
         $staff_al_quran_access = $staff->where('akses_alquran_learning', 1)->first();
         $kelas_id = $staff_al_quran_access ? $staff_al_quran_access->kelas_id : $staff->first()->kelas_id;
 
         $subcategoryIds = [];
         foreach ($staff as $access) {
-            $subcategoryIds = array_merge(
-                $subcategoryIds,
-                $access->alQuranSubcategories->pluck('id')->toArray()
-            );
+            if ($access->alQuranSubcategories && $access->alQuranSubcategories->count() > 0) {
+                $subcategoryIds = array_merge(
+                    $subcategoryIds,
+                    $access->alQuranSubcategories->pluck('id')->toArray()
+                );
+            }
         }
 
         $subcategories = AlQuranLearningSubcategory::whereIn('id', $subcategoryIds)
@@ -109,6 +111,53 @@ class StaffAlQuranLearningController extends Controller
         ];
 
         return view('staf.al-quran.create-assessment', compact('subcategories', 'students', 'staff_acces'));
+    }
+
+    public function getStudentsBySubcategory(Request $request)
+    {
+        $subcategoryId = $request->subcategory_id;
+
+        if (!$subcategoryId) {
+            return response()->json(['students' => []]);
+        }
+
+        $staff = session('staff');
+
+        // Check if staff has access to this subcategory
+        $hasAccess = StaffAcces::where('staff_id', $staff->id)
+            ->where('akses_alquran_learning', true)
+            ->whereHas('alQuranSubcategories', function ($query) use ($subcategoryId) {
+                $query->where('al_quran_learning_subcategories.id', $subcategoryId);
+            })
+            ->exists();
+
+        if (!$hasAccess) {
+            return response()->json(['error' => 'Access denied'], 403);
+        }
+
+        // Get staff's accessible class IDs
+        $staffClassIds = StaffAcces::where('staff_id', $staff->id)
+            ->where('akses_alquran_learning', true)
+            ->pluck('kelas_id')
+            ->unique()
+            ->toArray();
+
+        // 1. Siswa Terdaftar pada kategori ekstrakurikuler ini
+        // 2. Siswa tidak memiliki data Predicate & Explanation yang ada untuk kategori ini
+        $students = Siswa::whereHas('detailKelas', function ($query) use ($staffClassIds) {
+            $query->whereIn('kelas_id', $staffClassIds);
+        })
+            ->whereHas('alQuranCourses', function ($query) use ($subcategoryId) {
+                $query->where('al_quran_learning_subcategories.id', $subcategoryId);
+            })
+            ->whereDoesntHave('alQuranAssessments', function ($query) use ($subcategoryId) {
+                $query->where('subcategory_id', $subcategoryId);
+            })
+            ->select('siswa.id', 'siswa.nama', 'siswa.nisn')
+            ->orderBy('siswa.nama')
+            ->get();
+
+        return response()->json(['students' => $students]);
     }
 
     /**

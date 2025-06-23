@@ -6,6 +6,7 @@ use App\Filament\Resources\StaffAccesResource;
 use App\Models\StaffAcces;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
 
 class CreateStaffAcces extends CreateRecord
@@ -129,6 +130,36 @@ class CreateStaffAcces extends CreateRecord
         }
 
         return $record;
+    }
+
+    protected function beforeCreate(): void
+    {
+        $data = $this->data;
+
+        // Validasi duplikasi data
+        $exists = StaffAcces::where('staff_id', $data['staff_id'])
+            ->where('kelas_id', $data['kelas_id'])
+            ->where('matapelajaran_id', $data['matapelajaran_id'])
+            ->exists();
+
+        if ($exists) {
+            $staff = \App\Models\Staff::find($data['staff_id']);
+            $kelas = \App\Models\Kelas::find($data['kelas_id']);
+            $matapelajaran = \App\Models\Matapelajaran::find($data['matapelajaran_id']);
+
+            Notification::make()
+                ->title('Data Duplikat')
+                ->body("Staff {$staff->nama} sudah memiliki akses untuk mata pelajaran {$matapelajaran->nama_mapel} di kelas {$kelas->nama_kelas}")
+                ->danger()
+                ->send();
+
+            $this->halt();
+        }
+    }
+
+    protected function getCreatedNotificationTitle(): ?string
+    {
+        return 'Staff Access berhasil dibuat';
     }
 
     protected function getRedirectUrl(): string

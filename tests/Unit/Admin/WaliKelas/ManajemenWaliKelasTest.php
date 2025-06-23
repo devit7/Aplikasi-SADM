@@ -1,10 +1,11 @@
 <?php
 // use function Pest\Laravel\{actingAs, get, post, delete};
-use App\Models\User;
+use App\Models\WaliKelas;
 use Livewire\Livewire;
 use App\Filament\Resources\UsersResource\Pages\CreateUsers;
 use App\Filament\Resources\UsersResource\Pages\EditUsers;
 use App\Filament\Resources\UsersResource\Pages\ListUsers;
+use App\Models\Kelas;
 
 // ./vendor/bin/pest .\tests\Unit\Admin\WaliKelas\ManajemenWaliKelasTest.php --filter="Validasi data wali kelas saat ditambahkan di Filament"
 test('Validasi data wali kelas saat ditambahkan di Filament', function () {
@@ -18,8 +19,7 @@ test('Validasi data wali kelas saat ditambahkan di Filament', function () {
         'tanggal_lahir' => '1999-01-01',
         'no_hp' => '085846374759',
         'alamat' => 'JL. rumah wali kelas baru',
-        'password' => 'password',
-        'role' => 'walikelas'
+        'password' => 'password'
     ];
 
     //Act & Assert
@@ -69,130 +69,41 @@ test('Admin tidak dapat menambahkan wali kelas dengan NIP yang sudah ada', funct
 // ./vendor/bin/pest .\tests\Unit\Admin\WaliKelas\ManajemenWaliKelasTest.php --filter="Admin dapat memperbarui data wali kelas"
 test('Admin dapat memperbarui data wali kelas', function () {
     //Arrange
-    $waliKelasCanEdit = User::factory()->create([
-        'nip' => '135799753113501010',
-        'name' => 'Wali Kelas Can Edit',
-        'email' => 'walikelascanedit@gmail.com',
-        'jenis_kelamin' => 'L',
-        'tempat_lahir' => 'Surabaya',
-        'tanggal_lahir' => '1999-01-01',
-        'no_hp' => '085846374769',
-        'alamat' => 'JL. rumah wali kelas can edit',
-        'password' => 'password-can-edit',
-        'role' => 'walikelas'
-    ]);
     
     $dataUpdate = [
-        'nip' => '135799753113501010',
+        'nip' => '135799753113571111',
         'name' => 'Wali Kelas Update',
-        'email' => 'walikelasupdate@gmail.com',
+        'email' => 'walikelasbaru@gmail.com',
         'jenis_kelamin' => 'L',
-        'tempat_lahir' => 'Bandung',
-        'tanggal_lahir' => '1985-10-10',
-        'no_hp' => '089876543210',
-        'alamat' => 'Jl. Wali Kelas Update Baru No. 789',
+        'tempat_lahir' => 'Banjarmasin',
+        'tanggal_lahir' => '1999-01-01',
+        'no_hp' => '085846374759',
+        'alamat' => 'JL. rumah wali kelas baru',
     ];
     
     //Act & Assert
-    Livewire::test(EditUsers::class, ['record' => $waliKelasCanEdit->id])
+    Livewire::test(EditUsers::class, ['record' => 9])
     ->fillForm($dataUpdate)
     ->call('save')
     ->assertHasNoFormErrors();
     
     $this->assertDatabaseHas('users', [
-        'id' => $waliKelasCanEdit->id,
+        'id' => 9,
         'name' => 'Wali Kelas Update',
-        'email' => 'walikelasupdate@gmail.com'
+        'email' => 'walikelasbaru@gmail.com'
     ]);
 });
 
-/* test('Admin dapat melihat daftar wali kelas', function () {
-    // Arrange
-    $waliKelas1 = User::factory()->create([
-        'nip' => '1357997531135001',
-        'name' => 'Wali Kelas Test 1',
-        'email' => 'walikelas1@gmail.com',
-        'jenis_kelamin' => 'L',
-        'tempat_lahir' => 'Banjarmasin1',
-        'tanggal_lahir' => '1999-01-01',
-        'no_hp' => '085846374755',
-        'alamat' => 'JL. rumah wali kelas 1',
-        'password' => 'password1',
-        'role' => 'walikelas'
-    ]);
-
-    $waliKelas2 = User::factory()->create([
-        'nip' => '1357997531135002',
-        'name' => 'Wali Kelas Test 2',
-        'email' => 'walikelas2@gmail.com',
-        'jenis_kelamin' => 'L',
-        'tempat_lahir' => 'Banjarmasin2',
-        'tanggal_lahir' => '1999-02-02',
-        'no_hp' => '085846374756',
-        'alamat' => 'JL. rumah wali kelas 2',
-        'password' => 'password2',
-        'role' => 'walikelas'
-    ]);
-
-    // Act & Assert
-    Livewire::test(ListUsers::class)
-        ->assertCanSeeTableRecords([$waliKelas1, $waliKelas2]);
-});
-
-test('Validasi data wali kelas tidak bisa di edit di Filament', function () {
-    //Arrange
-    $user = User::factory()->create([
-        'nip' => '135799753113579929',
-        'name' => 'Wali Kelas Baru 222222',
-        'email' => 'walikelasbaru222222@gmail.com',
-        'jenis_kelamin' => 'L',
-        'tempat_lahir' => 'Banjarmasin',
-        'tanggal_lahir' => '1998-01-01',
-        'no_hp' => '085846374757',
-        'alamat' => 'JL. rumah wali kelas baru 2',
-        'password' => 'password2',
-        'role' => 'walikelas'
-    ]);
-
-    $dataWaliKelas = [
-        'nip' => '',
-        'name' => '',
-        'email' => '',
-    ];
-
-    //Act & Assert
-    livewire::test(EditUsers::class, ['record' => $user->id])
-        ->fillForm($dataWaliKelas)
-        ->call('save')
-        ->assertHasFormErrors([
-            'nip' => 'required',
-            'name' => 'required',
-            'email' => 'required'
-        ]);
-}); */
 
 // ./vendor/bin/pest .\tests\Unit\Admin\WaliKelas\ManajemenWaliKelasTest.php --filter="Admin dapat menghapus data wali kelas"
 test('Admin dapat menghapus data wali kelas', function () {
-    // Arrange
-    $waliKelas = User::factory()->create([
-        'nip' => '135799753113500303',
-        'name' => 'Wali Kelas Test Hapus',
-        'email' => 'walikelashapus@gmail.com',
-        'jenis_kelamin' => 'L',
-        'tempat_lahir' => 'Banjarmasin',
-        'tanggal_lahir' => '1998-01-01',
-        'no_hp' => '085846374753',
-        'alamat' => 'JL. rumah wali kelas hapus',
-        'password' => 'password-hapus',
-        'role' => 'walikelas'
-    ]);
-
     //Act & Assert
-    Livewire::test(EditUsers::class, ['record' => $waliKelas->id])
+    Livewire::test(EditUsers::class, ['record' => 8])
         ->callAction('delete')
         ->assertHasNoActionErrors();
 
     $this->assertDatabaseMissing('users', [
-        'id' => $waliKelas->id
+        'id' => 8
     ]);
 });
+

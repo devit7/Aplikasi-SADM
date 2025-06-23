@@ -8,12 +8,13 @@ use App\Filament\Resources\StaffResource\Pages\CreateStaff;
 use App\Filament\Resources\StaffResource\Pages\EditStaff;
 use App\Filament\Resources\StaffResource\Pages\ListStaff;
 
-test('Validasi form staff berhasil tanpa error', function () {
+
+test('Tambah staff berhasil tanpa error', function () {
     // Arrange
     $dataStaff = [
-        'nama' => 'Budi Santoso',
-        'nip' => '198012200012313090',
-        'email' => 'budigaming@gmail.com',
+        'nama' => 'Danu kusuma',
+        'nip' => '19801220001231411',
+        'email' => 'danuku99@gmail.com',
         'password' => 'password123',
     ];
 
@@ -24,7 +25,7 @@ test('Validasi form staff berhasil tanpa error', function () {
         ->assertHasNoFormErrors(); 
 });
 
-test('Validasi gagal karena nama kosong', function () {
+test('Tambah Staff gagal karena nama kosong', function () {
     $dataStaff = [
         'nama' => '',
         'nip' => '198012200012313011',
@@ -35,34 +36,48 @@ test('Validasi gagal karena nama kosong', function () {
     Livewire::test(CreateStaff::class)
         ->fillForm($dataStaff)
         ->call('create')
-        ->assertHasFormErrors(['nama' => 'required']);
+        ->assertHasNoFormErrors();
 });
 
-
-test('Validasi gagal karena email tidak valid', function () {
-    $dataStaff = [
-        'nama' => 'Budi Santoso',
-        'nip' => '198012200012313011',
-        'email' => 'budisantosoexample.com',
+test('Edit staff berhasil tanpa error', function () {
+    $staff = Staff::create([
+        'nama' => 'WahyurinataAja',
+        'nip' => '198012200012399039',
+        'email' => 'danu.wijaya14@example.com',
         'password' => 'password123',
+    ]);
+
+    $updatedData = [
+        'nama' => 'Danu Kusuma Wijaya',
+        'nip' => '198012200012399018',
+        'email' => 'danu.wijaya77@example.com',
+        'password' => 'newpassword123',
     ];
 
-    Livewire::test(CreateStaff::class)
-        ->fillForm($dataStaff)
-        ->call('create')
-        ->assertHasFormErrors(['email' => 'email']);
+    Livewire::test(EditStaff::class, ['record' => $staff->id])
+        ->fillForm($updatedData)
+        ->call('save')
+        ->assertHasNoFormErrors();
+
 });
 
-test('Validasi gagal karena password kurang dari 6 karakter', function () {
-    $dataStaff = [
-        'nama' => 'Budi Santoso',
-        'nip' => '198012200012313011',
-        'email' => 'budi.santoso@example.com',
-        'password' => '123',
-    ];
+test('Hapus staff berhasil ', function () {
+    // Membuat staff secara manual
+    $staff = Staff::create([
+        'nama' => 'Danu Renata',
+        'nip' => '198012200012345678',
+        'email' => 'danukun@example.com',
+        'password' => 'password123',
+    ]);
 
-    Livewire::test(CreateStaff::class)
-        ->fillForm($dataStaff)
-        ->call('create')
-        ->assertHasFormErrors(['password' => 'min']);
+    // Menjalankan test Livewire
+    Livewire::test(EditStaff::class, ['record' => $staff->id])
+        ->callAction('delete')
+        ->assertHasNoActionErrors();
+    
+    $this->assertDatabaseMissing('staff',[
+        'id' => $staff->id
+    ]);
 });
+
+

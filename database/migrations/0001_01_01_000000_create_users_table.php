@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nip')->unique()->nullable();
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
             $table->string('tempat_lahir')->nullable();
             $table->date('tanggal_lahir')->nullable();

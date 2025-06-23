@@ -94,7 +94,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($recentAssessments as $index => $assessment)
+                        @foreach($recentAssessments as $index => $assessment)
                         <tr class="border-b hover:bg-gray-100">
                             <td class="p-3 whitespace-nowrap font-medium text-base">{{ $index + 1 }}</td>
                             <td class="p-3 whitespace-nowrap font-medium text-base">
@@ -323,13 +323,7 @@
                                 </span>
                             </td>
                         </tr>
-                        @empty
-                        <tr>
-                            <td colspan="7" class="p-8 text-center text-gray-500 font-semibold">
-                                No Assessments found
-                            </td>
-                        </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </x-tables>
@@ -339,7 +333,6 @@
 
 @push('scripts')
 <script>
-    // Enhance radio button styling
     document.querySelectorAll('input[name="predicate"]').forEach(radio => {
         radio.addEventListener('change', function() {
             // Remove styling from all labels in the same form
@@ -366,6 +359,9 @@
             // which would prevent form submission
             button.innerHTML =
                 '<svg class="animate-spin h-5 w-5 text-white inline mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Deleting...';
+
+            // Let form submit complete - don't use disabled=true
+            return true;
         });
     });
 

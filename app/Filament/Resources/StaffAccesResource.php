@@ -49,79 +49,117 @@ class StaffAccesResource extends Resource
                             ->searchable()
                             ->searchDebounce(200)
                             ->relationship('staff', 'nama')
-                            ->required(),
+                            ->required()
+                            ->live()
+                            ->rules([
+                                function () {
+                                    return function (string $attribute, $value, \Closure $fail) {
+                                        // Validasi akan dilakukan di level form submission
+                                    };
+                                },
+                            ]),
                         Select::make('kelas_id')
                             ->label('Kelas')
                             ->relationship('kelas', 'nama_kelas')
                             ->preload()
                             ->searchable()
                             ->searchDebounce(200)
-                            ->required(),
+                            ->required()
+                            ->live()
+                            ->afterStateUpdated(function (callable $set) {
+                                $set('mata_pelajaran', []);
+                            }),
                     ])->columnSpan(1),
 
                 // BAGIAN 3: MATA PELAJARAN (DENGAN REPEATER)
                 Section::make('Mata Pelajaran')
-                    ->description('Tambahkan satu atau lebih mata pelajaran')
+                    ->description('Pilih kelas terlebih dahulu untuk menampilkan mata pelajaran')
                     ->schema([
-                        Repeater::make('mata_pelajaran')
-                            ->label('')
-                            ->schema([
-                                Select::make('matapelajaran_id')
-                                    ->label('Mata Pelajaran')
-                                    ->options(function (callable $get) {
-                                        $kelasId = $get('../../kelas_id');
-                                        if (!$kelasId) {
-                                            return [];
+                        Select::make('matapelajaran_id')
+                            ->label('Mata Pelajaran')
+                            ->options(function (callable $get) {
+                                $kelasId = $get('kelas_id');
+                                if (!$kelasId) {
+                                    return [];
+                                }
+                                return Matapelajaran::where('kelas_id', $kelasId)
+                                    ->get()
+                                    ->mapWithKeys(function ($matapelajaran) {
+                                        return [$matapelajaran->id => $matapelajaran->nama_mapel . ' - ' . $matapelajaran->semester];
+                                    });
+                            })
+                            ->searchable()
+                            ->disabled(fn(callable $get) => !$get('kelas_id'))
+                            ->placeholder(fn(callable $get) => !$get('kelas_id') ? 'Pilih kelas terlebih dahulu' : 'Pilih mata pelajaran')
+                            ->required()
+                            ->live() // ✅ Ini sudah ada, pastikan tetap ada
+                            ->afterStateUpdated(function (callable $set, callable $get) {
+                                // ✅ Reset checkbox ketika mata pelajaran berubah (opsional)
+                                $mataPelajaranId = $get('matapelajaran_id');
+                                if (!$mataPelajaranId) {
+                                    $set('akses_nilai', false);
+                                    $set('akses_absen', false);
+                                }
+                            })
+                            ->rules([
+                                function (callable $get) {
+                                    return function (string $attribute, $value, \Closure $fail) use ($get) {
+                                        $staffId = $get('staff_id');
+                                        $kelasId = $get('kelas_id');
+
+                                        if ($staffId && $kelasId && $value) {
+                                            $exists = StaffAcces::where('staff_id', $staffId)
+                                                ->where('kelas_id', $kelasId)
+                                                ->where('matapelajaran_id', $value)
+                                                ->exists();
+
+                                            if ($exists) {
+                                                $staff = \App\Models\Staff::find($staffId);
+                                                $kelas = \App\Models\Kelas::find($kelasId);
+                                                $matapelajaran = Matapelajaran::find($value);
+
+                                                $fail("Staff {$staff->nama} sudah memiliki akses untuk mata pelajaran {$matapelajaran->nama_mapel} di kelas {$kelas->nama_kelas}");
+                                            }
                                         }
-                                        return Matapelajaran::where('kelas_id', $kelasId)
-                                            ->get()
-                                            ->mapWithKeys(function ($matapelajaran) {
-                                                return [$matapelajaran->id => $matapelajaran->nama_mapel . ' - ' . $matapelajaran->semester];
-                                            });
-                                    })
-                                    ->searchable()
-                                    ->disabled(fn(callable $get) => !$get('../../kelas_id'))
-                                    ->required(),
-                            ])
-                            ->addActionLabel('Tambah Mata Pelajaran')
-                            ->itemLabel(
-                                fn(array $state): ?string =>
-                                $state['matapelajaran_id']
-                                    ? Matapelajaran::find($state['matapelajaran_id'])?->nama_mapel
-                                    : null
-                            )
-                            ->collapsible()
-                            ->defaultItems(0)
-                            ->reorderable(false)
-                            ->live() // Penting: Aktifkan live state updating
-                    ])->columnSpan(1),
+                                    };
+                                },
+                            ]),
+                    ])->columnSpan(1)
+                    ->hidden(fn(callable $get) => !$get('kelas_id')),
 
                 // BAGIAN 2: HAK AKSES DASAR
                 Section::make('Hak Akses Dasar')
-                    ->description('Pilih 1 atau lebih hak akses yang diberikan kepada staff')
+                    ->description('Pilih mata pelajaran terlebih dahulu untuk mengaktifkan hak akses')
                     ->schema([
                         Checkbox::make('akses_nilai')
                             ->label('Akses Nilai')
-                            ->helperText('Memberikan akses untuk mengelola nilai siswa')
-                            ->disabled(function (callable $get) {
-                                $mataPelajaran = $get('mata_pelajaran');
-                                return !is_array($mataPelajaran) || count($mataPelajaran) === 0;
+                            ->helperText(function (callable $get) {
+                                $mataPelajaranId = $get('matapelajaran_id');
+                                if (!$mataPelajaranId) {
+                                    return 'Pilih mata pelajaran terlebih dahulu untuk mengaktifkan akses ini';
+                                }
+                                return 'Memberikan akses untuk mengelola nilai siswa';
                             })
-                            ->dehydrated(function (callable $get) {
-                                $mataPelajaran = $get('mata_pelajaran');
-                                return is_array($mataPelajaran) && count($mataPelajaran) > 0;
-                            }),
+                            ->disabled(function (callable $get) {
+                                $mataPelajaranId = $get('matapelajaran_id');
+                                return !$mataPelajaranId; // ✅ Hanya cek apakah mata pelajaran sudah dipilih
+                            })
+                            ->live(), // ✅ Tambahkan live() untuk reaktivitas
+
                         Checkbox::make('akses_absen')
                             ->label('Akses Absen')
-                            ->helperText('Memberikan akses untuk mengelola absensi siswa')
-                            ->disabled(function (callable $get) {
-                                $mataPelajaran = $get('mata_pelajaran');
-                                return !is_array($mataPelajaran) || count($mataPelajaran) === 0;
+                            ->helperText(function (callable $get) {
+                                $mataPelajaranId = $get('matapelajaran_id');
+                                if (!$mataPelajaranId) {
+                                    return 'Pilih mata pelajaran terlebih dahulu untuk mengaktifkan akses ini';
+                                }
+                                return 'Memberikan akses untuk mengelola absensi siswa';
                             })
-                            ->dehydrated(function (callable $get) {
-                                $mataPelajaran = $get('mata_pelajaran');
-                                return is_array($mataPelajaran) && count($mataPelajaran) > 0;
-                            }),
+                            ->disabled(function (callable $get) {
+                                $mataPelajaranId = $get('matapelajaran_id');
+                                return !$mataPelajaranId; // ✅ Hanya cek apakah mata pelajaran sudah dipilih
+                            })
+                            ->live(), // ✅ Tambahkan live() untuk reaktivitas
                     ])->columnSpan(1),
 
                 // BAGIAN 4: HAK AKSES AL-QURAN LEARNING
@@ -154,11 +192,9 @@ class StaffAccesResource extends Resource
                                             return [];
                                         }
 
-                                        // Debug - cek field yang digunakan untuk nama subcategory
                                         $subcategories = AlQuranLearningSubcategory::where('category_id', $categoryId)->get();
 
                                         return $subcategories->mapWithKeys(function ($subcategory) {
-                                            // Gunakan sub_nama sesuai dengan migrasi
                                             return [$subcategory->id => $subcategory->sub_nama];
                                         });
                                     })

@@ -68,7 +68,7 @@
                   </tr>
                </thead>
                <tbody>
-                  @forelse($recentAssessments as $index => $assessment)
+                  @foreach($recentAssessments as $index => $assessment)
                   <tr class="border-b hover:bg-gray-100">
                      <td class="p-3 whitespace-nowrap font-medium text-base">{{ $index + 1 }}</td>
                      <td class="p-3 whitespace-nowrap font-medium text-base">{{ $assessment->siswa->nama ?? 'N/A' }}</td>
@@ -112,7 +112,7 @@
                                        @click="openEditModal = false"></div>
 
                                     <!-- Modal Content -->
-                                    <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full md:max-w-xl">
+                                    <div class="bg-white rounded-lg text-start overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full md:max-w-xl">
                                        <!-- Modal Header -->
                                        <div class="bg-blue-600 py-4 px-6 text-white flex justify-between">
                                           <h3 class="text-lg font-semibold">Edit Assessment</h3>
@@ -283,13 +283,7 @@
                         </span>
                      </td>
                   </tr>
-                  @empty
-                  <tr>
-                     <td colspan="7" class="p-8 text-center text-gray-700 font-semibold">
-                        No assessments found
-                     </td>
-                  </tr>
-                  @endforelse
+                  @endforeach
                </tbody>
             </table>
          </x-tables>
@@ -299,7 +293,6 @@
 
 @push('scripts')
 <script>
-   // Enhance radio button styling
    document.querySelectorAll('input[name="predicate"]').forEach(radio => {
       radio.addEventListener('change', function() {
          const form = this.closest('form');
