@@ -80,7 +80,7 @@
                 <div class="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
                     {{ $errors->first('login') }}
                 </div>
-                @endi
+                @endif
             </div>
         </div>
     </section>

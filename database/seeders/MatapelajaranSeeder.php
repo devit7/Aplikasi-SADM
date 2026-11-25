@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use App\Models\Matapelajaran;
 use App\Models\Kelas;
 use Carbon\Carbon;
@@ -16,6 +15,14 @@ class MatapelajaranSeeder extends Seeder
      */
     public function run(): void
     {
+        $allKelas = Kelas::all();
+
+        if ($allKelas->isEmpty()) {
+            $this->command->warn('No Kelas found. Running KelasSeeder first...');
+            $this->call(KelasSeeder::class);
+            $allKelas = Kelas::all();
+        }
+
         $baseSubjects = [
             ['nama' => 'Islamic Education', 'kode_base' => 'PAI'],
             ['nama' => 'PPKn/ Civic', 'kode_base' => 'PKN'],
@@ -35,35 +42,39 @@ class MatapelajaranSeeder extends Seeder
             ['nama' => 'Kemuhammadiyahan', 'kode_base' => 'KMD'],
         ];
 
-        $allKelas = Kelas::all();
-        $matapelajaranData = [];
-        $now = Carbon::now();
-
+        $count = 0;
         foreach ($allKelas as $kelas) {
             foreach ($baseSubjects as $subject) {
-                $matapelajaranData[] = [
-                    'nama_mapel' => $subject['nama'],
-                    'kode_mapel' => $subject['kode_base'] . $kelas->id . '-1', // IPA12, MTK12, etc.
-                    'kelas_id' => $kelas->id,
-                    'semester' => 'ganjil',
-                    'kkm' => 80,
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                ];
+                // Semester Ganjil
+                Matapelajaran::updateOrCreate(
+                    [
+                        'kode_mapel' => $subject['kode_base'] . $kelas->id . '-1',
+                    ],
+                    [
+                        'nama_mapel' => $subject['nama'],
+                        'kelas_id' => $kelas->id,
+                        'semester' => 'ganjil',
+                        'kkm' => 80,
+                    ]
+                );
+                $count++;
 
-                $matapelajaranData[] = [
-                    'nama_mapel' => $subject['nama'],
-                    'kode_mapel' => $subject['kode_base'] . $kelas->id . '-2', // IPA12, MTK12, etc.
-                    'kelas_id' => $kelas->id,
-                    'semester' => 'genap',
-                    'kkm' => 80,
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                ];
+                // Semester Genap
+                Matapelajaran::updateOrCreate(
+                    [
+                        'kode_mapel' => $subject['kode_base'] . $kelas->id . '-2',
+                    ],
+                    [
+                        'nama_mapel' => $subject['nama'],
+                        'kelas_id' => $kelas->id,
+                        'semester' => 'genap',
+                        'kkm' => 80,
+                    ]
+                );
+                $count++;
             }
         }
 
-        // Insert all data at once
-        DB::table('matapelajaran')->insert($matapelajaranData);
+        $this->command->info($count . ' Matapelajaran records seeded successfully.');
     }
 }
